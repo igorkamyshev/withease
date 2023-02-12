@@ -11,7 +11,7 @@ export default defineConfig({
     siteTitle: "With Ease",
     footer: {
       message: "Released under the MIT License.",
-      copyright: "Copyright © 2022-present Igor Kamyşev",
+      copyright: "Copyright © 2023-present Igor Kamyşev",
     },
     socialLinks: [],
     editLink: {
@@ -19,6 +19,7 @@ export default defineConfig({
         "https://github.com/igorkamyshev/withease/edit/master/apps/website/docs/:path",
     },
     nav: [
+      { text: "Packages", items: [{ text: "i18next", link: "/i18next/" }] },
       {
         text: "More",
         items: [
