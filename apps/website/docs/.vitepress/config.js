@@ -20,6 +20,7 @@ export default defineConfig({
     },
     nav: [
       { text: "Packages", items: [{ text: "i18next", link: "/i18next/" }] },
+      { text: "Magazine", link: "/magazine/" },
       {
         text: "More",
         items: [
