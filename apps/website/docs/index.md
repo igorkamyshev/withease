@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: With Ease
-  text: Effector's family
-  tagline: TODO
+  name: Effector
+  text: with ease
+  tagline: A set of libraries and recipes to make frontend development easier thanks to Effector
 
 features:
   - icon: 🌐

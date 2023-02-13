@@ -3,7 +3,8 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   lang: "en-US",
   title: "With Ease",
-  description: "...",
+  description:
+    "A set of libraries and recipes to make frontend development easier thanks to Effector",
   lastUpdated: true,
   outDir: "../../../dist/apps/website",
   head: [],
