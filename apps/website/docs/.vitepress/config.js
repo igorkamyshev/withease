@@ -33,6 +33,13 @@ export default defineConfig({
         ],
       },
     ],
-    sidebar: {},
+    sidebar: {
+      "/magazine/": [
+        {
+          text: "Global variables and frontend",
+          link: "/magazine/global_variables",
+        },
+      ],
+    },
   },
 });
