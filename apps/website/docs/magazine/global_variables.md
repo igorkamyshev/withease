@@ -356,7 +356,7 @@ sample({ clock: setupAxiosFx.doneData, target: $axios });
 ```
 
 :::tip
-In this example, we use [implicit start _Event_ of the application](/magazine/implicit_start). It is a good practice to use it, because it allows you to control the start of the application.
+In this example, we use [explicit start _Event_ of the application](/magazine/explicit_start). It is a good practice to use it, because it allows you to control the start of the application.
 :::
 
 After that, we can [`fork`](https://effector.dev/docs/api/effector/fork) the application and pass a new value of our [_Stores_](https://effector.dev/docs/api/effector/store) for every particular environment 👇
@@ -404,7 +404,7 @@ describe("App", () => {
 That's it! Now we can use the same code for all environments and don't worry about global state, because it's isolated in the [_Scope_](https://effector.dev/docs/api/effector/scope).
 
 :::tip
-Read more about `allSettled` function in the article about [implicit start _Event_ of the application](/magazine/implicit_start).
+Read more about `allSettled` function in the article about [explicit start _Event_ of the application](/magazine/explicit_start).
 :::
 
 ## Recap
