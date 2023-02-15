@@ -39,12 +39,12 @@ export default defineConfig({
           text: "Architecture",
           items: [
             {
-              text: "Global variables and frontend",
+              text: "Global variables",
               link: "/magazine/global_variables",
             },
             {
               text: "Explicit start of the app",
-              link: "/magazine/explicit",
+              link: "/magazine/explicit_start",
             },
             {
               text: "Dependency injection",

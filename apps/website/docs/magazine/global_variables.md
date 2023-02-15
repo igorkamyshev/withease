@@ -1,4 +1,4 @@
-# Global variables and frontend
+# Global variables
 
 What problems do we have with the following code?
 
