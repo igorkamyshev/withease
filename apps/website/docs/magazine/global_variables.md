@@ -210,6 +210,8 @@ describe("App", () => {
 });
 ```
 
+:::tip Much more powerful
+Fork API can be used not only for avoiding global variables, but as a full-featured [dependency injection mechanism](/magazine/dependency_injection), because it allows to replace a value of any [_Store_](https://effector.dev/docs/api/effector/store) and a handler of any [_Effect_](https://effector.dev/docs/api/effector/effect) in a particular [_Scope_](https://effector.dev/docs/api/effector/scope) during `fork` call.
 :::
 
 #### UI-libraries integration

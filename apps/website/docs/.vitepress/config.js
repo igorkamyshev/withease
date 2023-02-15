@@ -46,6 +46,10 @@ export default defineConfig({
               text: "Implicit start of the app",
               link: "/magazine/implicit_start",
             },
+            {
+              text: "Dependency injection",
+              link: "/magazine/dependency_injection",
+            }
           ],
         },
         {
