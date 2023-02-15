@@ -1,7 +1,3 @@
----
-outline: [2, 3]
----
-
 # Global variables and frontend
 
 What problems do we have with the following code?
@@ -22,6 +18,8 @@ So, it's quite a lot, but let's focus on the global variable `axios` and it's op
 It causes possible mixing between different users during SSR, make tests slower and stories harder to write.
 :::
 
+## Environments
+
 In the modern world our frontend applications can run in different environments:
 
 - browser as a standalone application
@@ -29,7 +27,39 @@ In the modern world our frontend applications can run in different environments:
 - Node.js as a test-case
 - Node.js as a server-side rendering application
 
+Let's take a closer look and find out how global variables can affect our application in each of them.
+
+### ✅ Standalone application
+
+In this case, we have only one instance of our application in a single process. It means that we can use global variables to store our application state. **It's safe.**
+
+### 🟨 Embedded application (e.g. in [Storybook](https://storybook.js.org/))
+
+> This case is valid only for development mode, so it won't affect production.
+
+Typically, we have a lot of stories inside single tab of a browser while using tools like [Storybook](https://storybook.js.org/). It means that we can have more than one instance of our application in a single process. So, it can be a bit dangerous to use global variables to store our application state, because different stories can interfere with each other.
+
+However, some tools from this category can provide its own way to isolate different stories from each other. So, **it could be safe** to use global variables in this case.
+
+### 🟨 Test-case
+
+> This case is valid only for development mode, so it won't affect production.
+
+Tests are running in a Node.js which is single-threaded by default. It means that we can have more than one instance of our application in a single process. So, we have to be careful with global variables to store our application state, because otherwise different tests can interfere with each other.
+
+To simplify it, some of test-runners can provide its own way to isolate different tests from each other, but due to limit access to code internal implementation their solution can significantly decrease performance of tests. So, **it could be safe** to use global variables in this case.
+
+### 🔴 Server-side rendering
+
+Server side rendering is process of rendering application on a server and sending it to a browser. Because of single-threaded nature of Node.js, we can have more than one instance of our application in a single process during render. So, if we use global variables to store our application state and change it for one user, it can affect another user. In general, **it is not safe** to use global variables in case of SSR.
+
+### Summary
+
 As you can see, in 3/4 of environments we have more than one instance of our application in a single process. It means that we can't use global variables to store our application state. It's not safe. Let's see how we can solve this problem.
+
+:::tip Q: I don't use SSR, so I can use global variables, right?
+**A**: Yes, but. If avoiding global variables costs you almost nothing, why not to do it? It will make your application more predictable and easier to test. If you need to use SSR in the future, you will have to refactor your code anyway.
+:::
 
 ## The problem
 
