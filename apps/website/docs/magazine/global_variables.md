@@ -53,15 +53,13 @@ To simplify it, some of test-runners can provide its own way to isolate differen
 
 Server side rendering is process of rendering application on a server and sending it to a browser. Because of single-threaded nature of Node.js, we can have more than one instance of our application in a single process during render. So, if we use global variables to store our application state and change it for one user, it can affect another user. In general, **it is not safe** to use global variables in case of SSR.
 
-### Summary
+## The problem
 
 As you can see, in 3/4 of environments we have more than one instance of our application in a single process. It means that we can't use global variables to store our application state. It's not safe. Let's see how we can solve this problem.
 
 :::tip Q: I don't use SSR, so I can use global variables, right?
 **A**: Yes, but. If avoiding global variables costs you almost nothing, why not to do it? It will make your application more predictable and easier to test. If you need to use SSR in the future, you will have to refactor your code anyway.
 :::
-
-## The problem
 
 Because of usage of global instance of `axios` and applying some global state (with `getTokenSomehow` function) requests can be sent with wrong token in SSR or tests.
 
