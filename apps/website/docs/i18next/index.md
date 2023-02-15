@@ -119,7 +119,7 @@ const { translated } = createI18nextIntegration({
 });
 
 const $someTranslatedString = translated("cityPois.buttonText", {
-  cityName: $city((city) => city.name),
+  cityName: $city.map((city) => city.name),
 });
 ```
 
