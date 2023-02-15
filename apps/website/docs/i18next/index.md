@@ -1,8 +1,12 @@
+---
+outline: [2, 3]
+---
+
 # i18next
 
 A powerful internationalization framework for Effector which is based on [i18next](https://www.i18next.com/).
 
-## Install
+## Installation
 
 First, you need to install integration and its peer dependency:
 
@@ -59,7 +63,7 @@ const scope = fork({
 await allSettled(appStarted, { scope });
 ```
 
-### Integration
+### Usage
 
 Returned from `createI18nextIntegration` integration contains the following fields:
 
@@ -93,7 +97,7 @@ const $someTranslatedString = combine({ city: $city, t: $t }, ({ city, t }) =>
 
 In both cases, result will be a [_Store_](https://effector.dev/docs/api/effector/store) containing a translated string. It will be updated automatically when the language or available translations will be changed.
 
-### `translated`
+#### `translated`
 
 A factory that returns [_Store_](https://effector.dev/docs/api/effector/store) containing a translated string.
 
