@@ -1,3 +1,7 @@
+---
+outline: [2, 3]
+---
+
 # Global variables and frontend
 
 What problems do we have with the following code?
@@ -27,7 +31,15 @@ In the modern world our frontend applications can run in different environments:
 
 As you can see, in 3/4 of environments we have more than one instance of our application in a single process. It means that we can't use global variables to store our application state. It's not safe. Let's see how we can solve this problem.
 
-## React-way
+## The problem
+
+Because of usage of global instance of `axios` and applying some global state (with `getTokenSomehow` function) requests can be sent with wrong token in SSR or tests.
+
+## Theoretical solution
+
+The key of this problem is global state. Let's see how to avoid global state in different frameworks.
+
+### React-way
 
 React-way is to use [React Context](https://reactjs.org/docs/context.html) to store our application state.
 
@@ -37,7 +49,7 @@ React used as an example, but almost all frontend frameworks have similar concep
 
 We can use a value from a context 👇
 
-```tsx
+```tsx{3}
 // app.tsx
 function App() {
   const userId = useContext(UserIdContext);
@@ -118,7 +130,11 @@ export const Default = () => {
 
 Now, it is bulletproof. We can render any amount of instances of our application in a single process, and they will not interfere with each other. It's a good solution, but it's not suitable for non-React contexts (like business logic layer). Let's see how we can solve this problem with Effector.
 
-## Effector-way
+### Effector-way
+
+::: tip
+To correct work with [_Scope_](https://effector.dev/docs/api/effector/store)-full runtime, your application have to follow [some rules](/magazine/fork_api_rules).
+:::
 
 Effector has its own API to isolate application state, it's called Fork API — [`fork`](https://effector.dev/docs/api/effector/fork) function returns a new [_Scope_](https://effector.dev/docs/api/effector/scope) which is a container for all application state. Let's see how we can use it in all mentioned environments.
 
@@ -167,3 +183,203 @@ describe("App", () => {
 ```
 
 :::
+
+#### UI-libraries integration
+
+To connect UI-library to Effector, you have to use a integration library. For example, for React, you can use [`effector-react`](https://effector.dev/docs/api/effector-react) library. It supports Fork API, let's see how we can use it 👇
+
+```tsx{5}
+// app.tsx
+import { useUnit } from "effector-react";
+
+function App() {
+  const userId = useUnit($userId);
+
+  return (
+    <main>
+      <h1>Hello, world!</h1>
+      <p>{currentValue}</p>
+    </main>
+  );
+}
+```
+
+And pass your [_Scope_](https://effector.dev/docs/api/effector/scope) to the integration library through a context provider 👇
+
+::: code-group
+
+```tsx{6,9-11} [client.entrypoint.tsx]
+import { createRoot } from "react-dom/client";
+import { fork } from "effector";
+import { Provider } from "effector-react";
+
+// In client-side environment we can read a value from a browser
+const scope = fork({ values: [[$userId, readUserIdFromBrowser()]] });
+
+createRoot(document.getElementById("root")).render(
+  <Provider value={scope}>
+    <App />
+  </Provider>
+);
+```
+
+```tsx{7,10-12} [server.tsx]
+import { renderToString } from "react-dom/server";
+import { fork } from "effector";
+import { Provider } from "effector-react";
+
+function handleRequest(req, res) {
+  // In server-side environment we can read a value from a request
+  const scope = fork({ values: [[$userId, readUserIdFromRequest(req)]] });
+
+  const html = renderToString(
+    <Provider value={scope}>
+      <App />
+    </Provider>
+  );
+
+  res.send(html);
+}
+```
+
+```tsx{8,11-13} [app.test.tsx]
+import { render } from "@testing-library/react";
+import { fork } from "effector";
+import { Provider } from "effector-react";
+
+describe("App", () => {
+  it("should render userId", () => {
+    // In test environment we can use a mock value
+    const scope = fork({ values: [[$userId, "42"]] });
+
+    const { getByText } = render(
+      <Provider value={scope}>
+        <App />
+      </Provider>
+    );
+
+    expect(getByText("42")).toBeInTheDocument();
+  });
+});
+```
+
+```tsx{10,15-18} [app.stories.tsx]
+import { fork } from "effector";
+import { Provider } from "effector-react";
+
+export default {
+  component: App,
+  title: "Any random title",
+};
+
+// In Storybook environment we can use a mock value as well
+const scope = fork({ values: [[$userId, "mockUserId"]] });
+
+export const Default = () => {
+  return (
+    <Provider value={scope}>
+      <App />
+    </Provider>
+  );
+};
+```
+
+:::
+
+:::tip
+React is used as an example, but you can use any UI-library which has an integration with Effector.
+:::
+
+## The solution
+
+So, let's return to original problem with a global interceptor on global `axios` instance. We can save an instance to the [_Store_](https://effector.dev/docs/api/effector/store) and apply an interceptor to it exclusively 👇
+
+```ts
+// app.ts
+import { createStore, createEvent, sample, attach } from "effector";
+import { createInstance } from "axios";
+
+// Will be filled later, during fork
+const $userToken = createStore(null);
+
+const $axios = createStore(null);
+
+// An event that will be fired when application is started
+const applicationStared = createEvent();
+
+const setupAxiosFx = attach({
+  source: { userToken: $userToken },
+  effect({ userToken }) {
+    const instance = createInstance();
+
+    instance.interceptors.request.use((config) => {
+      config.headers["X-Custom-Token"] = userToken;
+      return config;
+    });
+
+    return instance;
+  },
+});
+
+sample({ clock: applicationStared, target: setupAxiosFx });
+sample({ clock: setupAxiosFx.doneData, target: $axios });
+```
+
+:::tip
+In this example, we use [implicit start _Event_ of the application](/magazine/implicit_start). It is a good practice to use it, because it allows you to control the start of the application.
+:::
+
+After that, we can [`fork`](https://effector.dev/docs/api/effector/fork) the application and pass a new value of our [_Stores_](https://effector.dev/docs/api/effector/store) for every particular environment 👇
+
+::: code-group
+
+```ts [client.entrypoint.ts]
+import { fork, allSettled } from "effector";
+
+const scope = fork({
+  values: [[$userToken, readUserTokenFromBrowserCookie()]],
+});
+
+await allSettled(applicationStared, { scope });
+```
+
+```tsx [server.tsx]
+import { fork, allSettled } from "effector";
+
+async function handleRequest(req, res) {
+  const scope = fork({
+    values: [[$userToken, readUserTokenFromRequestCookies(req)]],
+  });
+
+  await allSettled(applicationStared, { scope });
+}
+```
+
+```tsx [app.test.tsx]
+import { fork, allSettled } from "effector";
+
+describe("App", () => {
+  it("should start an app", async () => {
+    // Do not pass any values to the fork, because we don't need them in tests
+    // $userToken will be filled with null
+    const scope = fork();
+
+    await allSettled(applicationStared, { scope });
+  });
+});
+```
+
+:::
+
+That's it! Now we can use the same code for all environments and don't worry about global state, because it's isolated in the [_Scope_](https://effector.dev/docs/api/effector/scope).
+
+:::tip
+Read more about `allSettled` function in the article about [implicit start _Event_ of the application](/magazine/implicit_start).
+:::
+
+## Recap
+
+- Global state is a bad idea, because it can lead to unpredictable behavior in tests, SSR and other environments.
+- Effector has its own API to isolate application state, it's called Fork API — [`fork`](https://effector.dev/docs/api/effector/fork) function returns a new [_Scope_](https://effector.dev/docs/api/effector/scope) which is a container for all application state.
+- Application that uses Fork API must follow [some rules](/magazine/fork_api_rules).
+- To use Fork API with a UI-library, you have to use an integration library. For example, for React, you can use [`effector-react`](https://effector.dev/docs/api/effector-react) library.
