@@ -36,8 +36,26 @@ export default defineConfig({
     sidebar: {
       "/magazine/": [
         {
-          text: "Global variables and frontend",
-          link: "/magazine/global_variables",
+          text: "Architecture",
+          items: [
+            {
+              text: "Global variables and frontend",
+              link: "/magazine/global_variables",
+            },
+            {
+              text: "Implicit start of the app",
+              link: "/magazine/implicit_start",
+            },
+          ],
+        },
+        {
+          text: "Effector deep dive",
+          items: [
+            {
+              text: "Fork API rules",
+              link: "/magazine/fork_api_rules",
+            },
+          ],
         },
       ],
     },
