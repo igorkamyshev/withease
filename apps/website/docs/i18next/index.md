@@ -41,7 +41,7 @@ import { createI18nextIntegration } from "@withease/i18next";
 const appStarted = createEvent();
 
 // Create Store for i18next instance
-const $i18nextInstance = createStore<i18n | null>();
+const $i18nextInstance = createStore(null);
 
 const integration = createI18nextIntegration({
   // Pass Store with i18next instance to the integration
@@ -122,7 +122,7 @@ const $someTranslatedString = translated("cityPois.buttonText", {
 Also, you can pass a template string with [_Store_](https://effector.dev/docs/api/effector/store) parts of a key:
 
 ```ts
-const $pathOfAKey = createStore<"BrandOne" | "BrandTwo">("BrandOne");
+const $pathOfAKey = createStore("BrandOne");
 
 const { translated } = createI18nextIntegration({
   /* ... */
