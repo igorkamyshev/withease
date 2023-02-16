@@ -3,13 +3,11 @@
 What problems do we have with the following code?
 
 ```js
-axios.interceptors.request.use(
-  function (config) {
-    config.headers['X-Custom-Token': getTokenSomehow()];
+axios.interceptors.request.use(function (config) {
+  config.headers["X-Custom-Token"] = getTokenSomehow();
 
-    return config;
-  }
-);
+  return config;
+});
 ```
 
 So, it's quite a lot, but let's focus on the global variable `axios` and it's operations.
