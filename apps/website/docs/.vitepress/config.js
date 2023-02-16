@@ -14,7 +14,11 @@ export default defineConfig({
       message: "Released under the MIT License.",
       copyright: "Copyright © 2023-present Igor Kamyşev",
     },
-    socialLinks: [],
+    socialLinks: [
+      { icon: "github", link: "https://github.com/igorkamyshev/withease" },
+      { icon: "twitter", link: "https://twitter.com/EffectorJS" },
+      { icon: "discord", link: "https://discord.gg/zU9NDR5GpM" },
+    ],
     editLink: {
       pattern:
         "https://github.com/igorkamyshev/withease/edit/master/apps/website/docs/:path",
@@ -24,13 +28,7 @@ export default defineConfig({
       { text: "Magazine", link: "/magazine/" },
       {
         text: "More",
-        items: [
-          {
-            text: "Statements",
-            link: "/statements/",
-          },
-          { text: "Effector", link: "https://effector.dev" },
-        ],
+        items: [{ text: "Effector", link: "https://effector.dev" }],
       },
     ],
     sidebar: {
@@ -49,7 +47,7 @@ export default defineConfig({
             {
               text: "Dependency injection",
               link: "/magazine/dependency_injection",
-            }
+            },
           ],
         },
         {
