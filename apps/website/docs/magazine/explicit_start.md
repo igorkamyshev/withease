@@ -154,6 +154,10 @@ That's it! Now we can test the app's behavior in different states and start the 
 In real-world applications, it's better to add not only explicit start of the app, but also explicit stop of the app. It will help you to avoid memory leaks and unexpected behavior.
 :::
 
+## One more thing
+
+In this recipe, we used application-wide `appStarted` [_Event_](https://effector.dev/docs/api/effector/event) to trigger the start of the app. However, in real-world applications, it's better to use more granular [_Events_](https://effector.dev/docs/api/effector/event) to trigger the start of the particular part of the app.
+
 ## Recap
 
 - Do not execute any logic just on module execution
