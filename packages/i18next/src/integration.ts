@@ -1,6 +1,7 @@
 import {
   attach,
   combine,
+  createEffect,
   createEvent,
   createStore,
   Event,
@@ -34,6 +35,7 @@ export function createI18nextIntegration({
 }): I18nextIntegration {
   // -- Internval events
   const instanceInitialized = createEvent<i18n>();
+  const contextChanged = createEvent();
 
   // -- Parse options
   const $instance: Store<i18n | null> = is.store(instance)
@@ -41,10 +43,16 @@ export function createI18nextIntegration({
     : createStore(instance as i18n | null);
 
   // -- Public API
-  const $t = createStore<TFunction>(identity).on(
-    instanceInitialized,
-    (_, i18next) => i18next.t.bind(i18next)
-  );
+  const $t = createStore<TFunction>(identity);
+
+  sample({
+    clock: [
+      instanceInitialized,
+      sample({ clock: contextChanged, source: $instance, filter: Boolean }),
+    ],
+    fn: (i18next) => i18next.t.bind(i18next),
+    target: $t,
+  });
 
   function translatedLiteral(
     parts: TemplateStringsArray,
@@ -80,25 +88,35 @@ export function createI18nextIntegration({
 
   // -- Setup
 
-  const initInstance = attach({
+  const initInstanceFx = attach({
     source: $instance,
-    effect: async (i18next) => {
-      const onInitialized = scopeBind(instanceInitialized, { safe: true });
+    async effect(i18next) {
       if (!i18next) {
-        return;
+        return null;
       }
 
       if (i18next.isInitialized) {
-        onInitialized(i18next);
-        return;
+        return i18next;
       }
 
       await i18next.init();
-      onInitialized(i18next);
+      return i18next;
     },
   });
 
-  sample({ clock: [setup, $instance.updates], target: initInstance });
+  const setupListenersFx = createEffect((i18next: i18n) => {
+    const boundContextChanged = scopeBind(contextChanged, { safe: true });
+
+    i18next.on('languageChanged', boundContextChanged);
+    i18next.store.on('added', () => boundContextChanged());
+  });
+
+  sample({ clock: [setup, $instance.updates], target: initInstanceFx });
+  sample({
+    clock: initInstanceFx.doneData,
+    filter: Boolean,
+    target: [instanceInitialized, setupListenersFx],
+  });
 
   return {
     $t,
