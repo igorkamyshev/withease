@@ -3,8 +3,10 @@ import {
   logger,
   readJsonFile,
   writeJsonFile,
-} from '@nrwl/devkit';
-import { spawnSync } from 'child_process';
+} from "@nrwl/devkit";
+import { spawnSync } from "child_process";
+
+throw new Error("YOU ARE NOT READY");
 
 const [, , name] = process.argv;
 const graph = readCachedProjectGraph();
@@ -25,10 +27,10 @@ process.chdir(outputPath);
 
 const originalPackageJson = readJsonFile(`package.json`);
 
-writeJsonFile('package.json', {
+writeJsonFile("package.json", {
   ...originalPackageJson,
-  publishConfig: { access: 'public' },
-  license: 'MIT',
+  publishConfig: { access: "public" },
+  license: "MIT",
 });
 
 const { version } = originalPackageJson;
@@ -40,25 +42,25 @@ invariant(
   `No version provided or version did not match Semantic Versioning, expected: #.#.#-tag.# or #.#.#, got ${version}.`
 );
 
-const result = spawnSync('npm', ['publish', '--json', '--access', 'public']);
+const result = spawnSync("npm", ["publish", "--json", "--access", "public"]);
 
 const errorInfo = getLastJsonObjectFromString(result.stderr.toString());
 
 if (errorInfo) {
-  logger.warn('Skip publishing\n');
+  logger.warn("Skip publishing\n");
   logger.warn(errorInfo.error.summary);
 } else {
   logger.info(result.stdout.toString());
-  logger.log('Published successfully');
+  logger.log("Published successfully");
 }
 
 // utils
 
 function getLastJsonObjectFromString(str) {
-  str = str.replace(/[^}]*$/, '');
+  str = str.replace(/[^}]*$/, "");
 
   while (str) {
-    str = str.replace(/[^{]*/, '');
+    str = str.replace(/[^{]*/, "");
 
     try {
       return JSON.parse(str);

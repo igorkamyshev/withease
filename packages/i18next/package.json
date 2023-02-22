@@ -1,6 +1,6 @@
 {
   "name": "@withease/i18next",
-  "version": "0.7.2",
+  "version": "0.0.1",
   "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.5.0"
