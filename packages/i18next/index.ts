@@ -1,1 +1,1 @@
-export { ini } from "./src/test";
+export { createI18nextIntegration } from "./src/integration";
