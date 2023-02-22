@@ -211,4 +211,68 @@ describe('integration.$t', () => {
 
     expect(scope.getState($result)).toBe('Sawa dee');
   });
+
+  test('unsubscribe from instance on teardown (language change)', async () => {
+    const instance = createInstance({
+      resources: {
+        th: { common: { hello: 'Sawa dee' } },
+        en: { common: { hello: 'Hello' } },
+      },
+      lng: 'th',
+    });
+
+    const setup = createEvent();
+    const teardown = createEvent();
+
+    const { $t } = createI18nextIntegration({
+      instance,
+      setup,
+      teardown,
+    });
+
+    const $result = $t.map((t) => t('common:hello'));
+
+    const scope = fork();
+
+    await allSettled(setup, { scope });
+
+    expect(scope.getState($result)).toBe('Sawa dee');
+
+    await allSettled(teardown, { scope });
+
+    instance.changeLanguage('en');
+
+    await allSettled(scope);
+    expect(scope.getState($result)).toBe('Sawa dee');
+  });
+
+  test('unsubscribe from instance on teardown (resorces change)', async () => {
+    const instance = createInstance({
+      lng: 'th',
+    });
+
+    const setup = createEvent();
+    const teardown = createEvent();
+
+    const { $t } = createI18nextIntegration({
+      instance,
+      setup,
+      teardown,
+    });
+
+    const $result = $t.map((t) => t('common:hello'));
+
+    const scope = fork();
+
+    await allSettled(setup, { scope });
+
+    expect(scope.getState($result)).toBe('hello');
+
+    await allSettled(teardown, { scope });
+
+    instance.addResource('th', 'common', 'hello', 'Sawa dee');
+    await allSettled(scope);
+
+    expect(scope.getState($result)).toBe('hello');
+  });
 });

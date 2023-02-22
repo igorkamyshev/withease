@@ -101,4 +101,30 @@ describe('integration.$t', () => {
     await allSettled($instance, { scope, params: instance });
     expect(scope.getState($isReady)).toBeTruthy();
   });
+
+  test('not ready after teardown', async () => {
+    const instance = createInstance({
+      resources: { th: { common: { foo: 'bar' } } },
+      lng: 'th',
+    });
+
+    const setup = createEvent();
+    const teardown = createEvent();
+
+    const { $isReady } = createI18nextIntegration({
+      instance,
+      setup,
+      teardown,
+    });
+
+    const scope = fork();
+
+    expect(scope.getState($isReady)).toBeFalsy();
+
+    await allSettled(setup, { scope });
+    expect(scope.getState($isReady)).toBeTruthy();
+
+    await allSettled(teardown, { scope });
+    expect(scope.getState($isReady)).toBeFalsy();
+  });
 });

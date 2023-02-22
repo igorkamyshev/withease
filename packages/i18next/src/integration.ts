@@ -43,6 +43,8 @@ export function createI18nextIntegration({
     ? instance
     : createStore(instance as i18n | null);
 
+  const destroy = teardown ?? createEvent();
+
   // -- Public API
   const $isReady = createStore(false, { serialize: 'ignore' });
 
@@ -62,6 +64,8 @@ export function createI18nextIntegration({
     fn: () => true,
     target: $isReady,
   });
+
+  sample({ clock: destroy, fn: () => false, target: $isReady });
 
   function translatedLiteral(
     parts: TemplateStringsArray,
@@ -113,11 +117,30 @@ export function createI18nextIntegration({
     },
   });
 
+  const $contextChangeListener = createStore<(() => void) | null>(null, {
+    serialize: 'ignore',
+  });
+
   const setupListenersFx = createEffect((i18next: i18n) => {
     const boundContextChanged = scopeBind(contextChanged, { safe: true });
+    const listener = () => boundContextChanged();
 
-    i18next.on('languageChanged', boundContextChanged);
-    i18next.store.on('added', () => boundContextChanged());
+    i18next.on('languageChanged', listener);
+    i18next.store.on('added', listener);
+
+    return listener;
+  });
+
+  const destroyListenersFx = attach({
+    source: { listener: $contextChangeListener, i18next: $instance },
+    effect: ({ listener, i18next }) => {
+      if (!listener || !i18next) {
+        return;
+      }
+
+      i18next.off('languageChanged', listener);
+      i18next.store.off('added', listener);
+    },
   });
 
   sample({ clock: [setup, $instance.updates], target: initInstanceFx });
@@ -125,6 +148,13 @@ export function createI18nextIntegration({
     clock: initInstanceFx.doneData,
     filter: Boolean,
     target: [instanceInitialized, setupListenersFx],
+  });
+
+  sample({ clock: setupListenersFx.doneData, target: $contextChangeListener });
+  sample({ clock: destroy, target: destroyListenersFx });
+  sample({
+    clock: destroyListenersFx.done,
+    target: $contextChangeListener.reinit!,
   });
 
   return {
