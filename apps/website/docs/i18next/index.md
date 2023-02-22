@@ -37,9 +37,9 @@ All you need to do is to create an integration by calling `createI18nextIntegrat
 - `teardown?` — after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be removed, and the integration will be ready to be destroyed.
 
 ```ts
-import i18next from "i18next";
-import { createStore, createEvent, fork, allSettled } from "effector";
-import { createI18nextIntegration } from "@withease/i18next";
+import i18next from 'i18next';
+import { createStore, createEvent, fork, allSettled } from 'effector';
+import { createI18nextIntegration } from '@withease/i18next';
 
 // Event that should be called after application initialization
 const appStarted = createEvent();
@@ -76,20 +76,20 @@ const { $t } = createI18nextIntegration({
   /* ... */
 });
 
-const $someTranslatedString = $t.map((t) => t("cityPois.buttonText"));
+const $someTranslatedString = $t.map((t) => t('cityPois.buttonText'));
 ```
 
 The second argument is an optional object with options for the translation function.
 
 ```ts
-const $city = createStore({ name: "Moscow" });
+const $city = createStore({ name: 'Moscow' });
 
 const { $t } = createI18nextIntegration({
   /* ... */
 });
 
 const $someTranslatedString = combine({ city: $city, t: $t }, ({ city, t }) =>
-  t("cityPois.buttonText", {
+  t('cityPois.buttonText', {
     cityName: city.name,
   })
 );
@@ -106,19 +106,19 @@ const { translated } = createI18nextIntegration({
   /* ... */
 });
 
-const $someTranslatedString = translated("premiumLabel.BrandOne");
+const $someTranslatedString = translated('premiumLabel.BrandOne');
 ```
 
 The second argument is an optional object with options for the translation function. Options can be a [_Store_](https://effector.dev/docs/api/effector/store) or a plain value.
 
 ```ts
-const $city = createStore({ name: "Moscow" });
+const $city = createStore({ name: 'Moscow' });
 
 const { translated } = createI18nextIntegration({
   /* ... */
 });
 
-const $someTranslatedString = translated("cityPois.buttonText", {
+const $someTranslatedString = translated('cityPois.buttonText', {
   cityName: $city.map((city) => city.name),
 });
 ```
@@ -126,7 +126,7 @@ const $someTranslatedString = translated("cityPois.buttonText", {
 Also, you can pass a template string with [_Store_](https://effector.dev/docs/api/effector/store) parts of a key:
 
 ```ts
-const $pathOfAKey = createStore("BrandOne");
+const $pathOfAKey = createStore('BrandOne');
 
 const { translated } = createI18nextIntegration({
   /* ... */
@@ -136,3 +136,13 @@ const $someTranslatedString = translated`premiumLabel.${$pathOfAKey}`;
 ```
 
 Result of the factory will be a [_Store_](https://effector.dev/docs/api/effector/store) containing a translated string. It will be updated automatically when the language or available translations will be changed.
+
+#### `$isReady`
+
+A [_Store_](https://effector.dev/docs/api/effector/store) containing a boolean value that indicates whether the integration is ready to use.
+
+```ts
+const { $isReady } = createI18nextIntegration({
+  /* ... */
+});
+```

@@ -20,6 +20,7 @@ interface Translated {
 type I18nextIntegration = {
   $t: Store<TFunction>;
   translated: Translated;
+  $isReady: Store<boolean>;
 };
 
 const identity = ((key: string) => key) as TFunction;
@@ -43,7 +44,9 @@ export function createI18nextIntegration({
     : createStore(instance as i18n | null);
 
   // -- Public API
-  const $t = createStore<TFunction>(identity);
+  const $isReady = createStore(false, { serialize: 'ignore' });
+
+  const $t = createStore<TFunction>(identity, { serialize: 'ignore' });
 
   sample({
     clock: [
@@ -52,6 +55,12 @@ export function createI18nextIntegration({
     ],
     fn: (i18next) => i18next.t.bind(i18next),
     target: $t,
+  });
+
+  sample({
+    clock: instanceInitialized,
+    fn: () => true,
+    target: $isReady,
   });
 
   function translatedLiteral(
@@ -119,6 +128,7 @@ export function createI18nextIntegration({
   });
 
   return {
+    $isReady,
     $t,
     translated: (firstArg, ...args: any[]) => {
       if (typeof firstArg === 'string') {
