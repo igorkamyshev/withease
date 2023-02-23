@@ -17,10 +17,20 @@ interface Translated {
   (parts: TemplateStringsArray, ...stores: Array<Store<string>>): Store<string>;
 }
 
+type MissinKeyReport = {
+  lngs: readonly string[];
+  namespace: string;
+  key: string;
+  res: string;
+};
+
 type I18nextIntegration = {
   $t: Store<TFunction>;
   translated: Translated;
   $isReady: Store<boolean>;
+  reporting: {
+    missingKey: Event<MissinKeyReport>;
+  };
 };
 
 const identity = ((key: string) => key) as TFunction;
@@ -49,6 +59,10 @@ export function createI18nextIntegration({
   const $isReady = createStore(false, { serialize: 'ignore' });
 
   const $t = createStore<TFunction>(identity, { serialize: 'ignore' });
+
+  const reporting = {
+    missingKey: createEvent<MissinKeyReport>(),
+  };
 
   sample({
     clock: [
@@ -108,12 +122,22 @@ export function createI18nextIntegration({
         return null;
       }
 
+      // Subscribe to missing key event BEFORE init
+      const boundMissingKey = scopeBind(reporting.missingKey, { safe: true });
+      const missingKeyListener = (
+        lngs: readonly string[],
+        namespace: string,
+        key: string,
+        res: string
+      ) => boundMissingKey({ lngs, namespace, key, res });
+      i18next.on('missingKey', missingKeyListener);
+
       if (i18next.isInitialized) {
-        return i18next;
+        return { i18next, missingKeyListener };
       }
 
       await i18next.init();
-      return i18next;
+      return { i18next, missingKeyListener };
     },
   });
 
@@ -121,25 +145,41 @@ export function createI18nextIntegration({
     serialize: 'ignore',
   });
 
+  const $missingKeyListener = createStore<(() => void) | null>(null, {
+    serialize: 'ignore',
+  });
+
   const setupListenersFx = createEffect((i18next: i18n) => {
+    // Context change
     const boundContextChanged = scopeBind(contextChanged, { safe: true });
-    const listener = () => boundContextChanged();
+    const contextChangeListener = () => boundContextChanged();
 
-    i18next.on('languageChanged', listener);
-    i18next.store.on('added', listener);
+    i18next.on('languageChanged', contextChangeListener);
+    i18next.store.on('added', contextChangeListener);
 
-    return listener;
+    // Result
+    return { contextChangeListener };
   });
 
   const destroyListenersFx = attach({
-    source: { listener: $contextChangeListener, i18next: $instance },
-    effect: ({ listener, i18next }) => {
-      if (!listener || !i18next) {
+    source: {
+      contextChangeListener: $contextChangeListener,
+      missingKeyListener: $missingKeyListener,
+      i18next: $instance,
+    },
+    effect: ({ contextChangeListener, missingKeyListener, i18next }) => {
+      if (!i18next) {
         return;
       }
 
-      i18next.off('languageChanged', listener);
-      i18next.store.off('added', listener);
+      if (contextChangeListener) {
+        i18next.off('languageChanged', contextChangeListener);
+        i18next.store.off('added', contextChangeListener);
+      }
+
+      if (missingKeyListener) {
+        i18next.off('missingKey', missingKeyListener);
+      }
     },
   });
 
@@ -147,14 +187,25 @@ export function createI18nextIntegration({
   sample({
     clock: initInstanceFx.doneData,
     filter: Boolean,
+    fn: ({ i18next }) => i18next,
     target: [instanceInitialized, setupListenersFx],
   });
 
-  sample({ clock: setupListenersFx.doneData, target: $contextChangeListener });
+  sample({
+    clock: setupListenersFx.doneData,
+    fn: ({ contextChangeListener }) => contextChangeListener,
+    target: $contextChangeListener,
+  });
+  sample({
+    clock: initInstanceFx.doneData,
+    filter: Boolean,
+    fn: ({ missingKeyListener }) => missingKeyListener,
+    target: $missingKeyListener,
+  });
   sample({ clock: destroy, target: destroyListenersFx });
   sample({
     clock: destroyListenersFx.done,
-    target: $contextChangeListener.reinit!,
+    target: [$contextChangeListener.reinit!, $missingKeyListener.reinit!],
   });
 
   return {
@@ -167,5 +218,6 @@ export function createI18nextIntegration({
         return translatedLiteral(firstArg, ...args);
       }
     },
+    reporting,
   };
 }
