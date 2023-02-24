@@ -13,7 +13,7 @@ import {
 import { type TFunction, i18n } from 'i18next';
 
 interface Translated {
-  (key: string, variables: Record<string, Store<string>>): Store<string>;
+  (key: string, variables?: Record<string, Store<string>>): Store<string>;
   (parts: TemplateStringsArray, ...stores: Array<Store<string>>): Store<string>;
 }
 
@@ -105,10 +105,10 @@ export function createI18nextIntegration({
 
   function translatedWithVariables(
     key: string,
-    variables: Record<string, Store<string>>
+    variables?: Record<string, Store<string>>
   ): Store<string> {
     return combine(
-      { t: $t, variables: combine(variables) },
+      { t: $t, variables: combine(variables ?? {}) },
       ({ t, variables }) => t(key, variables)
     );
   }

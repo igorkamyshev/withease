@@ -5,6 +5,30 @@ import { describe, expect, test } from 'vitest';
 import { createI18nextIntegration } from './integration';
 
 describe('integration.$t', () => {
+  describe('overload: key', () => {
+    test('supports simple key', async () => {
+      const instance = createInstance({
+        resources: { th: { common: { key: 'valueOne' } } },
+        lng: 'th',
+      });
+
+      const setup = createEvent();
+
+      const { translated } = createI18nextIntegration({
+        instance,
+        setup,
+      });
+
+      const $result = translated('common:key');
+
+      const scope = fork();
+
+      await allSettled(setup, { scope });
+
+      expect(scope.getState($result)).toBe('valueOne');
+    });
+  });
+
   describe('overload: template literal', () => {
     test('changes after key store changed', async () => {
       const instance = createInstance({
@@ -35,7 +59,7 @@ describe('integration.$t', () => {
     });
   });
 
-  describe('overload: with object', () => {
+  describe('overload: key with variables', () => {
     test('changes after variables store changed', async () => {
       const instance = createInstance({
         resources: { th: { common: { key: 'valueOne {{name}}' } } },
