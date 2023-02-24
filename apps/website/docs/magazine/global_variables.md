@@ -83,7 +83,7 @@ function App() {
   return (
     <main>
       <h1>Hello, world!</h1>
-      <p>{currentValue}</p>
+      <p>{userId}</p>
     </main>
   );
 }
@@ -226,7 +226,7 @@ function App() {
   return (
     <main>
       <h1>Hello, world!</h1>
-      <p>{currentValue}</p>
+      <p>{userId}</p>
     </main>
   );
 }

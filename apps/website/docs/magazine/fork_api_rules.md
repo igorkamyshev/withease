@@ -87,18 +87,18 @@ function Component() {
 
 Also, you have to provide the current [_Scope_](https://effector.dev/docs/api/effector/scope) to UI-library through the context. Read more about it in the [official documentation](https://effector.dev).
 
-### `bindScope`
+### `scopeBind`
 
-However, sometimes you have to call [_Events_](https://effector.dev/docs/api/effector/event) from the external sources, for example, pass them as a callback to some external library. In this case, you have to use `bindScope` function:
+However, sometimes you have to call [_Events_](https://effector.dev/docs/api/effector/event) from the external sources, for example, pass them as a callback to some external library. In this case, you have to use `scopeBind` function:
 
 ```ts{7-8}
-import { createEvent, createEffect, bindScope, sample } from 'effector'
+import { createEvent, createEffect, scopeBind, sample } from 'effector'
 import { listenSomething } from "external-library";
 
 const doStuff = createEvent();
 
 const setupListenersFx = createEffect(async () => {
-  const boundDoStuff = bindScope(doStuff);
+  const boundDoStuff = scopeBind(doStuff);
   listenSomething(boundDoStuff);
 });
 
@@ -106,7 +106,7 @@ sample({ clock: appStarted, target: setupListenersFx });
 ```
 
 ::: tip
-In this example we have to `bindScope` inside [_Effect_](https://effector.dev/docs/api/effector/effect) because it contains current [_Scope_](https://effector.dev/docs/api/effector/scope). So, to call this [_Effect_](https://effector.dev/docs/api/effector/effect) we use [explicit application start](/magazine/explicit_start) [_Event_](https://effector.dev/docs/api/effector/event).
+In this example we have to `scopeBind` inside [_Effect_](https://effector.dev/docs/api/effector/effect) because it contains current [_Scope_](https://effector.dev/docs/api/effector/scope). So, to call this [_Effect_](https://effector.dev/docs/api/effector/effect) we use [explicit application start](/magazine/explicit_start) [_Event_](https://effector.dev/docs/api/effector/event).
 :::
 
 ## Use explicit start of the application
@@ -122,6 +122,6 @@ await allSettled(appStarted, { scope });
 ## Recap
 
 - One effect is one [_Effect_](https://effector.dev/docs/api/effector/effect), do not use asynchronous functions inside [_Effect_](https://effector.dev/docs/api/effector/effect) body
-- Always use `bindScope` for [_Events_](https://effector.dev/docs/api/effector/event) that are passed to external sources
+- Always use `scopeBind` for [_Events_](https://effector.dev/docs/api/effector/event) that are passed to external sources
 - Do not forget to use `useUnit` (or its analogs) for [_Events_](https://effector.dev/docs/api/effector/event) that are used in the UI layer
 - Do not execute any logic just on module execution, prefer explicit start of the application

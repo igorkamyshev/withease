@@ -54,13 +54,13 @@ The main reason for this approach is it allows you to control the app's lifecycl
 
 ```ts
 // app.ts
-import { createStore, createEvent, sample, bindScope } from "effector";
+import { createStore, createEvent, sample, scopeBind } from "effector";
 
 const $counter = createStore(0);
-const increment = creaeEvent();
+const increment = createEvent();
 
 const startIncrementationIntervalFx = createEffect(() => {
-  const boundIncrement = bindScope(scope, { safe: true });
+  const boundIncrement = scopeBind(scope, { safe: true });
 
   setInterval(() => {
     boundIncrement();
@@ -82,7 +82,7 @@ startIncrementationIntervalFx();
 We believe that any serious application has to be testable, so we have to isolate application lifecycle inside particular test-case. In case of implicit start (start of model logic by module execution), it will be impossible to test the app's behavior in different states.
 
 ::: tip
-`bindScope` function allows you to bind an [_Event_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope), more details you can find in the article [about Fork API rules](/magazine/fork_api_rules).
+`scopeBind` function allows you to bind an [_Event_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope), more details you can find in the article [about Fork API rules](/magazine/fork_api_rules).
 :::
 
 Now, to test the app's behavior, we have to mock `setInterval` function and check that `$counter` value is correct after particular time.
@@ -123,13 +123,13 @@ Let's rewrite the code and add explicit start of the app.
 
 ```ts
 // app.ts
-import { createStore, createEvent, sample, bindScope } from "effector";
+import { createStore, createEvent, sample, scopeBind } from "effector";
 
 const $counter = createStore(0);
 const increment = creaeEvent();
 
 const startIncrementationIntervalFx = createEffect(() => {
-  const boundIncrement = bindScope(scope, { safe: true });
+  const boundIncrement = scopeBind(scope, { safe: true });
 
   setInterval(() => {
     boundIncrement();
