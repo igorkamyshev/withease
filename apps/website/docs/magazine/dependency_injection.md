@@ -1,6 +1,6 @@
 # Dependency injection
 
-Effector provides a simple way to inject dependencies into your application — Fork API. Let's take a look at how it works.
+Effector provides a simple way to inject dependencies into your application — Fork API. Let us take a look at how it works.
 
 :::tip
 Application has to follow [some rules to work with Fork API](/magazine/fork_api_rules)
@@ -27,13 +27,13 @@ const logFx = createEffect((message) => {
 sample({ clock: somethingHappened, target: logFx });
 ```
 
-But it's not the best way. What of we want to enable it back for a particular test? We have to change the code and support one more variable. So, it will lead to a mess in the code.
+But it is not the best way. What if we want to enable it back for a particular test? We have to change the code and support one more variable. So, it will lead to a mess in the code.
 
 Other reason is that you may want to use different implementations of a logger in different environments. For example, in browser you want to send logs to some external system (like Rollbar or Sentry) and on server you want to write logs to `stdout`.
 
 ## How
 
-To solve these problems we can use Fork API. It allows us to create a new instance of the application with different dependencies. Let's take a look at how it works.
+To solve these problems we can use Fork API. It allows us to create a new instance of the application with different dependencies. Let us take a look at how it works.
 
 ```ts
 // app.ts

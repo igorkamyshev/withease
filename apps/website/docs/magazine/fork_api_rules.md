@@ -1,16 +1,16 @@
 # Fork API rules
 
-Fork API allows you to run multiple instances of the same application in the single process. It is useful for testing, SSR, and other cases. It's powerful mechanism, but it has some rules that you should follow to avoid unexpected behavior.
+Fork API allows you to run multiple instances of the same application in the single process. It is useful for testing, SSR, and other cases. It is powerful mechanism, but it has some rules that you should follow to avoid unexpected behavior.
 
 ## Prefer declarative code
 
-So, all Effector's operators (like `sample` or `combine`) support Fork API out of the box, so if you describe your application logic in a declarative way with Effector's operator, you don't have to do anything to make it work with Fork API.
+All Effector's operators (like `sample` or `combine`) support Fork API out of the box, if you describe your application logic in a declarative way with Effector's operator, you do not have to do anything to make it work with Fork API.
 
 Of course, in some cases, you have to use some logic without Effector's operators, in this case, you have to follow some rules.
 
 ## Do not mix [_Effects_](https://effector.dev/docs/api/effector/effect) and async functions
 
-It's illegal to mix [_Effects_](https://effector.dev/docs/api/effector/effect) and async functions inside [_Effect_](https://effector.dev/docs/api/effector/effect) handler body. So, this code will lead to unexpected behavior:
+It is illegal to mix [_Effects_](https://effector.dev/docs/api/effector/effect) and async functions inside [_Effect_](https://effector.dev/docs/api/effector/effect) handler body. This code will lead to unexpected behavior:
 
 ```ts{10-14}
 import { createEffect } from "effector";
@@ -60,7 +60,7 @@ For UI-libraries (like SolidJS or React), Effector has a special hooks that help
 ::: code-group
 
 ```ts [SolidJS]
-import { useUnit } from "effector-solid";
+import { useUnit } from 'effector-solid';
 
 const doStuff = createEvent();
 
@@ -72,7 +72,7 @@ function Component() {
 ```
 
 ```ts [React]
-import { useUnit } from "effector-react";
+import { useUnit } from 'effector-react';
 
 const doStuff = createEvent();
 
@@ -87,9 +87,9 @@ function Component() {
 
 Also, you have to provide the current [_Scope_](https://effector.dev/docs/api/effector/scope) to UI-library through the context. Read more about it in the [official documentation](https://effector.dev).
 
-### `scopeBind`
+### [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind)
 
-However, sometimes you have to call [_Events_](https://effector.dev/docs/api/effector/event) from the external sources, for example, pass them as a callback to some external library. In this case, you have to use `scopeBind` function:
+However, sometimes you have to call [_Events_](https://effector.dev/docs/api/effector/event) from the external sources, for example, pass them as a callback to some external library. In this case, you have to use [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) function:
 
 ```ts{7-8}
 import { createEvent, createEffect, scopeBind, sample } from 'effector'
@@ -106,15 +106,15 @@ sample({ clock: appStarted, target: setupListenersFx });
 ```
 
 ::: tip
-In this example we have to `scopeBind` inside [_Effect_](https://effector.dev/docs/api/effector/effect) because it contains current [_Scope_](https://effector.dev/docs/api/effector/scope). So, to call this [_Effect_](https://effector.dev/docs/api/effector/effect) we use [explicit application start](/magazine/explicit_start) [_Event_](https://effector.dev/docs/api/effector/event).
+In this example we have to [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) inside [_Effect_](https://effector.dev/docs/api/effector/effect) because it contains current [_Scope_](https://effector.dev/docs/api/effector/scope). To call this [_Effect_](https://effector.dev/docs/api/effector/effect) we use [explicit application start](/magazine/explicit_start) [_Event_](https://effector.dev/docs/api/effector/event).
 :::
 
 ## Use explicit start of the application
 
-The last rule is to use explicit start of the application. It's important because you have to provide the current [_Scope_](https://effector.dev/docs/api/effector/scope) to the Effector itself. So, you have to call `start` function with the current [_Scope_](https://effector.dev/docs/api/effector/scope) through `allSetteled` method:
+The last rule is to use explicit start of the application. It is important because you have to provide the current [_Scope_](https://effector.dev/docs/api/effector/scope) to the Effector itself. To fulfill this requirement, you can call `start` function with the current [_Scope_](https://effector.dev/docs/api/effector/scope) through `allSetteled` method:
 
 ```ts
-import { allSettled } from "effector";
+import { allSettled } from 'effector';
 
 await allSettled(appStarted, { scope });
 ```
@@ -122,6 +122,6 @@ await allSettled(appStarted, { scope });
 ## Recap
 
 - One effect is one [_Effect_](https://effector.dev/docs/api/effector/effect), do not use asynchronous functions inside [_Effect_](https://effector.dev/docs/api/effector/effect) body
-- Always use `scopeBind` for [_Events_](https://effector.dev/docs/api/effector/event) that are passed to external sources
+- Always use [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) for [_Events_](https://effector.dev/docs/api/effector/event) that are passed to external sources
 - Do not forget to use `useUnit` (or its analogs) for [_Events_](https://effector.dev/docs/api/effector/event) that are used in the UI layer
 - Do not execute any logic just on module execution, prefer explicit start of the application
