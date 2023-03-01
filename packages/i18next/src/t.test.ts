@@ -275,4 +275,27 @@ describe('integration.$t', () => {
 
     expect(scope.getState($result)).toBe('hello');
   });
+
+  test('does not trigger re-calculate if inited instance is provided even before setup', async () => {
+    const instance = createInstance({
+      lng: 'th',
+    });
+    instance.init();
+
+    const setup = createEvent();
+
+    const { $t } = createI18nextIntegration({
+      instance,
+      setup,
+    });
+
+    const $result = $t.map((t) => t('common:hello'));
+
+    const scope = fork();
+    expect(scope.getState($result)).toBe('hello');
+
+    await allSettled(setup, { scope });
+
+    expect(scope.getState($result)).toBe('hello');
+  });
 });

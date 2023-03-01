@@ -55,10 +55,21 @@ export function createI18nextIntegration({
 
   const destroy = teardown ?? createEvent();
 
+  // -- Internal API
+
+  const $derivedT = $instance.map(
+    (i18next): TFunction => (i18next ? i18next.t.bind(i18next) : identity)
+  );
+  const $stanaloneT = createStore<TFunction>(identity, { serialize: 'ignore' });
+
   // -- Public API
   const $isReady = createStore(false, { serialize: 'ignore' });
 
-  const $t = createStore<TFunction>(identity, { serialize: 'ignore' });
+  const $t = combine(
+    { derived: $derivedT, standalone: $stanaloneT },
+    ({ derived, standalone }) =>
+      derived !== identity && standalone === identity ? derived : standalone
+  );
 
   const reporting = {
     missingKey: createEvent<MissinKeyReport>(),
@@ -70,7 +81,7 @@ export function createI18nextIntegration({
       sample({ clock: contextChanged, source: $instance, filter: Boolean }),
     ],
     fn: (i18next) => i18next.t.bind(i18next),
-    target: $t,
+    target: $stanaloneT,
   });
 
   sample({
