@@ -49,6 +49,25 @@ const doAllStuffFx = createEffect(async () => {
 });
 ```
 
+::: details One more thing
+The last example is supported by Fork API, but there is a better way to do it. You can use [`sample`](https://effector.dev/docs/api/effector/sample) operator to express the same logic:
+
+```ts
+const doAllStuff = createEvent();
+
+sample({ clock: doAllStuff, target: regularAsyncFunctionFx });
+sample({ clock: regularAsyncFunctionFx.done, target: asyncFunctionInFx });
+```
+
+It is more declarative and expandable. For example, you can easily handle errors from this [_Effects_](https://effector.dev/docs/api/effector/effect) independently:
+
+```ts
+sample({ clock: regularAsyncFunctionFx.fail, target: logError });
+sample({ clock: asyncFunctionInFx.fail, target: showErrorMessage });
+```
+
+:::
+
 ## Bind [_Events_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope)
 
 Another important rule is to bind [_Events_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope) if you call them from external sources outside the Effector. For example, if you pass them as a callback to some external library, or if you call them from the UI layer as an event handler.
@@ -89,17 +108,16 @@ Also, you have to provide the current [_Scope_](https://effector.dev/docs/api/ef
 
 ### [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind)
 
-However, sometimes you have to call [_Events_](https://effector.dev/docs/api/effector/event) from the external sources, for example, pass them as a callback to some external library. In this case, you have to use [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) function:
+However, sometimes you have to call [_Events_](https://effector.dev/docs/api/effector/event) from the external sources, for example, pass them as a callback to some external library or DOM APIs. In this case, you have to use [`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) function:
 
 ```ts{7-8}
 import { createEvent, createEffect, scopeBind, sample } from 'effector'
-import { listenSomething } from "external-library";
 
-const doStuff = createEvent();
+const windowGotFocus = createEvent();
 
 const setupListenersFx = createEffect(async () => {
-  const boundDoStuff = scopeBind(doStuff);
-  listenSomething(boundDoStuff);
+  const boundWindowGotFocus = scopeBind(windowGotFocus);
+  addEventListener('focus', boundWindowGotFocus);
 });
 
 sample({ clock: appStarted, target: setupListenersFx });
