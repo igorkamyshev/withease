@@ -68,6 +68,22 @@ sample({ clock: asyncFunctionInFx.fail, target: showErrorMessage });
 
 :::
 
+### `Promise.all` and `Promise.race`
+
+Fork API supports `Promise.all` and `Promise.race` out of the box. You can use them in your code without any restrictions.
+
+```ts
+const doAllStuffFx = createEffect(async () => {
+  // 🟢 valid
+  await Promise.all([regularAsyncFunctionFx(), asyncFunctionInFx()]);
+});
+
+const doRaceStuffFx = createEffect(async () => {
+  // 🟢 valid
+  await Promise.race([regularAsyncFunctionFx(), asyncFunctionInFx()]);
+});
+```
+
 ## Bind [_Events_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope)
 
 Another important rule is to bind [_Events_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope) if you call them from external sources outside the Effector. For example, if you pass them as a callback to some external library, or if you call them from the UI layer as an event handler.
