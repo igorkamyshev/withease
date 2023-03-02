@@ -24,6 +24,7 @@ importers:
       bytes-iec: ^3.1.1
       effector: ^22.5.0
       eslint: ~8.15.0
+      glob: ^8.0.3
       i18next: ^22.4.10
       nx: 15.6.3
       prettier: ^2.6.2
@@ -59,6 +60,7 @@ importers:
       bytes-iec: 3.1.1
       effector: 22.5.0
       eslint: 8.15.0
+      glob: 8.1.0
       i18next: 22.4.10
       nx: 15.6.3
       prettier: 2.7.1
@@ -5300,6 +5302,17 @@ packages:
       minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: true
+
+  /glob/8.1.0:
+    resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.4
+      minimatch: 5.1.0
+      once: 1.4.0
     dev: true
 
   /globals/11.12.0:
