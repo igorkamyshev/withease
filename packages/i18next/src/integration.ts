@@ -225,7 +225,7 @@ export function createI18nextIntegration({
     $t,
     translated: (firstArg, ...args: any[]) => {
       if (typeof firstArg === 'string') {
-        return translatedWithVariables(firstArg, args.at(0));
+        return translatedWithVariables(firstArg, args[0]);
       } else {
         return translatedLiteral(firstArg, ...args);
       }
