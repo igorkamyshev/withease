@@ -1,5 +1,12 @@
 # @withease/i18next
 
+## 0.1.2
+
+### Patch Changes
+
+- 34e5105: Do not use `.at` on Array
+- 45affeb: Simplify internal implementation of `$t` _Store_
+
 ## 0.1.1
 
 ### Patch Changes
