@@ -51,11 +51,11 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = ({
     .map((): void => void 1);
 
   // -- Listen
-  const $visibilityListener = createStore<EventListener | null>(null, {
+  const $listener = createStore<EventListener | null>(null, {
     serialize: 'ignore',
   });
 
-  const listenVisibilityStateFx = createEffect(() => {
+  const listenFx = createEffect(() => {
     const boundVisibilityChanged = scopeBind(visibilityChanged, { safe: true });
 
     const listener: EventListener = () =>
@@ -66,16 +66,16 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = ({
     return listener;
   });
 
-  sample({ clock: setup, listenVisibilityStateFx });
+  sample({ clock: setup, listenFx });
   sample({
-    clock: listenVisibilityStateFx.doneData,
-    target: $visibilityListener,
+    clock: listenFx.doneData,
+    target: $listener,
   });
 
   // -- Unlisten
   if (teardown) {
-    const unlistenVisibilityStateFx = attach({
-      source: $visibilityListener,
+    const unlistenFx = attach({
+      source: $listener,
       effect(listener) {
         if (listener) {
           document.removeEventListener('visibilitychange', listener);
@@ -83,10 +83,10 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = ({
       },
     });
 
-    sample({ clock: teardown, unlistenVisibilityStateFx });
+    sample({ clock: teardown, unlistenFx });
     sample({
-      clock: unlistenVisibilityStateFx.done,
-      target: $visibilityListener.reinit!,
+      clock: unlistenFx.done,
+      target: $listener.reinit!,
     });
   }
 

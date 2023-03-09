@@ -12,15 +12,15 @@ All you need to do is to create an integration by calling `trackNetworkStatus` w
 ```ts
 import { trackNetworkStatus } from '@withease/web-api';
 
-const { connected, disconnected, $online, $offline } = trackNetworkStatus({
+const { online, offline, $online, $offline } = trackNetworkStatus({
   setup: appStarted,
 });
 ```
 
 Returns an object with:
 
-- `connected`: [_Event_](https://effector.dev/docs/api/effector/event) that fires on connection restore
-- `disconnected`: [_Event_](https://effector.dev/docs/api/effector/event) that fires on connection loss
+- `online`: [_Event_](https://effector.dev/docs/api/effector/event) that fires on connection restore
+- `offline`: [_Event_](https://effector.dev/docs/api/effector/event) that fires on connection loss
 - `$online`: [_Store_](https://effector.dev/docs/api/effector/store) with `true` if connection is restored and `false` if connection is lost
 - `$offline`: [_Store_](https://effector.dev/docs/api/effector/store) with `true` if connection is lost and `false` if connection is restored
 
