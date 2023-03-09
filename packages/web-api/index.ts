@@ -1,2 +1,2 @@
-export { trackWindowFocus } from './src/window_focus';
+export { trackPageVisibility } from './src/page_visibility';
 export { trackNetworkStatus } from './src/network_status';

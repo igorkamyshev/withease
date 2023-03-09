@@ -47,7 +47,10 @@ export default defineConfig({
           text: 'APIs',
           items: [
             { text: 'Network status', link: '/web-api/network_status' },
-            { text: 'Window focus', link: '/web-api/window_focus' },
+            {
+              text: 'Page Visbility',
+              link: '/web-api/page_visibility',
+            },
           ],
         },
       ]),
