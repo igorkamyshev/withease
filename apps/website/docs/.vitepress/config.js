@@ -41,7 +41,16 @@ export default defineConfig({
     ],
     sidebar: {
       ...createSidebar('i18next', [{ text: 'Get Started', link: '/i18next/' }]),
-      ...createSidebar('web-api', [{ text: 'Get Started', link: '/web-api/' }]),
+      ...createSidebar('web-api', [
+        { text: 'Get Started', link: '/web-api/' },
+        {
+          text: 'APIs',
+          items: [
+            { text: 'Network status', link: '/web-api/network_status' },
+            { text: 'Window focus', link: '/web-api/window_focus' },
+          ],
+        },
+      ]),
       '/magazine/': [
         {
           text: 'Architecture',

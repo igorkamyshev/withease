@@ -1,1 +1,2 @@
-export { t } from './src/integration';
+export { trackWindowFocus } from './src/window_focus';
+export { trackNetworkStatus } from './src/network_status';

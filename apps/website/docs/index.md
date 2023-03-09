@@ -21,7 +21,7 @@ features:
     linkText: Get Started
   - icon: 👩🏽‍💻
     title: web-api
-    details: Web API bindings — media-query, network status, tab visibility, and more
+    details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
   - icon: 🪄
