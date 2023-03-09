@@ -1,8 +1,13 @@
 export function createSidebar(packageName, sidebar) {
   return {
     [`/${packageName}/`]: [
-      ...sidebar,
-      { text: 'Changelog', link: `/${packageName}/CHANGELOG.md` },
+      {
+        text: packageName,
+        items: [
+          ...sidebar,
+          { text: 'Changelog', link: `/${packageName}/CHANGELOG.md` },
+        ],
+      },
     ],
   };
 }

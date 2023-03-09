@@ -33,6 +33,7 @@ export default defineConfig({
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
+      { text: 'Protocols', link: '/protocols/' },
       {
         text: 'More',
         items: [{ text: 'Effector', link: 'https://effector.dev' }],
@@ -65,6 +66,22 @@ export default defineConfig({
             {
               text: 'Fork API rules',
               link: '/magazine/fork_api_rules',
+            },
+          ],
+        },
+      ],
+      '/protocols/': [
+        {
+          text: 'Protocols',
+          link: '/protocols/',
+          items: [
+            {
+              text: '@@unitShape',
+              link: 'https://effector.dev/docs/ecosystem-development/unit-shape-protocol',
+            },
+            {
+              text: '@@trigger',
+              link: '/protocols/trigger',
             },
           ],
         },

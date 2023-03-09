@@ -35,7 +35,7 @@ importers:
       typescript: 4.8.4
       vite: ^4.0.1
       vite-tsconfig-paths: ^4.0.2
-      vitepress: 1.0.0-alpha.47
+      vitepress: 1.0.0-alpha.50
       vitest: ^0.26.2
       vue: ^3.2.37
     dependencies:
@@ -71,7 +71,7 @@ importers:
       typescript: 4.8.4
       vite: 4.0.3_@types+node@18.7.14
       vite-tsconfig-paths: 4.0.5_typescript@4.8.4
-      vitepress: 1.0.0-alpha.47_kbn2kz72sssjsm3eiq5ojntlae
+      vitepress: 1.0.0-alpha.50_kbn2kz72sssjsm3eiq5ojntlae
       vitest: 0.26.2_@vitest+ui@0.25.8
       vue: 3.2.37
 
@@ -3423,14 +3423,14 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@vitejs/plugin-vue/4.0.0_vite@4.1.3+vue@3.2.47:
+  /@vitejs/plugin-vue/4.0.0_vite@4.1.4+vue@3.2.47:
     resolution: {integrity: sha512-e0X4jErIxAB5oLtDqbHvHpJe/uWNkdpYV83AOG2xo2tEVSzCzewgJMtREZM30wXnM5ls90hxiOtAuVU6H5JgbA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.1.3_@types+node@18.7.14
+      vite: 4.1.4_@types+node@18.7.14
       vue: 3.2.47
     dev: true
 
@@ -8453,8 +8453,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vite/4.1.3_@types+node@18.7.14:
-    resolution: {integrity: sha512-0Zqo4/Fr/swSOBmbl+HAAhOjrqNwju+yTtoe4hQX9UsARdcuc9njyOdr6xU0DDnV7YP0RT6mgTTOiRtZgxfCxA==}
+  /vite/4.1.4_@types+node@18.7.14:
+    resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -8487,18 +8487,18 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitepress/1.0.0-alpha.47_kbn2kz72sssjsm3eiq5ojntlae:
-    resolution: {integrity: sha512-vj+LOY0WJtKSk98HV4qqG6p4MofmF+C8yrWHiiw+GCMfr6C+610U5D7oD2OruroIafsON6F4nBDWGK8ZyGIpXQ==}
+  /vitepress/1.0.0-alpha.50_kbn2kz72sssjsm3eiq5ojntlae:
+    resolution: {integrity: sha512-6EdT6JIiHRD7KatKMfxCJ3J7aHlkMp67ZEcfYrMTLKAJ+K+qWs2p427udMHSenCOzVNLIikEC5v/rP3GOGWubQ==}
     hasBin: true
     dependencies:
       '@docsearch/css': 3.3.3
       '@docsearch/js': 3.3.3_2r467mdhb7mblpaox4bg7fatdi
-      '@vitejs/plugin-vue': 4.0.0_vite@4.1.3+vue@3.2.47
+      '@vitejs/plugin-vue': 4.0.0_vite@4.1.4+vue@3.2.47
       '@vue/devtools-api': 6.5.0
       '@vueuse/core': 9.13.0_vue@3.2.47
       body-scroll-lock: 4.0.0-beta.0
       shiki: 0.14.1
-      vite: 4.1.3_@types+node@18.7.14
+      vite: 4.1.4_@types+node@18.7.14
       vue: 3.2.47
     transitivePeerDependencies:
       - '@algolia/client-search'
