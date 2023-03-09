@@ -1,12 +1,12 @@
 import {
+  type Event,
+  type Store,
   attach,
   createEffect,
   createEvent,
   createStore,
-  Event,
   sample,
   scopeBind,
-  Store,
 } from 'effector';
 import { readValue } from './shared';
 
@@ -52,7 +52,7 @@ const trackNetworkStatus: NetworkStatus & TriggerProtocol = ({
     const boundOnline = scopeBind(online, { safe: true });
     const onlineListener: EventListener = () => boundOnline();
 
-    const boundOffline = scopeBind(online, { safe: true });
+    const boundOffline = scopeBind(offline, { safe: true });
     const offlineListener: EventListener = () => boundOffline();
 
     window.addEventListener('online', onlineListener);
@@ -61,7 +61,7 @@ const trackNetworkStatus: NetworkStatus & TriggerProtocol = ({
     return { online: onlineListener, offline: offlineListener };
   });
 
-  sample({ clock: setup, listenFx });
+  sample({ clock: setup, target: listenFx });
   sample({
     clock: listenFx.doneData,
     target: $listeners,

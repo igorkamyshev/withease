@@ -66,7 +66,7 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = ({
     return listener;
   });
 
-  sample({ clock: setup, listenFx });
+  sample({ clock: setup, target: listenFx });
   sample({
     clock: listenFx.doneData,
     target: $listener,
