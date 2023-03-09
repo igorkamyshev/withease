@@ -9,9 +9,9 @@ type NetworkStatus = ({
   setup: Event<void>;
   teardown?: Event<void>;
 }) => {
-  online: Event<void>;
+  connected: Event<void>;
+  disconnected: Event<void>;
   $online: Store<boolean>;
-  offline: Event<void>;
   $offline: Store<boolean>;
 };
 
@@ -19,20 +19,21 @@ const trackNetworkStatus: NetworkStatus & TriggerProtocol = ({
   setup,
   teardown,
 }) => {
-  const online = createEvent();
-  const offline = createEvent();
+  const connected = createEvent();
+  const disconnected = createEvent();
+
   const $online = createStore(false, { serialize: 'ignore' });
   const $offline = createStore(false, { serialize: 'ignore' });
 
-  return { online, offline, $offline, $online };
+  return { connected, disconnected, $offline, $online };
 };
 
 trackNetworkStatus['@@trigger'] = () => {
   const setup = createEvent();
 
-  const { online } = trackNetworkStatus({ setup });
+  const { connected } = trackNetworkStatus({ setup });
 
-  return { setup, fired: online };
+  return { setup, fired: connected };
 };
 
 export { trackNetworkStatus };

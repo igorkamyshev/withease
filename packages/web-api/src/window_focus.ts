@@ -11,7 +11,7 @@ type WindowFocus = ({
 }) => {
   focused: Event<void>;
   blured: Event<void>;
-  $hasFocus: Store<boolean>;
+  $focused: Store<boolean>;
 };
 
 const trackWindowFocus: WindowFocus & TriggerProtocol = ({
@@ -20,9 +20,9 @@ const trackWindowFocus: WindowFocus & TriggerProtocol = ({
 }) => {
   const focused = createEvent();
   const blured = createEvent();
-  const $hasFocus = createStore(false, { serialize: 'ignore' });
+  const $focused = createStore(false, { serialize: 'ignore' });
 
-  return { focused, blured, $hasFocus };
+  return { focused, blured, $focused };
 };
 
 trackWindowFocus['@@trigger'] = () => {
