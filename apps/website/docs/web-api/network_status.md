@@ -1,6 +1,12 @@
-# `trackNetworkStatus`
+# Network status
 
 Allows tracking network status with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).
+
+::: info
+
+Uses [Navigator.onLine](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/onLine), [Window: online event](https://developer.mozilla.org/en-US/docs/Web/API/Window/online_event) and [Window: offline event](https://developer.mozilla.org/en-US/docs/Web/API/Window/offline_event) under the hood
+
+:::
 
 ## Usage
 

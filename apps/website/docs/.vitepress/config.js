@@ -48,7 +48,7 @@ export default defineConfig({
           items: [
             { text: 'Network status', link: '/web-api/network_status' },
             {
-              text: 'Page Visbility',
+              text: 'Page visibility',
               link: '/web-api/page_visibility',
             },
           ],
