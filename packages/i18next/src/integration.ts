@@ -57,18 +57,19 @@ export function createI18nextIntegration({
 
   // -- Internal API
 
-  const $derivedT = $instance.map(
-    (i18next): TFunction => (i18next ? i18next.t.bind(i18next) : identity)
+  const $derivedT = $instance.map((i18next): TFunction | null =>
+    i18next ? i18next.t.bind(i18next) : null
   );
-  const $stanaloneT = createStore<TFunction>(identity, { serialize: 'ignore' });
+  const $stanaloneT = createStore<TFunction | null>(null, {
+    serialize: 'ignore',
+  });
 
   // -- Public API
   const $isReady = createStore(false, { serialize: 'ignore' });
 
   const $t = combine(
     { derived: $derivedT, standalone: $stanaloneT },
-    ({ derived, standalone }) =>
-      derived !== identity && standalone === identity ? derived : standalone
+    ({ derived, standalone }): TFunction => standalone ?? derived ?? identity
   );
 
   const reporting = {
@@ -224,7 +225,7 @@ export function createI18nextIntegration({
     $t,
     translated: (firstArg, ...args: any[]) => {
       if (typeof firstArg === 'string') {
-        return translatedWithVariables(firstArg, args.at(0));
+        return translatedWithVariables(firstArg, args[0]);
       } else {
         return translatedLiteral(firstArg, ...args);
       }

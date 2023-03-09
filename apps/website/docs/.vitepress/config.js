@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { createSidebar } from './sidebar_creator';
 
 export default defineConfig({
   lang: 'en-US',
@@ -38,6 +39,8 @@ export default defineConfig({
       },
     ],
     sidebar: {
+      ...createSidebar('i18next', [{ text: 'Get Started', link: '/i18next/' }]),
+      ...createSidebar('web-api', [{ text: 'Get Started', link: '/web-api/' }]),
       '/magazine/': [
         {
           text: 'Architecture',
