@@ -91,10 +91,11 @@ const trackNetworkStatus: NetworkStatus & TriggerProtocol = ({
 
 trackNetworkStatus['@@trigger'] = () => {
   const setup = createEvent();
+  const teardown = createEvent();
 
-  const { online } = trackNetworkStatus({ setup });
+  const { online } = trackNetworkStatus({ setup, teardown });
 
-  return { setup, fired: online };
+  return { setup, teardown, fired: online };
 };
 
 export { trackNetworkStatus };

@@ -96,10 +96,11 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = ({
 
 trackPageVisibility['@@trigger'] = () => {
   const setup = createEvent();
+  const teardown = createEvent();
 
-  const { visible } = trackPageVisibility({ setup });
+  const { visible } = trackPageVisibility({ setup, teardown });
 
-  return { setup, fired: visible };
+  return { setup, teardown, fired: visible };
 };
 
 export { trackPageVisibility };
