@@ -18,8 +18,14 @@ Trigger is an any object with the field `@@trigger` that a function that returns
 - `teardown`: [_Event_](https://effector.dev/docs/api/effector/event), external consumers will call it to stop trigger
 
 ::: tip
-[_Event_](https://effector.dev/docs/api/effector/event) `setup` is presented in protocol, because it is better to provide [explicit start of the application](/magazine/explicit_start).
+[_Events_](https://effector.dev/docs/api/effector/event) `setup` and `teardown` are presented in protocol, because it is better to provide [explicit start of the application](/magazine/explicit_start).
 :::
+
+## Single `fired`
+
+Since `@@trigger` supports only one `fired` [_Event_](https://effector.dev/docs/api/effector/event), any operator that supports `@@trigger` protocol has to choose reasonable [_Event_](https://effector.dev/docs/api/effector/event) to use it as `fired`.
+
+E.g., [`trackPageVisibility`](/web-api/page_visibility) returns [_Events_](https://effector.dev/docs/api/effector/event) `visible` and `hidden`, but `visibile` seems more reasonable `fired` [_Event_](https://effector.dev/docs/api/effector/event).
 
 ## Example
 
