@@ -1,1 +1,1 @@
-export { createI18nextIntegration } from "./src/integration";
+export { createI18nextIntegration } from './src/integration';

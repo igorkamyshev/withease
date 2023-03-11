@@ -19,6 +19,11 @@ features:
     details: A powerful internationalization framework for Effector which is based on i18next
     link: /i18next/
     linkText: Get Started
+  - icon: 👩🏽‍💻
+    title: web-api
+    details: Web API bindings — network status, tab visibility, and more
+    link: /web-api/
+    linkText: Get Started
   - icon: 🪄
     title: Farfetched
     details: The advanced data fetching tool for web applications

@@ -13,7 +13,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@withease/i18next": ["packages/i18next/index.ts"]
+      "@withease/i18next": ["packages/i18next/index.ts"],
+      "@withease/web-api": ["packages/web-api/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

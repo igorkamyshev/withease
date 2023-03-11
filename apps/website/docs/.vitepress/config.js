@@ -25,8 +25,15 @@ export default defineConfig({
         'https://github.com/igorkamyshev/withease/edit/master/apps/website/docs/:path',
     },
     nav: [
-      { text: 'Packages', items: [{ text: 'i18next', link: '/i18next/' }] },
+      {
+        text: 'Packages',
+        items: [
+          { text: 'i18next', link: '/i18next/' },
+          { text: 'web-api', link: '/web-api/' },
+        ],
+      },
       { text: 'Magazine', link: '/magazine/' },
+      { text: 'Protocols', link: '/protocols/' },
       {
         text: 'More',
         items: [{ text: 'Effector', link: 'https://effector.dev' }],
@@ -34,6 +41,19 @@ export default defineConfig({
     ],
     sidebar: {
       ...createSidebar('i18next', [{ text: 'Get Started', link: '/i18next/' }]),
+      ...createSidebar('web-api', [
+        { text: 'Get Started', link: '/web-api/' },
+        {
+          text: 'APIs',
+          items: [
+            { text: 'Network status', link: '/web-api/network_status' },
+            {
+              text: 'Page visibility',
+              link: '/web-api/page_visibility',
+            },
+          ],
+        },
+      ]),
       '/magazine/': [
         {
           text: 'Architecture',
@@ -58,6 +78,22 @@ export default defineConfig({
             {
               text: 'Fork API rules',
               link: '/magazine/fork_api_rules',
+            },
+          ],
+        },
+      ],
+      '/protocols/': [
+        {
+          text: 'Protocols',
+          link: '/protocols/',
+          items: [
+            {
+              text: '@@unitShape',
+              link: 'https://effector.dev/docs/ecosystem-development/unit-shape-protocol',
+            },
+            {
+              text: '@@trigger',
+              link: '/protocols/trigger',
             },
           ],
         },
