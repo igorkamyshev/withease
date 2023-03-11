@@ -8,17 +8,11 @@ import {
   sample,
   scopeBind,
 } from 'effector';
-import { readValue } from './shared';
 
+import { readValue, type Setupable } from './shared';
 import { TriggerProtocol } from './trigger_protocol';
 
-type NetworkStatus = ({
-  setup,
-  teardown,
-}: {
-  setup: Event<void>;
-  teardown?: Event<void>;
-}) => {
+type NetworkStatus = ({ setup, teardown }: Setupable) => {
   online: Event<void>;
   offline: Event<void>;
   $online: Store<boolean>;

@@ -9,16 +9,10 @@ import {
   scopeBind,
 } from 'effector';
 
-import { readValue } from './shared';
+import { readValue, type Setupable } from './shared';
 import { type TriggerProtocol } from './trigger_protocol';
 
-type PageVisibility = ({
-  setup,
-  teardown,
-}: {
-  setup: Event<void>;
-  teardown?: Event<void>;
-}) => {
+type PageVisibility = ({ setup, teardown }: Setupable) => {
   visible: Event<void>;
   hidden: Event<void>;
   $visibile: Store<boolean>;
