@@ -15,11 +15,6 @@ function trackMediaQuery(
   mq: Query
 ): ((c: Setupable) => Result) & TriggerProtocol;
 
-function trackMediaQuery(mq: Array<Query>, c: Setupable): Array<Result>;
-function trackMediaQuery(
-  mq: Array<Query>
-): Array<((c: Setupable) => Result) & TriggerProtocol>;
-
 function trackMediaQuery<T extends Record<string, Query>>(
   mq: T,
   c: Setupable
