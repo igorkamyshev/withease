@@ -36,7 +36,7 @@ It supports [`@@trigger` protocol](/protocols/trigger). Since it allow firing on
 ```ts
 import { trackNetworkStatus } from '@withease/web-api';
 
-somethingExpectsTrigget(trackNetworkStatus);
+somethingExpectsTrigger(trackNetworkStatus);
 ```
 
 :::
