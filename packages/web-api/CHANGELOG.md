@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.1.1
+
+### Patch Changes
+
+- 0d0c929: Fix a typo in a field of object returned from `trackPageVisibility` — `$visibile` => `$visible`
+
 ## 0.1.0
 
 ### Minor Changes
