@@ -2,4 +2,4 @@
 '@withease/web-api': patch
 ---
 
-`$visibile` => `$visible`
+Fix a typo in a field of object returned from `trackPageVisibility` — `$visibile` => `$visible`
