@@ -26,7 +26,7 @@ const hiddenElement = document.querySelector('#hidden')!;
 
 const page = trackPageVisibility({ setup: appStarted });
 
-page.$visibile.watch((visible) => {
+page.$visible.watch((visible) => {
   console.log('visible', visible);
   visibleElement.textContent = JSON.stringify(visible);
 });

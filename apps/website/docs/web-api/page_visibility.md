@@ -18,7 +18,7 @@ All you need to do is to create an integration by calling `trackWindowFocus` wit
 ```ts
 import { trackPageVisibility } from '@withease/web-api';
 
-const { visible, hidden, $visibile, $hidden } = trackPageVisibility({
+const { visible, hidden, $visible, $hidden } = trackPageVisibility({
   setup: appStarted,
 });
 ```
@@ -27,7 +27,7 @@ Returns an object with:
 
 - `visible`: [_Event_](https://effector.dev/docs/api/effector/event) fired when the content of a tab has become visible
 - `hidden`: [_Event_](https://effector.dev/docs/api/effector/event) fired when the content of a tab has been hidden
-- `$visibile`: [_Store_](https://effector.dev/docs/api/effector/store) with `true` if document is visible and `false` if it is hidden
+- `$visible`: [_Store_](https://effector.dev/docs/api/effector/store) with `true` if document is visible and `false` if it is hidden
 - `$hidden`: [_Store_](https://effector.dev/docs/api/effector/store) with `false` if document is visible and `true` if it is hidden
 
 ::: tip
@@ -36,7 +36,7 @@ It supports [`@@trigger` protocol](/protocols/trigger). Since it allow firing on
 ```ts
 import { trackPageVisibility } from '@withease/web-api';
 
-somethingExpectsTrigget(trackPageVisibility);
+somethingExpectsTrigger(trackPageVisibility);
 ```
 
 :::
