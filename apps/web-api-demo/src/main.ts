@@ -1,4 +1,8 @@
-import { trackNetworkStatus, trackPageVisibility } from '@withease/web-api';
+import {
+  trackMediaQuery,
+  trackNetworkStatus,
+  trackPageVisibility,
+} from '@withease/web-api';
 import { createEvent } from 'effector';
 
 const appStarted = createEvent();
@@ -33,6 +37,25 @@ page.$visibile.watch((visible) => {
 page.$hidden.watch((hidden) => {
   console.log('hidden', hidden);
   hiddenElement.textContent = JSON.stringify(hidden);
+});
+
+// Media query
+
+const mobileElement = document.querySelector('#mobile')!;
+const desktopElement = document.querySelector('#desktop')!;
+
+const { mobile, desktop } = trackMediaQuery(
+  { desktop: '(min-width: 601px)', mobile: '(max-width: 600px)' },
+  { setup: appStarted }
+);
+
+mobile.$active.watch((active) => {
+  console.log('mobile', active);
+  mobileElement.textContent = JSON.stringify(active);
+});
+desktop.$active.watch((inactive) => {
+  console.log('desktop', inactive);
+  desktopElement.textContent = JSON.stringify(inactive);
 });
 
 // Start

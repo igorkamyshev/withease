@@ -1,7 +1,10 @@
 import {
-  createStore,
   sample,
+  attach,
+  scopeBind,
+  createStore,
   createEvent,
+  createEffect,
   type Event,
   type Store,
 } from 'effector';
@@ -76,21 +79,60 @@ function trackMediaQuery(
   }
 }
 
-function tracker(mq: string, config: Setupable): Result {
-  const $active = createStore(
-    readValue(() => window.matchMedia(mq).matches, false)
-  );
+function tracker(query: string, config: Setupable): Result {
+  const mq = readValue(() => window.matchMedia(query), null);
+
+  const $active = createStore(mq?.matches ?? false, { serialize: 'ignore' });
   const $inactive = $active.map((active) => !active);
+
+  const changed = createEvent<MediaQueryListEvent>();
+
+  sample({ clock: changed, fn: (event) => event.matches, target: $active });
 
   const activate = sample({
     clock: $active.updates,
     filter: Boolean,
-    fn: () => void 1,
+    fn: (): void => {
+      // ...
+    },
   });
 
-  // TODO: watch!
+  const $subscription = createStore<((e: MediaQueryListEvent) => void) | null>(
+    null,
+    {
+      serialize: 'ignore',
+    }
+  );
 
-  return { $active, $inactive, activate } as Result;
+  const startWatchingFx = createEffect(() => {
+    if (!mq) return;
+
+    const listener = scopeBind(changed, { safe: true });
+    mq.addEventListener('change', listener);
+    return listener;
+  });
+
+  const stopWatchingFx = attach({
+    source: { subscription: $subscription },
+    effect({ subscription }) {
+      if (!subscription || !mq) return;
+      mq.removeEventListener('change', subscription);
+    },
+  });
+
+  sample({ clock: config.setup, target: startWatchingFx });
+  sample({
+    clock: startWatchingFx.doneData,
+    filter: Boolean,
+    target: $subscription,
+  });
+
+  if (config.teardown) {
+    sample({ clock: config.teardown, target: stopWatchingFx });
+  }
+  sample({ clock: stopWatchingFx.done, target: $subscription.reinit! });
+
+  return { $active, $inactive, activate };
 }
 
 export { trackMediaQuery };
