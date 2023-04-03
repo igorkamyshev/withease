@@ -31,7 +31,7 @@ Returns an object with:
 - `matched`: [_Event_](https://effector.dev/docs/api/effector/event) fired when query starts to match current state
 
 ::: tip
-It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackPageVisibility` triggers `visible` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
+It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackMediaQuery` triggers `matched` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
 
 ```ts
 import { trackMediaQuery } from '@withease/web-api';
