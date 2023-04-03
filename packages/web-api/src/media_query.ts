@@ -1,15 +1,12 @@
 import {
   sample,
-  attach,
-  scopeBind,
   createStore,
   createEvent,
-  createEffect,
   type Event,
   type Store,
 } from 'effector';
 
-import { readValue, type Setupable } from './shared';
+import { readValue, setupListener, type Setupable } from './shared';
 import { type TriggerProtocol } from './trigger_protocol';
 
 type Result = {
@@ -81,11 +78,17 @@ function trackMediaQuery(
 function tracker(query: string, config: Setupable): Result {
   const mq = readValue(() => window.matchMedia(query), null);
 
-  const $matches = createStore(mq?.matches ?? false, { serialize: 'ignore' });
+  const changed = setupListener<MediaQueryListEvent>(
+    {
+      add: (listener) => mq?.addEventListener('change', listener),
+      remove: (listener) => mq?.removeEventListener('change', listener),
+    },
+    config
+  );
 
-  const changed = createEvent<MediaQueryListEvent>();
-
-  sample({ clock: changed, fn: (event) => event.matches, target: $matches });
+  const $matches = createStore(mq?.matches ?? false, {
+    serialize: 'ignore',
+  }).on(changed, (_, event) => event.matches);
 
   const matched = sample({
     clock: $matches.updates,
@@ -94,41 +97,6 @@ function tracker(query: string, config: Setupable): Result {
       // ...
     },
   });
-
-  const $subscription = createStore<((e: MediaQueryListEvent) => void) | null>(
-    null,
-    {
-      serialize: 'ignore',
-    }
-  );
-
-  const startWatchingFx = createEffect(() => {
-    if (!mq) return;
-
-    const listener = scopeBind(changed, { safe: true });
-    mq.addEventListener('change', listener);
-    return listener;
-  });
-
-  const stopWatchingFx = attach({
-    source: { subscription: $subscription },
-    effect({ subscription }) {
-      if (!subscription || !mq) return;
-      mq.removeEventListener('change', subscription);
-    },
-  });
-
-  sample({ clock: config.setup, target: startWatchingFx });
-  sample({
-    clock: startWatchingFx.doneData,
-    filter: Boolean,
-    target: $subscription,
-  });
-
-  if (config.teardown) {
-    sample({ clock: config.teardown, target: stopWatchingFx });
-  }
-  sample({ clock: stopWatchingFx.done, target: $subscription.reinit! });
 
   return { $matches, matched };
 }
