@@ -40,7 +40,7 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = (config) => {
   const $hidden = $visibilityState.map((state) => state === 'hidden');
 
   const visible = sample({
-    clock: $visibile.updates,
+    clock: $visible.updates,
     fn: (): void => {
       //
     },
