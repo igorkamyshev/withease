@@ -13,9 +13,8 @@ import { readValue, type Setupable } from './shared';
 import { type TriggerProtocol } from './trigger_protocol';
 
 type Result = {
-  $active: Store<boolean>;
-  $inactive: Store<boolean>;
-  activate: Event<void>;
+  $matches: Store<boolean>;
+  matched: Event<void>;
 };
 
 type Query = string;
@@ -48,9 +47,9 @@ function trackMediaQuery(
         const setup = createEvent();
         const teardown = createEvent();
 
-        const { activate } = tracker(mq, { setup, teardown });
+        const { matched } = tracker(mq, { setup, teardown });
 
-        return { setup, teardown, fired: activate };
+        return { setup, teardown, fired: matched };
       };
 
       return track;
@@ -82,15 +81,14 @@ function trackMediaQuery(
 function tracker(query: string, config: Setupable): Result {
   const mq = readValue(() => window.matchMedia(query), null);
 
-  const $active = createStore(mq?.matches ?? false, { serialize: 'ignore' });
-  const $inactive = $active.map((active) => !active);
+  const $matches = createStore(mq?.matches ?? false, { serialize: 'ignore' });
 
   const changed = createEvent<MediaQueryListEvent>();
 
-  sample({ clock: changed, fn: (event) => event.matches, target: $active });
+  sample({ clock: changed, fn: (event) => event.matches, target: $matches });
 
-  const activate = sample({
-    clock: $active.updates,
+  const matched = sample({
+    clock: $matches.updates,
     filter: Boolean,
     fn: (): void => {
       // ...
@@ -132,7 +130,7 @@ function tracker(query: string, config: Setupable): Result {
   }
   sample({ clock: stopWatchingFx.done, target: $subscription.reinit! });
 
-  return { $active, $inactive, activate };
+  return { $matches, matched };
 }
 
 export { trackMediaQuery };
