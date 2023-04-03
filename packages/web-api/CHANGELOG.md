@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.2.0
+
+### Minor Changes
+
+- 290f48d: Add `trackMediaQuery`
+
 ## 0.1.1
 
 ### Patch Changes
