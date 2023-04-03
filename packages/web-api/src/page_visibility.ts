@@ -12,6 +12,8 @@ import { type TriggerProtocol } from './trigger_protocol';
 type PageVisibility = ({ setup, teardown }: Setupable) => {
   visible: Event<void>;
   hidden: Event<void>;
+  $visible: Store<boolean>;
+  /** @deprecated */
   $visibile: Store<boolean>;
   $hidden: Store<boolean>;
 };
@@ -34,7 +36,7 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = (config) => {
   ).on(visibilityChanged, (_, state) => state);
 
   // -- Public API
-  const $visibile = $visibilityState.map((state) => state === 'visible');
+  const $visible = $visibilityState.map((state) => state === 'visible');
   const $hidden = $visibilityState.map((state) => state === 'hidden');
 
   const visible = sample({
@@ -51,7 +53,7 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = (config) => {
   });
 
   // -- Result
-  return { visible, hidden, $visibile, $hidden };
+  return { visible, hidden, $visible, $visibile: $visible, $hidden };
 };
 
 trackPageVisibility['@@trigger'] = () => {
