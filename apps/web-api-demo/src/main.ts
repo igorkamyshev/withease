@@ -49,11 +49,11 @@ const { mobile, desktop } = trackMediaQuery(
   { setup: appStarted }
 );
 
-mobile.$active.watch((active) => {
+mobile.$matches.watch((active) => {
   console.log('mobile', active);
   mobileElement.textContent = JSON.stringify(active);
 });
-desktop.$active.watch((inactive) => {
+desktop.$matches.watch((inactive) => {
   console.log('desktop', inactive);
   desktopElement.textContent = JSON.stringify(inactive);
 });

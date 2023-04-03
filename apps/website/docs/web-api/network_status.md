@@ -31,12 +31,12 @@ Returns an object with:
 - `$offline`: [_Store_](https://effector.dev/docs/api/effector/store) with `true` if connection is lost and `false` if connection is restored
 
 ::: tip
-It supports [`@@trigger` protocol](/protocols/trigger). Since it allow firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackNetworkStatus` triggers `online` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
+It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackNetworkStatus` triggers `online` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
 
 ```ts
 import { trackNetworkStatus } from '@withease/web-api';
 
-somethingExpectsTrigget(trackNetworkStatus);
+somethingExpectsTrigger(trackNetworkStatus);
 ```
 
 :::

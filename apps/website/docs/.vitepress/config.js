@@ -51,6 +51,10 @@ export default defineConfig({
               text: 'Page visibility',
               link: '/web-api/page_visibility',
             },
+            {
+              text: 'Media query',
+              link: '/web-api/media_query',
+            },
           ],
         },
       ]),
