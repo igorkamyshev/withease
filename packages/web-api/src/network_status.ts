@@ -1,36 +1,30 @@
-import {
-  type Event,
-  type Store,
-  attach,
-  createEffect,
-  createEvent,
-  createStore,
-  sample,
-  scopeBind,
-} from 'effector';
-import { readValue } from './shared';
+import { type Event, type Store, createEvent, createStore } from 'effector';
 
-import { TriggerProtocol } from './trigger_protocol';
+import { readValue, setupListener, type Setupable } from './shared';
+import { type TriggerProtocol } from './trigger_protocol';
 
-type NetworkStatus = ({
-  setup,
-  teardown,
-}: {
-  setup: Event<void>;
-  teardown?: Event<void>;
-}) => {
+type NetworkStatus = ({ setup, teardown }: Setupable) => {
   online: Event<void>;
   offline: Event<void>;
   $online: Store<boolean>;
   $offline: Store<boolean>;
 };
 
-const trackNetworkStatus: NetworkStatus & TriggerProtocol = ({
-  setup,
-  teardown,
-}) => {
-  const online = createEvent();
-  const offline = createEvent();
+const trackNetworkStatus: NetworkStatus & TriggerProtocol = (config) => {
+  const online = setupListener<void>(
+    {
+      add: (listener) => window.addEventListener('online', listener),
+      remove: (listener) => window.removeEventListener('online', listener),
+    },
+    config
+  );
+  const offline = setupListener<void>(
+    {
+      add: (listener) => window.addEventListener('offline', listener),
+      remove: (listener) => window.removeEventListener('offline', listener),
+    },
+    config
+  );
 
   const $online = createStore(
     readValue(() => navigator.onLine, true),
@@ -38,53 +32,8 @@ const trackNetworkStatus: NetworkStatus & TriggerProtocol = ({
   )
     .on(online, () => true)
     .on(offline, () => false);
+
   const $offline = $online.map((online) => !online);
-
-  // -- Listen
-  const $listeners = createStore<{
-    online: EventListener;
-    offline: EventListener;
-  } | null>(null, {
-    serialize: 'ignore',
-  });
-
-  const listenFx = createEffect(() => {
-    const boundOnline = scopeBind(online, { safe: true });
-    const onlineListener: EventListener = () => boundOnline();
-
-    const boundOffline = scopeBind(offline, { safe: true });
-    const offlineListener: EventListener = () => boundOffline();
-
-    window.addEventListener('online', onlineListener);
-    window.addEventListener('offline', offlineListener);
-
-    return { online: onlineListener, offline: offlineListener };
-  });
-
-  sample({ clock: setup, target: listenFx });
-  sample({
-    clock: listenFx.doneData,
-    target: $listeners,
-  });
-
-  // -- Unlisten
-  if (teardown) {
-    const unlistenFx = attach({
-      source: $listeners,
-      effect(listeners) {
-        if (listeners) {
-          window.removeEventListener('online', listeners.online);
-          window.removeEventListener('offline', listeners.offline);
-        }
-      },
-    });
-
-    sample({ clock: teardown, unlistenFx });
-    sample({
-      clock: unlistenFx.done,
-      target: $listeners.reinit!,
-    });
-  }
 
   return { online, offline, $offline, $online };
 };

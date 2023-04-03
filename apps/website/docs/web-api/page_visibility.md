@@ -31,7 +31,7 @@ Returns an object with:
 - `$hidden`: [_Store_](https://effector.dev/docs/api/effector/store) with `false` if document is visible and `true` if it is hidden
 
 ::: tip
-It supports [`@@trigger` protocol](/protocols/trigger). Since it allow firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackPageVisibility` triggers `visible` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
+It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackPageVisibility` triggers `visible` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
 
 ```ts
 import { trackPageVisibility } from '@withease/web-api';
