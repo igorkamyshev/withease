@@ -18,7 +18,19 @@ jobs:
       - run: pnpm lint:workspace
       - run: pnpm test
       - run: pnpm test:types
-      - run: pnpm test:e2e
       - run: pnpm lint
       - run: pnpm build
       - run: pnpm size
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm playwright install
+      - run: pnpm test:e2e
