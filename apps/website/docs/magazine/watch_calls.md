@@ -5,20 +5,18 @@ Sometimes, you can notice a _weird_ behavior in your code if you use `.watch` to
 ## Effector's main mantra
 
 ::: tip Summary
-`.watch` method immediately executes callback after module execution with the initial value of the [_Store_](https://effector.dev/docs/api/effector/store).
+`.watch` method immediately executes callback after module execution with the current value of the [_Store_](https://effector.dev/docs/api/effector/store).
 :::
 
 Effector is based on the idea of explicit initialization. It means that module execution should not produce any side effects. It is a good practice because it allows you to control the order of execution and avoid unexpected behavior. This mantra leads us to the idea of [explicit start of the app](/magazine/explicit_start).
 
-However, it is one exception to this rule: callback in `.watch` call on [_Store_](https://effector.dev/docs/api/effector/store) is executed immediately after the store is created with an initial value. This behavior is not quite obvious, but it is introduced on purpose.
+However, it is one exception to this rule: callback in `.watch` call on [_Store_](https://effector.dev/docs/api/effector/store) is executed immediately after the store is created with a current value. This behavior is not quite obvious, but it is introduced on purpose.
 
 ::: details Why?
 
-<!-- TODO: fact-check -->
+Effector introduced this behavior to be compatible with default behavior of [Redux](https://redux.js.org/) on the early stages of development. Also, it allows using Effector [_Stores_](https://effector.dev/docs/api/effector/store) in [Svelte](https://svelte.dev/) as its native stores without any additional compatibility layers.
 
-Effector fully supports [Observable protocol](https://tc39.es/proposal-observable/) which requires `.subscribe` method to execute callback immediately with the current value. Since `.subscribe` method internally uses `.watch` method, it also executes callback immediately.
-
-**So, it is because of historical reasons.**
+**It is not a case anymore, but we still keep this behavior for historical reasons.**
 
 :::
 
@@ -58,7 +56,27 @@ $store.watch((value) => {
 // -> 'original value'
 ```
 
-It could be confusing, but it is not a bug. First `.watch` call executes only with original initial value of the [_Store_](https://effector.dev/docs/api/effector/store). In real-world applications, it means that you probably should not use `.watch`.
+It could be confusing, but it is not a bug. First `.watch` call executes only with current value of the [_Store_](https://effector.dev/docs/api/effector/store) outside of [_Scope_](https://effector.dev/docs/api/effector/scope/). In real-world applications, it means that you probably should not use `.watch`.
+
+::: details Current value?
+
+Actually, yes. Callback executes with the current value of the [_Store_](https://effector.dev/docs/api/effector/store) outside of [_Scope_](https://effector.dev/docs/api/effector/scope/). It means, you can change value of the [_Store_](https://effector.dev/docs/api/effector/store) before `.watch` call and it will be printed in the console:
+
+```ts
+const $store = createStore('original value');
+
+$store.setState('something new');
+
+$store.watch((value) => {
+  console.log(value);
+});
+
+// -> 'something new'
+```
+
+However, it is a dangerous way, and you have to avoid it in application code.
+
+:::
 
 In general `.watch` could be useful for debugging purposes and as a way to track changes in [_Store_](https://effector.dev/docs/api/effector/store) and react somehow. Since, it is not a good idea to use it in the production code, let us consider some alternatives.
 
