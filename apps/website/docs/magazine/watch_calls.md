@@ -190,4 +190,5 @@ This approach not only solve problems that mentioned above but also increases co
 
 ## Summary
 
-**Do not use `.watch`**, instead consider using [`patronum/debug`](https://patronum.effector.dev/methods/debug/) and [_Effects_](https://effector.dev/docs/api/effector/effect).
+- **Do not use `.watch`** for debug - use [`patronum/debug`](https://patronum.effector.dev/methods/debug/) instead
+- **Do not use `.watch`** for logic and side effects - use [_Effects_](https://effector.dev/docs/api/effector/effect) instead
