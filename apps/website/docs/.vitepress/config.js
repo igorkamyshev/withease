@@ -83,6 +83,10 @@ export default defineConfig({
               text: 'Fork API rules',
               link: '/magazine/fork_api_rules',
             },
+            {
+              text: '.watch calls are (not) weird',
+              link: '/magazine/watch_calls',
+            },
           ],
         },
       ],
