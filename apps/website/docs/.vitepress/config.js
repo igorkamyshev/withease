@@ -89,6 +89,15 @@ export default defineConfig({
             },
           ],
         },
+        {
+          text: 'Recipes',
+          items: [
+            {
+              text: 'Events in UI-frameworks',
+              link: '/magazine/handle_events_in_ui_frameworks',
+            },
+          ],
+        },
       ],
       '/protocols/': [
         {
