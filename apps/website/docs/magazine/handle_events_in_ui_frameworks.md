@@ -187,7 +187,7 @@ export const showWarningFx = attach({
 
 ::: tip
 
-`attach` is a function that allows to bind specific [_Store_] to an [_Effect_](https://effector.dev/docs/api/effector/effect). It means that we can use `notificationApi` in `showWarningFx` without passing it as a parameter. Read more in [Effector's documentation](https://effector.dev/docs/api/effector/attach).
+`attach` is a function that allows to bind specific [_Store_](https://effector.dev/docs/api/effector/store) to an [_Effect_](https://effector.dev/docs/api/effector/effect). It means that we can use `notificationApi` in `showWarningFx` without passing it as a parameter. Read more in [Effector's documentation](https://effector.dev/docs/api/effector/attach).
 :::
 
 [_Effect_](https://effector.dev/docs/api/effector/effect) `showWarningFx` can be used in any place of the application without any additional hustle.
