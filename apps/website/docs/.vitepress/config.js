@@ -105,6 +105,10 @@ export default defineConfig({
           link: '/protocols/',
           items: [
             {
+              text: 'Contract',
+              link: '/protocols/contract',
+            },
+            {
               text: '@@unitShape',
               link: 'https://effector.dev/docs/ecosystem-development/unit-shape-protocol',
             },
