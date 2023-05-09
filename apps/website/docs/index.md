@@ -16,7 +16,7 @@ hero:
 features:
   - icon: 🌐
     title: i18next
-    details: A powerful internationalization framework for Effector which is based on i18next
+    details: A powerful internationalization framework based on i18next
     link: /i18next/
     linkText: Get Started
   - icon: 👩🏽‍💻
@@ -28,5 +28,10 @@ features:
     title: Farfetched
     details: The advanced data fetching tool for web applications
     link: https://farfetched.pages.dev
+    linkText: Learn More
+  - icon: 🫙
+    title: effector-storage
+    details: Sync Stores with any external storage (like localStorage)
+    link: https://github.com/yumauri/effector-storage
     linkText: Learn More
 ---
