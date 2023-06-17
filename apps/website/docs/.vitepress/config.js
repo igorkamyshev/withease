@@ -55,6 +55,7 @@ export default defineConfig({
               text: 'Media query',
               link: '/web-api/media_query',
             },
+            { text: 'Screen orientation', link: '/web-api/screen_orientation' },
           ],
         },
       ]),
