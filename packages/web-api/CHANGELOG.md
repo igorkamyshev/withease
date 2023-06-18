@@ -1,5 +1,12 @@
 # @withease/web-api
 
+## 0.3.0
+
+### Minor Changes
+
+- 4de0174: Add `trackScreenOrientation`
+- b86b9b9: Delete deprecated (because of typo) field `$visibile` from return object of `trackPageVisibility`
+
 ## 0.2.0
 
 ### Minor Changes
