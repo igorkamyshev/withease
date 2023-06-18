@@ -13,8 +13,6 @@ type PageVisibility = ({ setup, teardown }: Setupable) => {
   visible: Event<void>;
   hidden: Event<void>;
   $visible: Store<boolean>;
-  /** @deprecated */
-  $visibile: Store<boolean>;
   $hidden: Store<boolean>;
 };
 
@@ -53,7 +51,7 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = (config) => {
   });
 
   // -- Result
-  return { visible, hidden, $visible, $visibile: $visible, $hidden };
+  return { visible, hidden, $visible, $hidden };
 };
 
 trackPageVisibility['@@trigger'] = () => {
