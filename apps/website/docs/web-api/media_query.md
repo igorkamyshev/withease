@@ -50,10 +50,7 @@ You can track multiple queries by calling `trackMediaQueries` with queries to tr
 ```ts
 import { trackMediaQuery } from '@withease/web-api';
 
-const { mobile, desktop } = trackMediaQuery(
-  { mobile: '(max-width: 600px)', desktop: '(min-width: 601px)' },
-  { setup: appStarted }
-);
+const { mobile, desktop } = trackMediaQuery({ mobile: '(max-width: 600px)', desktop: '(min-width: 601px)' }, { setup: appStarted });
 
 mobile.$matches; // Store<boolean>
 mobile.matched; // Event<void>
@@ -61,3 +58,55 @@ mobile.matched; // Event<void>
 desktop.$matches; // Store<boolean>
 desktop.matched; // Event<void>
 ```
+
+## Live demo
+
+Let us show you a live demo of how it works. The following demo display a `$matches` value of the query in the screen. Change the screen size to see how it works.
+
+<script setup lang="ts">
+import { createEvent } from 'effector';
+import { useStore } from 'effector-vue/composition'
+
+import { trackMediaQuery } from '../../../../packages/web-api';
+
+const appStarted = createEvent();
+
+const { mobile, desktop } = trackMediaQuery(
+  { desktop: '(min-width: 601px)', mobile: '(max-width: 600px)' },
+  { setup: appStarted }
+);
+
+const matchesMobile = useStore(mobile.$matches)
+const matchesDesktop = useStore(desktop.$matches)
+
+appStarted();
+
+</script>
+
+::: details Source code
+
+```ts
+import { createEvent } from 'effector';
+import { useStore } from 'effector-vue/composition';
+import { trackMediaQuery } from '@withease/web-api';
+
+const appStarted = createEvent();
+
+const { mobile, desktop } = trackMediaQuery(
+  {
+    desktop: '(min-width: 601px)',
+    mobile: '(max-width: 600px)',
+  },
+  { setup: appStarted }
+);
+
+const matchesMobile = useStore(mobile.$matches);
+const matchesDesktop = useStore(desktop.$matches);
+
+appStarted();
+```
+
+:::
+
+- Query matches mobile (max-width: 600px) : **{{ matchesMobile }}**
+- Query matches desktop (min-width: 601px) : **{{ matchesDesktop }}**
