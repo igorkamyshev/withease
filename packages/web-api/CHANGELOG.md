@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.3.1
+
+### Patch Changes
+
+- f466d54: Fix extra firing of `visible` and `hidden` in `trackPageVisibility`
+
 ## 0.3.0
 
 ### Minor Changes
