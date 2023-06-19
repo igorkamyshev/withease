@@ -39,12 +39,14 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = (config) => {
 
   const visible = sample({
     clock: $visible.updates,
+    filter: Boolean,
     fn: (): void => {
       //
     },
   });
   const hidden = sample({
     clock: $hidden.updates,
+    filter: Boolean,
     fn: (): void => {
       //
     },
