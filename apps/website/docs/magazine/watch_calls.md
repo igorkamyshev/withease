@@ -1,3 +1,7 @@
+---
+title: .watch calls are (not) weird
+---
+
 # `.watch` calls are (not) weird
 
 Sometimes, you can notice a _weird_ behavior in your code if you use `.watch` to track [_Store_](https://effector.dev/docs/api/effector/store) changes. Let us explain what is going on and how to deal with it.

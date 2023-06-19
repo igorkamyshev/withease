@@ -1,3 +1,7 @@
+---
+title: Fork API rules
+---
+
 # Fork API rules
 
 Fork API allows you to run multiple instances of the same application in the single process. It is useful for testing, SSR, and other cases. It is powerful mechanism, but it has some rules that you should follow to avoid unexpected behavior.

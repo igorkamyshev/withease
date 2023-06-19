@@ -1,3 +1,7 @@
+---
+title: Explicit start of the app
+---
+
 # Explicit start of the app
 
 In Effector [_Events_](https://effector.dev/docs/api/effector/event) can not be triggered implicitly. It gives you more control over the app's lifecycle and helps to avoid unexpected behavior.

@@ -1,5 +1,6 @@
 ---
 outline: [2, 3]
+title: Handle Effector's Events in UI-frameworks
 ---
 
 # Handle Effector's _Events_ in UI-frameworks

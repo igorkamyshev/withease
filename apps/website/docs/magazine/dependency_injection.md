@@ -1,3 +1,7 @@
+---
+title: Dependency injection
+---
+
 # Dependency injection
 
 Effector provides a simple way to inject dependencies into your application — Fork API. Let us take a look at how it works.
