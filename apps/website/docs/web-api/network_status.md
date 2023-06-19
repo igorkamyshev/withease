@@ -40,3 +40,48 @@ somethingExpectsTrigger(trackNetworkStatus);
 ```
 
 :::
+
+## Live demo
+
+Let us show you a live demo of how it works. The following demo displays a `$online` and `$offilne` values of the current network status. _Turn off Wi-Fi to see how it works._
+
+<script setup lang="ts">
+import { createEvent } from 'effector';
+import { useStore } from 'effector-vue/composition'
+
+import { trackNetworkStatus } from '../../../../packages/web-api';
+
+const appStarted = createEvent();
+
+const { $online, $offline } = trackNetworkStatus(
+  { setup: appStarted }
+);
+
+const online = useStore($online)
+const offline = useStore($offline)
+
+appStarted();
+
+</script>
+
+::: details Source code
+
+```ts
+import { createEvent } from 'effector';
+import { useStore } from 'effector-vue/composition';
+import { trackNetworkStatus } from '@withease/web-api';
+
+const appStarted = createEvent();
+
+const { $online, $offline } = trackNetworkStatus({ setup: appStarted });
+
+const online = useStore($online);
+const offline = useStore($offline);
+
+appStarted();
+```
+
+:::
+
+- Client online: **{{ online }}**
+- Client offline: **{{ offline }}**

@@ -61,7 +61,7 @@ desktop.matched; // Event<void>
 
 ## Live demo
 
-Let us show you a live demo of how it works. The following demo display a `$matches` value of the query in the screen. Change the screen size to see how it works.
+Let us show you a live demo of how it works. The following demo displays a `$matches` value of the query in the screen. _Change the screen size to see how it works._
 
 <script setup lang="ts">
 import { createEvent } from 'effector';
