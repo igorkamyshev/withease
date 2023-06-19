@@ -50,7 +50,10 @@ You can track multiple queries by calling `trackMediaQueries` with queries to tr
 ```ts
 import { trackMediaQuery } from '@withease/web-api';
 
-const { mobile, desktop } = trackMediaQuery({ mobile: '(max-width: 600px)', desktop: '(min-width: 601px)' }, { setup: appStarted });
+const { mobile, desktop } = trackMediaQuery(
+  { mobile: '(max-width: 600px)', desktop: '(min-width: 601px)' },
+  { setup: appStarted }
+);
 
 mobile.$matches; // Store<boolean>
 mobile.matched; // Event<void>
