@@ -25,6 +25,7 @@ importers:
       '@vitest/ui': ^0.25.8
       bytes-iec: ^3.1.1
       effector: ^22.5.0
+      effector-vue: ^22.2.0
       eslint: ~8.15.0
       glob: ^8.0.3
       i18next: ^22.4.10
@@ -64,6 +65,7 @@ importers:
       '@vitest/ui': 0.25.8
       bytes-iec: 3.1.1
       effector: 22.5.0
+      effector-vue: 22.2.0_effector@22.5.0+vue@3.2.37
       eslint: 8.15.0
       glob: 8.1.0
       i18next: 22.4.10
@@ -4750,6 +4752,19 @@ packages:
 
   /duplexer/0.1.2:
     resolution: {integrity: sha512-jtD6YG370ZCIi/9GTaJKQxWTZD045+4R4hTk/x1UyoqadyJ9x9CgSi1RlVDQF8U2sxLLSnFkCaMihqljHIWgMg==}
+    dev: true
+
+  /effector-vue/22.2.0_effector@22.5.0+vue@3.2.37:
+    resolution: {integrity: sha512-ltiGrWizwBFXuIL0KuW11GXl253/AI/xSnSR1EtWlgDobzzEZ9G6gV6eUmcC36S4Jo34K7FJpKTmE/ODfGED6w==}
+    engines: {node: '>=11.0.0'}
+    peerDependencies:
+      '@vue/reactivity': ^3.0.2
+      '@vue/runtime-core': ^3.0.2
+      effector: ^22.0.2
+      vue: '*'
+    dependencies:
+      effector: 22.5.0
+      vue: 3.2.37
     dev: true
 
   /effector/22.5.0:

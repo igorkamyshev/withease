@@ -40,3 +40,59 @@ somethingExpectsTrigger(trackPageVisibility);
 ```
 
 :::
+
+## Live demo
+
+Let us show you a live demo of how it works. The following demo displays history of `hidden` and `visible` [_Events_](https://effector.dev/docs/api/effector/event). _Switch to other tab and return there see how it works._
+
+<script setup lang="ts">
+import { createEvent, createStore } from 'effector';
+import { useStore } from 'effector-vue/composition'
+
+import { trackPageVisibility } from '../../../../packages/web-api';
+
+const appStarted = createEvent();
+
+const { visible, hidden } = trackPageVisibility(
+  { setup: appStarted }
+);
+
+const $history = createStore([])
+  .on(visible, (state) => [...state, { at: new Date, action: 'visible' }])
+  .on(hidden, (state) => [...state, { at: new Date, action: 'hidden' }]);
+
+const history = useStore($history)
+
+appStarted();
+
+</script>
+
+::: details Source code
+
+```ts
+import { createEvent, createStore } from 'effector';
+import { useStore } from 'effector-vue/composition';
+import { trackPageVisibility } from '@withease/web-api';
+
+const appStarted = createEvent();
+
+const { visible, hidden } = trackPageVisibility({ setup: appStarted });
+
+const $history = createStore([])
+  .on(visible, (state) => [...state, { at: new Date(), action: 'visible' }])
+  .on(hidden, (state) => [...state, { at: new Date(), action: 'hidden' }]);
+
+const history = useStore($history);
+
+appStarted();
+```
+
+:::
+
+Event's history:
+
+<ul>
+<li v-for="event in history">{{ event.action }} at {{ event.at.toLocaleTimeString() }}</li>
+</ul>
+
+<span v-if="history.length === 0">No events yet</span>

@@ -38,3 +38,48 @@ somethingExpectsTrigger(trackScreenOrientation);
 ```
 
 :::
+
+## Live demo
+
+Let us show you a live demo of how it works. The following demo displays `$type` and `$angle` values of the current screen orientation. _Rotate your device to see how it works._
+
+<script setup lang="ts">
+import { createEvent } from 'effector';
+import { useStore } from 'effector-vue/composition'
+
+import { trackScreenOrientation } from '../../../../packages/web-api';
+
+const appStarted = createEvent();
+
+const { $type, $angle } = trackScreenOrientation(
+  { setup: appStarted }
+);
+
+const type = useStore($type)
+const angle = useStore($angle)
+
+appStarted();
+
+</script>
+
+::: details Source code
+
+```ts
+import { createEvent } from 'effector';
+import { useStore } from 'effector-vue/composition';
+import { trackScreenOrientation } from '@withease/web-api';
+
+const appStarted = createEvent();
+
+const { $type, $angle } = trackScreenOrientation({ setup: appStarted });
+
+const type = useStore($type);
+const angle = useStore($angle);
+
+appStarted();
+```
+
+:::
+
+- Screen orientation type: **{{ type }}**
+- Screen orientation angle: **{{ angle }}**
