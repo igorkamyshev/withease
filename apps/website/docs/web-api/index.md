@@ -21,3 +21,13 @@ npm install @withease/web-api
 ```
 
 :::
+
+## Available integrations
+
+<script setup>
+    import { data as apis } from './apis.data'
+</script>
+
+<ul>
+    <li v-for="api in apis"><a :href="api.url">{{ api.frontmatter.title }}</a></li>
+</ul>

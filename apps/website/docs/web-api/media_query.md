@@ -1,3 +1,7 @@
+---
+title: Media query
+---
+
 # Media query
 
 Allows tracking any media query matching state with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).

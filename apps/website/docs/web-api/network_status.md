@@ -1,3 +1,7 @@
+---
+title: Network status
+---
+
 # Network status
 
 Allows tracking network status with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).

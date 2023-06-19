@@ -1,3 +1,7 @@
+---
+title: Screen orientation
+---
+
 # Screen orientation
 
 Allows tracking device screen orientation with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).

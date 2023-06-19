@@ -1,3 +1,7 @@
+---
+title: Page visibility
+---
+
 # Page visibility
 
 Allows tracking window focus and blur with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).
