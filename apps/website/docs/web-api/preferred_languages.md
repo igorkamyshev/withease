@@ -151,7 +151,7 @@ app.get('*', (req, res) => {
 
 :::
 
-::: details Next.js
+::: details NestJS
 
 ```ts
 // server.ts
