@@ -92,37 +92,18 @@ User's preferred languages:
 
 ## Service-side rendering (SSR)
 
-It uses browser's APIs like `window.addEventListener` and `navigator.languages` under the hood, which are not available in server-side environment. However, it is possible to use it while SSR by passing header `Accept-Language` from the user's request to the special [_Store_](https://effector.dev/docs/api/effector/store) `__.$acceptLanguageHeader` returned from the `trackPreferredLanguages`.
-
-```ts
-// preferred-languages.model.ts
-
-import { trackPreferredLanguages } from '@withease/web-api';
-
-const preferredLanguages = trackPreferredLanguages({
-  setup: appStarted,
-});
-
-export { preferredLanguages };
-```
-
-You have to pass `Accept-Language` header value to the [_Store_](https://effector.dev/docs/api/effector/store) `preferredLanguages.__.$acceptLanguageHeader` while `fork` in the server-side environment. Every server-side framework has its own way to do it, there are some examples:
+It uses browser's APIs like `window.addEventListener` and `navigator.languages` under the hood, which are not available in server-side environment. However, it is possible to use it while SSR by passing header `Accept-Language` from the user's request to the special [_Store_](https://effector.dev/docs/api/effector/store) `trackPreferredLanguages.$acceptLanguageHeader` while `fork` in the server-side environment. Every server-side framework has its own way to do it, there are some examples:
 
 ::: details Fastify
 
 ```ts
 // server.ts
-import { preferredLanguages } from './preferred-languages.model';
+import { trackPreferredLanguages } from '@withease/web-api';
 
 fastify.get('*', {
   async handler(request, reply) {
     const scope = fork({
-      values: [
-        [
-          preferredLanguages.__.$acceptLanguageHeader,
-          request.headers['Accept-Language'],
-        ],
-      ],
+      values: [[trackPreferredLanguages.$acceptLanguageHeader, request.headers['Accept-Language']]],
     });
 
     await allSettled(appStarted);
@@ -140,11 +121,11 @@ fastify.get('*', {
 
 ```ts
 // server.ts
+import { trackPreferredLanguages } from '@withease/web-api';
+
 app.get('*', (req, res) => {
   const scope = fork({
-    values: [
-      [preferredLanguages.__.$acceptLanguageHeader, req.get('Accept-Language')],
-    ],
+    values: [[trackPreferredLanguages.$acceptLanguageHeader, req.get('Accept-Language')]],
   });
 
   allSettled(appStarted)
@@ -164,18 +145,14 @@ app.get('*', (req, res) => {
 
 ```ts
 // server.ts
+import { trackPreferredLanguages } from '@withease/web-api';
 
 @Controller()
 export class SSRController {
   @Get('*')
-  async render(@Headers('Accept-Language') acceptLanguage: string) {
+  async render(@Headers('Accept-Language') acceptLanguageHeader: string) {
     const scope = fork({
-      values: [
-        [
-          preferredLanguages.__.$acceptLanguageHeader,
-          request.headers['Accept-Language'],
-        ],
-      ],
+      values: [[trackPreferredLanguages.$acceptLanguageHeader, acceptLanguageHeader]],
     });
 
     await allSettled(appStarted);
