@@ -103,7 +103,12 @@ import { trackPreferredLanguages } from '@withease/web-api';
 fastify.get('*', {
   async handler(request, reply) {
     const scope = fork({
-      values: [[trackPreferredLanguages.$acceptLanguageHeader, request.headers['Accept-Language']]],
+      values: [
+        [
+          trackPreferredLanguages.$acceptLanguageHeader,
+          request.headers['Accept-Language'],
+        ],
+      ],
     });
 
     await allSettled(appStarted);
@@ -125,7 +130,12 @@ import { trackPreferredLanguages } from '@withease/web-api';
 
 app.get('*', (req, res) => {
   const scope = fork({
-    values: [[trackPreferredLanguages.$acceptLanguageHeader, req.get('Accept-Language')]],
+    values: [
+      [
+        trackPreferredLanguages.$acceptLanguageHeader,
+        req.get('Accept-Language'),
+      ],
+    ],
   });
 
   allSettled(appStarted)
@@ -152,7 +162,9 @@ export class SSRController {
   @Get('*')
   async render(@Headers('Accept-Language') acceptLanguageHeader: string) {
     const scope = fork({
-      values: [[trackPreferredLanguages.$acceptLanguageHeader, acceptLanguageHeader]],
+      values: [
+        [trackPreferredLanguages.$acceptLanguageHeader, acceptLanguageHeader],
+      ],
     });
 
     await allSettled(appStarted);
