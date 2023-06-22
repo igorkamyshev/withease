@@ -1,4 +1,11 @@
-import { Event, Store, createEvent, createStore, sample } from 'effector';
+import {
+  Event,
+  Store,
+  combine,
+  createEvent,
+  createStore,
+  sample,
+} from 'effector';
 
 import { Setupable, readValue, setupListener } from './shared';
 import { TriggerProtocol } from './trigger_protocol';
@@ -9,17 +16,31 @@ type PrefereredLanguages = ({ setup, teardown }: Setupable) => {
   $languages: Store<readonly string[]>;
 };
 
-// TODO: SSR support, Accept-Language header
-const trackPreferredLanguages: PrefereredLanguages & TriggerProtocol = (
-  config
-) => {
-  const $languages = createStore(
+type ScopeOverridesSupport = {
+  $acceptLanguageHeader: Store<string | null>;
+};
+
+const $acceptLanguageHeader = createStore<string | null>(null, {
+  serialize: 'ignore',
+});
+
+const $headerLanguages = $acceptLanguageHeader.map((header) => {
+  if (!header) {
+    return [];
+  }
+
+  return header
+    .split(',')
+    .map((lang) => lang.split(';')[0]?.trim())
+    .filter((lang) => lang && lang !== '*');
+});
+
+const trackPreferredLanguages: PrefereredLanguages &
+  TriggerProtocol &
+  ScopeOverridesSupport = (config) => {
+  const $navigatorLanguages = createStore(
     readValue(() => navigator.languages, []),
     { serialize: 'ignore' }
-  );
-
-  const $language = $languages.map(
-    (languages): string | null => languages[0] ?? null
   );
 
   const languagesChanged = setupListener(
@@ -32,7 +53,17 @@ const trackPreferredLanguages: PrefereredLanguages & TriggerProtocol = (
     config
   );
 
-  sample({ clock: languagesChanged, target: $languages });
+  sample({ clock: languagesChanged, target: $navigatorLanguages });
+
+  const $languages = combine(
+    { fromHeader: $headerLanguages, fromNavigator: $navigatorLanguages },
+    ({ fromHeader, fromNavigator }) =>
+      fromHeader.length > 0 ? fromHeader : fromNavigator
+  );
+
+  const $language = $languages.map(
+    (languages): string | null => languages[0] ?? null
+  );
 
   const languageChanged = sample({
     clock: languagesChanged,
@@ -52,5 +83,7 @@ trackPreferredLanguages['@@trigger'] = () => {
 
   return { setup, teardown, fired: languageChanged };
 };
+
+trackPreferredLanguages.$acceptLanguageHeader = $acceptLanguageHeader;
 
 export { trackPreferredLanguages };
