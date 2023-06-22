@@ -37,7 +37,7 @@
     "@typescript-eslint/parser": "5.49.0",
     "@vitest/ui": "^0.25.8",
     "bytes-iec": "^3.1.1",
-    "effector": "^22.5.0",
+    "effector": "^22.8.6",
     "effector-vue": "^22.2.0",
     "eslint": "~8.15.0",
     "glob": "^8.0.3",
