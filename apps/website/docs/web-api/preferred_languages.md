@@ -22,7 +22,7 @@ All you need to do is to create an integration by calling `trackPreferredLanguag
 ```ts
 import { trackPreferredLanguages } from '@withease/web-api';
 
-const { $languages, $languages, languageChanged } = trackPreferredLanguages({
+const { $language, $languages, languageChanged } = trackPreferredLanguages({
   setup: appStarted,
 });
 ```
