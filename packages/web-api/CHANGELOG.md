@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.4.0
+
+### Minor Changes
+
+- b8eb3f4: Add new integration `trackPreferredLanguages`
+
 ## 0.3.1
 
 ### Patch Changes
