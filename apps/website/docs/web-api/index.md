@@ -29,5 +29,5 @@ npm install @withease/web-api
 </script>
 
 <ul>
-    <li v-for="api in apis"><a :href="api.url">{{ api.frontmatter.title }}</a></li>
+    <li v-for="api in apis"><a :href="api.link">{{ api.text }}</a></li>
 </ul>

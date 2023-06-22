@@ -1,11 +1,14 @@
-import { createContentLoader } from 'vitepress';
+import type { SiteConfig } from 'vitepress';
 
-const EXCLUDE_FILES = ['index.html', 'CHANGELOG.html'];
+const config: SiteConfig = (globalThis as any).VITEPRESS_CONFIG;
 
-export default createContentLoader(`./web-api/*.md`, {
-  transform(content) {
-    return content.filter(
-      (item) => !EXCLUDE_FILES.some((exclusion) => item.url.endsWith(exclusion))
-    );
+export default {
+  load() {
+    console.log(config.userConfig.themeConfig.sidebar['/web-api/']);
+    const apis = config.userConfig.themeConfig.sidebar['/web-api/']
+      .at(0)
+      .items.at(1).items;
+
+    return apis;
   },
-});
+};

@@ -56,6 +56,10 @@ export default defineConfig({
               link: '/web-api/media_query',
             },
             { text: 'Screen orientation', link: '/web-api/screen_orientation' },
+            {
+              text: 'Preferred languages',
+              link: '/web-api/preferred_languages',
+            },
           ],
         },
       ]),
