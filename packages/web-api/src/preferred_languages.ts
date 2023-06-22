@@ -1,14 +1,14 @@
 import {
-  Event,
-  Store,
+  type Event,
+  type Store,
   combine,
   createEvent,
   createStore,
   sample,
 } from 'effector';
 
-import { Setupable, readValue, setupListener } from './shared';
-import { TriggerProtocol } from './trigger_protocol';
+import { type Setupable, readValue, setupListener } from './shared';
+import { type TriggerProtocol } from './trigger_protocol';
 
 type PrefereredLanguages = ({ setup, teardown }: Setupable) => {
   languageChanged: Event<void>;
