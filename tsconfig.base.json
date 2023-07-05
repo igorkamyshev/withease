@@ -14,6 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@withease/i18next": ["packages/i18next/index.ts"],
+      "@withease/factories": ["packages/factories/index.ts"],
       "@withease/web-api": ["packages/web-api/index.ts"]
     }
   },

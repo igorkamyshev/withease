@@ -30,6 +30,7 @@ export default defineConfig({
         items: [
           { text: 'i18next', link: '/i18next/' },
           { text: 'web-api', link: '/web-api/' },
+          { text: 'factories', link: '/factories/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
@@ -62,6 +63,11 @@ export default defineConfig({
             },
           ],
         },
+      ]),
+      ...createSidebar('factories', [
+        { text: 'Get Started', link: '/factories/' },
+        { text: 'Motivation', link: '/factories/motivation' },
+        { text: 'Important Caveats', link: '/factories/important_caveats' },
       ]),
       '/magazine/': [
         {

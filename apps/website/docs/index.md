@@ -34,4 +34,9 @@ features:
     details: Sync Stores with any external storage (like localStorage)
     link: https://github.com/yumauri/effector-storage
     linkText: Learn More
+  - icon: 👩‍🏭
+    title: factories
+    details: Set of helpers to create factories in your application
+    link: /factories/
+    linkText: Get Started
 ---
