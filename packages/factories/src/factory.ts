@@ -1,5 +1,5 @@
-export type Factory<P, R> = {
+export type Factory<C extends (params: any) => any> = {
   __: {
-    create: (params: P) => R;
+    create: C;
   };
 };

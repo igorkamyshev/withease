@@ -1,6 +1,8 @@
 import { type Factory } from './factory';
 
-export function createFactory<P, R>(creator: (params: P) => R): Factory<P, R> {
+export function createFactory<C extends (params: any) => any>(
+  creator: C
+): Factory<C> {
   return {
     __: {
       create: creator,
