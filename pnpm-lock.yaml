@@ -83,6 +83,9 @@ importers:
       vitest: 0.26.2_@vitest+ui@0.25.8
       vue: 3.2.37
 
+  packages/factories:
+    specifiers: {}
+
   packages/i18next:
     specifiers: {}
 

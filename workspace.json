@@ -3,6 +3,7 @@
   "version": 2,
   "projects": {
     "i18next": "packages/i18next",
+    "factories": "packages/factories",
     "web-api": "packages/web-api",
     "web-api-demo": "apps/web-api-demo",
     "web-api-demo-e2e": "apps/web-api-demo-e2e",
