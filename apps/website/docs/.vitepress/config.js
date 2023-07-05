@@ -67,7 +67,7 @@ export default defineConfig({
       ...createSidebar('factories', [
         { text: 'Get Started', link: '/factories/' },
         { text: 'Motivation', link: '/factories/motivation' },
-        { text: 'Important caveats', link: '/factories/important_caveats' },
+        { text: 'Important Caveats', link: '/factories/important_caveats' },
       ]),
       '/magazine/': [
         {
