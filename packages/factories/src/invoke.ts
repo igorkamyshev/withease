@@ -1,10 +1,34 @@
 import { type Factory } from './factory';
 
+/** This flag is used for defining that internals of a factory can be called */
+export let insideInvoke = false;
+
+export function invoke<C extends (...args: any) => any>(
+  factory: Factory<C>
+): OverloadReturn<void, OverloadUnion<C>>;
+
 export function invoke<
   C extends (...args: any) => any,
   P extends OverloadParameters<C>[0]
->(factory: Factory<C>, params: P): OverloadReturn<P, OverloadUnion<C>> {
-  return factory.__.create(params);
+>(factory: Factory<C>, params: P): OverloadReturn<P, OverloadUnion<C>>;
+
+export function invoke<
+  C extends (...args: any) => any,
+  P extends OverloadParameters<C>[0]
+>(factory: Factory<C>, params?: P): OverloadReturn<P, OverloadUnion<C>> {
+  /*
+   * Enable calling factory internals, so factory.__.create can be called with no exception
+   */
+  insideInvoke = true;
+
+  const result = factory.__.create(params);
+
+  /*
+   * Disable calling factory internals, so call of factory.__.create will throw an exception
+   */
+  insideInvoke = false;
+
+  return result;
 }
 
 /*
@@ -51,8 +75,25 @@ type OverloadParameters<T extends (...args: any) => any> = Parameters<
   OverloadUnion<T>
 >;
 
-type OverloadReturn<P, F extends (...args: any[]) => any> = F extends (
-  params: P
-) => infer R
-  ? R
-  : never;
+type OverloadReturn<P, F extends (...args: any[]) => any> =
+  /*
+   * Function with no arguments (() => any) is a special case
+   * because it extends (...args: any[]) => any in TypeScript.
+   *
+   * So we need to handle it separately to prevent incorrect inference.
+   */
+  F extends () => any
+    ? /*
+       * In case of functions without arguments
+       * we need to return ReturnType<F> because it is the only possible return type.
+       */
+      P extends void
+      ? ReturnType<F>
+      : never
+    : /*
+     * In case of function with single argument
+     * We need to find correct overload and return its return type.
+     */
+    F extends (params: P) => infer R
+    ? R
+    : never;

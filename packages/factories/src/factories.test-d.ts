@@ -20,4 +20,32 @@ describe('factories', () => {
     const numberFlag = invoke(createFlagFactory, 1);
     expectTypeOf(numberFlag).toEqualTypeOf<number>();
   });
+
+  test('supports factories with no arguments', () => {
+    function createFlag(): number {
+      return 1;
+    }
+
+    const createFlagFactory = createFactory(createFlag);
+
+    const flag = invoke(createFlagFactory);
+    expectTypeOf(flag).toEqualTypeOf<number>();
+  });
+
+  test('supports factories with no arguments as part of overload', () => {
+    function createFlag(): number;
+    function createFlag(status: string): string;
+
+    function createFlag(status?: string): any {
+      return status ?? 0;
+    }
+
+    const createFlagFactory = createFactory(createFlag);
+
+    const numberFlag = invoke(createFlagFactory);
+    expectTypeOf(numberFlag).toEqualTypeOf<number>();
+
+    const stringFlag = invoke(createFlagFactory, 'stat');
+    expectTypeOf(stringFlag).toEqualTypeOf<string>();
+  });
 });
