@@ -1,3 +1,13 @@
+/**
+ * Have to be called inside factory created by createFactory
+ */
+export function markFactoryAsCalled() {
+  factoryCalled = true;
+}
+
+/** This flag is used for defining that called function is created by createFactory */
+let factoryCalled = false;
+
 /** This flag is used for defining that internals of a factory can be called */
 export let insideInvoke = false;
 
@@ -21,10 +31,21 @@ export function invoke<
 
   const result = factory(params);
 
+  if (!factoryCalled) {
+    throw new Error(
+      'Function passed to invoke is not created by createFactory'
+    );
+  }
+
   /*
    * Disable calling factory internals, so call of factory.__.create will throw an exception
    */
   insideInvoke = false;
+
+  /*
+   * Reset flag for next invoke calls
+   */
+  factoryCalled = false;
 
   return result;
 }

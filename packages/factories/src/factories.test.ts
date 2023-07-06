@@ -39,4 +39,12 @@ describe('factories', () => {
       '"createFactory does not support functions with more than 1 argument"'
     );
   });
+
+  test('throw error if call non-factory function in invoke', () => {
+    expect(() =>
+      invoke((params: number[]) => params.at(0), [1, 2, 3])
+    ).toThrowErrorMatchingInlineSnapshot(
+      '"Function passed to invoke is not created by createFactory"'
+    );
+  });
 });
