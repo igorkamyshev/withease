@@ -1,27 +1,25 @@
-import { type Factory } from './factory';
-
 /** This flag is used for defining that internals of a factory can be called */
 export let insideInvoke = false;
 
 export function invoke<C extends (...args: any) => any>(
-  factory: Factory<C>
+  factory: C
 ): OverloadReturn<void, OverloadUnion<C>>;
 
 export function invoke<
   C extends (...args: any) => any,
   P extends OverloadParameters<C>[0]
->(factory: Factory<C>, params: P): OverloadReturn<P, OverloadUnion<C>>;
+>(factory: C, params: P): OverloadReturn<P, OverloadUnion<C>>;
 
 export function invoke<
   C extends (...args: any) => any,
   P extends OverloadParameters<C>[0]
->(factory: Factory<C>, params?: P): OverloadReturn<P, OverloadUnion<C>> {
+>(factory: C, params?: P): OverloadReturn<P, OverloadUnion<C>> {
   /*
    * Enable calling factory internals, so factory.__.create can be called with no exception
    */
   insideInvoke = true;
 
-  const result = factory.__.create(params);
+  const result = factory(params);
 
   /*
    * Disable calling factory internals, so call of factory.__.create will throw an exception

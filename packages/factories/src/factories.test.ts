@@ -24,19 +24,8 @@ describe('factories', () => {
   test('throw error if try to call factory directly', () => {
     const myFactory = createFactory((params: number[]) => params.at(0));
 
-    // @ts-expect-error It's obvious error, this test for JS-users
     expect(() => myFactory([1, 2, 3])).toThrowErrorMatchingInlineSnapshot(
-      '"myFactory is not a function"'
-    );
-  });
-
-  test('throw error if try to call internal creator directly', () => {
-    const myFactory = createFactory((params: number[]) => params.at(0));
-
-    expect(() =>
-      myFactory.__.create([1, 2, 3])
-    ).toThrowErrorMatchingInlineSnapshot(
-      '"Do not call factory.__.create directly, pass factory to invoke function instead"'
+      '"Do not call factory directly, pass it to invoke function instead"'
     );
   });
 

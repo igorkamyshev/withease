@@ -16,15 +16,17 @@ describe('factories, issue #33', () => {
   test('infer complex type', () => {
     const createAriadneQuery = createFactory(ariadneData);
 
-    const resultQuery = invoke(createAriadneQuery, {
-      graphQL: {
-        query: 'Some Query',
-        operationName: 'map_v2',
-        variables: {} as Store<Json>,
-      },
-      contract: Record({ map_v2: Record({ val: Number }) }),
-      mapData: (response) => response.map_v2,
-    });
+    const resultQuery = invoke(() =>
+      createAriadneQuery({
+        graphQL: {
+          query: 'Some Query',
+          operationName: 'map_v2',
+          variables: {} as Store<Json>,
+        },
+        contract: Record({ map_v2: Record({ val: Number }) }),
+        mapData: (response) => response.map_v2,
+      })
+    );
 
     expectTypeOf(resultQuery).toMatchTypeOf<
       Query<

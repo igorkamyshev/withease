@@ -1,9 +1,6 @@
-import { type Factory } from './factory';
 import { insideInvoke } from './invoke';
 
-export function createFactory<C extends (params: any) => any>(
-  creator: C
-): Factory<C> {
+export function createFactory<C extends (params: any) => any>(creator: C): C {
   /*
    * DX improvement for JS-users who do not get TS error
    * when pass function with more than 1 argument
@@ -20,15 +17,11 @@ export function createFactory<C extends (params: any) => any>(
      */
     if (!insideInvoke) {
       throw new Error(
-        `Do not call factory.__.create directly, pass factory to invoke function instead`
+        `Do not call factory directly, pass it to invoke function instead`
       );
     }
     return creator(params);
   }) as any;
 
-  return {
-    __: {
-      create,
-    },
-  };
+  return create;
 }
