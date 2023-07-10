@@ -111,7 +111,7 @@ Anywhere in your application you can invoke a factory by calling `invoke` with a
 ```ts
 import { invoke } from '@withease/factories';
 
-const counter = invole(createCounter, { initialValue: 2 });
+const counter = invoke(createCounter, { initialValue: 2 });
 ```
 
 ::: warning
