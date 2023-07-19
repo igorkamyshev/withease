@@ -109,6 +109,15 @@ export default defineConfig({
             },
           ],
         },
+        {
+          text: 'Opinions',
+          items: [
+            {
+              text: "You Don't Need Domains",
+              link: '/magazine/no_domains',
+            },
+          ],
+        },
       ],
       '/protocols/': [
         {
