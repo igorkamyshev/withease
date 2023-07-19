@@ -132,7 +132,7 @@ resetMany({ stores: [$store1, $store2, $store3], reset: someEvent }); // [!code 
 
 function resetMany({ stores, reset }) {
   for (const unit of stores) {
-    unit.reset(reset);
+    unit.reset(someEvent);
   }
 }
 ```
