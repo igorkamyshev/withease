@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.4.2
+
+### Patch Changes
+
+- 098baea: Fix undefined value of `$visiblityState` in non-usual env
+
 ## 0.4.1
 
 ### Patch Changes
