@@ -29,7 +29,7 @@ const trackPageVisibility: PageVisibility & TriggerProtocol = (config) => {
   );
 
   const $visibilityState = createStore(
-    readValue(() => document.visibilityState ?? 'visible', 'visible'),
+    readValue(() => document.visibilityState, 'visible'),
     { serialize: 'ignore' }
   ).on(visibilityChanged, (_, state) => state);
 

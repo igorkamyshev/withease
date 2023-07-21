@@ -15,7 +15,13 @@ export type Setupable = {
 
 export function readValue<T>(getter: () => T, defaultValue: T): T {
   try {
-    return getter();
+    const value = getter();
+
+    if (value === undefined) {
+      return defaultValue;
+    }
+
+    return value;
   } catch (e) {
     return defaultValue;
   }
