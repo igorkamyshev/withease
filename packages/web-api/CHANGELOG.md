@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.4.3
+
+### Patch Changes
+
+- 7b3880d: Make all integration bulletproof against weird env
+
 ## 0.4.2
 
 ### Patch Changes
