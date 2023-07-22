@@ -2,10 +2,16 @@
 
 Protocol that allows start watching some external trigger and react on it with universal API.
 
-::: tip Related packages
+::: tip Packages that use `@@trigger`
 
-- [`@withease/web-api`](/web-api/)
-- [`@farfetched/core`](https://farfetched.pages.dev)
+- [`@farfetched/core`](https://farfetched.pages.dev/tutorial/trigger_api.html#external-triggers)
+
+:::
+
+::: tip Known `@@trigger`
+
+- all integrations from [`@withease/web-api`](/web-api/)
+- method `interval` from [`patronum`](https://patronum.effector.dev/methods/interval/)
 
 :::
 
