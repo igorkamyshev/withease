@@ -93,6 +93,9 @@ importers:
   packages/i18next:
     specifiers: {}
 
+  packages/logger:
+    specifiers: {}
+
   packages/web-api:
     specifiers: {}
 

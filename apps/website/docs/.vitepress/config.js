@@ -31,6 +31,7 @@ export default defineConfig({
           { text: 'i18next', link: '/i18next/' },
           { text: 'web-api', link: '/web-api/' },
           { text: 'factories', link: '/factories/' },
+          { text: 'logger', link: '/logger/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
@@ -69,6 +70,7 @@ export default defineConfig({
         { text: 'Motivation', link: '/factories/motivation' },
         { text: 'Important Caveats', link: '/factories/important_caveats' },
       ]),
+      ...createSidebar('logger', [{ text: 'Get Started', link: '/logger/' }]),
       '/magazine/': [
         {
           text: 'Architecture',
