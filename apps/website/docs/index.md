@@ -24,6 +24,11 @@ features:
     details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
+  - icon: 📜
+    title: logger
+    details: Minimalistic backend-agnostic logger for web applications
+    link: /logger/
+    linkText: Get Started
   - icon: 🪄
     title: Farfetched
     details: The advanced data fetching tool for web applications
