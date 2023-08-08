@@ -329,7 +329,7 @@ So, let us return to original problem with a global interceptor on global `axios
 ```ts
 // app.ts
 import { createStore, createEvent, sample, attach } from 'effector';
-import { createInstance } from 'axios';
+import axios from 'axios';
 
 // Will be filled later, during fork
 const $userToken = createStore(null);
@@ -342,7 +342,7 @@ const applicationStared = createEvent();
 const setupAxiosFx = attach({
   source: { userToken: $userToken },
   effect({ userToken }) {
-    const instance = createInstance();
+    const instance = axios.create();
 
     instance.interceptors.request.use((config) => {
       config.headers['X-Custom-Token'] = userToken;
