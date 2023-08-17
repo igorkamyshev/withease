@@ -1,6 +1,6 @@
 {
   "name": "@withease/web-api",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.5.0"

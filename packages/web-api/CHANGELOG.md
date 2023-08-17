@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 0.4.4
+
+### Patch Changes
+
+- 8661467: Fire matched _Event_ after setup if current query is \$matches
+
 ## 0.4.3
 
 ### Patch Changes
