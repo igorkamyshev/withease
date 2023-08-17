@@ -90,12 +90,15 @@ function tracker(query: string, config: Setupable): Result {
     serialize: 'ignore',
   }).on(changed, (_, event) => event.matches);
 
-  const matched = sample({
-    clock: $matches.updates,
-    filter: Boolean,
+  const matched = createEvent();
+
+  sample({
+    clock: [$matches.updates, config.setup],
+    filter: $matches,
     fn: (): void => {
       // ...
     },
+    target: matched,
   });
 
   return { $matches, matched };
