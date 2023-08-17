@@ -335,9 +335,11 @@ import axios from 'axios';
 const $userToken = createStore(null);
 
 const $axios = createStore(null, {
-  serialize: "ignore", 
-  // Important to exclude $axios store serialize 
-  // for reduce possible ssr errors inside fork scope units
+  /*
+   * Important to exclude $axios store serialize
+   * for reduce possible ssr errors inside fork scope units
+   */
+  serialize: 'ignore',
 });
 
 // An event that will be fired when application is started
