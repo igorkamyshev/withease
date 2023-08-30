@@ -5,6 +5,7 @@
     "factories": "packages/factories",
     "i18next": "packages/i18next",
     "web-api": "packages/web-api",
+    "keyboard": "packages/keyboard",
     "web-api-demo": "apps/web-api-demo",
     "web-api-demo-e2e": "apps/web-api-demo-e2e",
     "website": "apps/website"
