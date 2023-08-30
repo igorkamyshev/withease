@@ -4,7 +4,7 @@ import { baseConfig } from '../../playwright.config.base';
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
-  use: { baseURL: 'http://localhost:3000' },
+  use: { baseURL: 'http://localhost:4000' },
 };
 
 export default config;

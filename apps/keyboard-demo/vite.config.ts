@@ -5,4 +5,5 @@ export default defineConfig({
   cacheDir: '../../../node_modules/.vite/keyboard-demo',
   plugins: [tsconfigPaths()],
   build: { outDir: '../../../dist/apps/keyboard-demo' },
+  server: { port: 4000 },
 });
