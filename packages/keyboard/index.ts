@@ -1,1 +1,1 @@
-export { t } from './src/keyboard';
+export { trackKeyboard } from './src/keyboard';
