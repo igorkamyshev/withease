@@ -15,7 +15,8 @@
     "paths": {
       "@withease/factories": ["packages/factories/index.ts"],
       "@withease/i18next": ["packages/i18next/index.ts"],
-      "@withease/web-api": ["packages/web-api/index.ts"]
+      "@withease/web-api": ["packages/web-api/index.ts"],
+      "@withease/keyboard": ["packages/keyboard/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

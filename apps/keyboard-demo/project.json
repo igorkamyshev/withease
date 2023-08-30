@@ -1,0 +1,43 @@
+{
+  "name": "keyboard-demo",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/keyboard-demo/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/vite:build",
+      "options": {
+        "outputPath": "dist/apps/keyboard-demo"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/vite:dev-server",
+      "options": {
+        "buildTarget": "keyboard-demo:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/keyboard-demo/**/*.{ts,js}"]
+      }
+    },
+    "preview": {
+      "executor": "@nrwl/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "keyboard-demo:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "keyboard-demo:build:development"
+        },
+        "production": {
+          "buildTarget": "keyboard-demo:build:production"
+        }
+      }
+    }
+  },
+  "tags": []
+}

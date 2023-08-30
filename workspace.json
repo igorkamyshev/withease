@@ -8,6 +8,7 @@
     "keyboard": "packages/keyboard",
     "web-api-demo": "apps/web-api-demo",
     "web-api-demo-e2e": "apps/web-api-demo-e2e",
+    "keyboard-demo": "apps/keyboard-demo",
     "website": "apps/website"
   }
 }
