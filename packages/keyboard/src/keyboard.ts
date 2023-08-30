@@ -1,4 +1,4 @@
-import { type Event, type Store } from 'effector';
+import { createEvent, sample, type Event, type Store } from 'effector';
 import { type Setupable } from './shared';
 
 // TODO: define Key type
@@ -17,5 +17,13 @@ type Keyboard = {
 };
 
 export function trackKeyboard(config: Setupable): Keyboard {
-  return {} as any;
+  return {
+    sequence(
+      needle: string | Store<string> | Store<string | null>,
+      opts?: { mods?: Mod[] }
+    ) {
+      const triggered = createEvent();
+      return triggered;
+    },
+  } as any;
 }
