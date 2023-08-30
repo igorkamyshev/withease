@@ -1,5 +1,5 @@
-import { trackKeyboard } from '@withease/keyboard';
 import { createEffect, createEvent, createStore, sample } from 'effector';
+import { trackKeyboard } from '@withease/keyboard';
 
 // -- infra
 
@@ -7,55 +7,65 @@ const appStarted = createEvent();
 
 const keyboard = trackKeyboard({ setup: appStarted });
 
-// -- input
+const addListItemFx = createEffect(
+  ({
+    container,
+    content,
+  }: {
+    container: HTMLUListElement | null;
+    content: string;
+  }) => {
+    if (!container) {
+      return;
+    }
+
+    const el = document.createElement('li');
+    el.textContent = content;
+    container.appendChild(el);
+  }
+);
+
+// -- static value
+
+const STATIC_TARGET_SEQUENCE = 'my-fav-st';
+
+const staticOutputList = document.querySelector<HTMLUListElement>(
+  '#static-output-list'
+);
+
+sample({
+  clock: keyboard.sequence(STATIC_TARGET_SEQUENCE),
+  fn: () => ({ content: STATIC_TARGET_SEQUENCE, container: staticOutputList }),
+  target: addListItemFx,
+});
+
+// -- dynamic value
 
 const $targetSequence = createStore<string>('iddqd');
 const targetSequenceChanged = createEvent<string>();
 
 const targetSequenceInput =
-  document.querySelector<HTMLInputElement>('#target-sequence')!;
+  document.querySelector<HTMLInputElement>('#target-sequence');
 
-targetSequenceInput.value = $targetSequence.getState();
-targetSequenceInput.addEventListener('input', () =>
-  targetSequenceChanged(targetSequenceInput.value)
-);
-
-// -- output
-const addNewOutputFx = createEffect({
-  handler: ({
-    targetSequence,
-    container,
-  }: {
-    targetSequence: string;
-    container: HTMLUListElement;
-  }) => {
-    const el = document.createElement('li');
-    el.textContent = targetSequence;
-    container.appendChild(el);
-  },
-});
-
-const dynamicSequenceTriggered = keyboard.sequence($targetSequence);
+if (targetSequenceInput) {
+  targetSequenceInput.value = $targetSequence.getState(); // Sync initial value
+  targetSequenceInput.addEventListener('input', () =>
+    targetSequenceChanged(targetSequenceInput.value)
+  );
+}
 
 const dynamicOutputList = document.querySelector<HTMLUListElement>(
   '#dynamic-output-list'
-)!;
+);
 
 sample({
-  clock: dynamicSequenceTriggered,
+  clock: keyboard.sequence($targetSequence),
   source: $targetSequence,
-  fn: (targetSequence) => ({ targetSequence, container: dynamicOutputList }),
-  target: addNewOutputFx,
-});
-
-const staticOutputList = document.querySelector<HTMLUListElement>(
-  '#static-output-list'
-)!;
-
-sample({
-  clock: keyboard.sequence('my-fav-st'),
-  fn: () => ({ targetSequence: 'my-fav-st', container: staticOutputList }),
-  target: addNewOutputFx,
+  fn: (targetSequence) => ({
+    content: targetSequence,
+    container: dynamicOutputList,
+  }),
+  target: addListItemFx,
 });
 
 // -- start
