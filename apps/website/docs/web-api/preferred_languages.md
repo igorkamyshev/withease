@@ -8,7 +8,7 @@ Allows tracking user's preferred languages with [_Events_](https://effector.dev/
 
 ::: info
 
-Uses [Navigator.languages](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages) and [Window: languagechange event](https://https://developer.mozilla.org/en-US/docs/Web/API/Window/languagechange_event) under the hood under the hood
+Uses [Navigator.languages](https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages) and [Window: languagechange event](https://https://developer.mozilla.org/en-US/docs/Web/API/Window/languagechange_event) under the hood
 
 :::
 
