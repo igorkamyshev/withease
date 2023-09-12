@@ -11,8 +11,11 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "prepare_changelog"
+        },
+        {
+          "projects": ["web-api"],
+          "target": "build"
         }
       ]
     },
@@ -23,7 +26,6 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "prepare_changelog"
         }
       ]

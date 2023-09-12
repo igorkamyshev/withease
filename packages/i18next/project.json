@@ -11,7 +11,6 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "build"
         }
       ]
@@ -36,36 +35,26 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "pack"
         }
       ]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/i18next/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/vite:test",
+      "executor": "@nx/vite:test",
       "options": {
-        "config": "vite.config.ts"
-      }
-    },
-    "test_watch": {
-      "executor": "@nrwl/vite:test",
-      "options": {
-        "config": "vite.config.ts",
-        "watch": true
-      }
-    },
-    "typetest": {
-      "executor": "@nrwl/vite:test",
-      "options": {
-        "config": "vite.config.ts",
-        "mode": "typecheck"
+        "config": "packages/i18next/vite.config.ts"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     },
     "size": {
@@ -76,7 +65,6 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "build"
         }
       ]

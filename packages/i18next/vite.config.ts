@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitest/config';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
   test: { typecheck: { ignoreSourceErrors: true } },
-  plugins: [tsconfigPaths()],
+  plugins: [nxViteTsPaths()],
 });
