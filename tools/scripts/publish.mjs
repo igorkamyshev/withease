@@ -3,7 +3,7 @@ import {
   logger,
   readJsonFile,
   writeJsonFile,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 import { spawnSync } from 'child_process';
 
 const [, , name] = process.argv;
