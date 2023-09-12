@@ -49,46 +49,10 @@ somethingExpectsTrigger(trackPreferredLanguages);
 Let us show you a live demo of how it works. The following demo displays a `$languages` value. _Change your system or browser language to see how it works._
 
 <script setup lang="ts">
-import { createEvent } from 'effector';
-import { useStore } from 'effector-vue/composition'
-
-import { trackPreferredLanguages } from '../../../../packages/web-api';
-
-const appStarted = createEvent();
-
-const { $languages } = trackPreferredLanguages(
-  { setup: appStarted }
-);
-
-const languages = useStore($languages)
-
-appStarted();
-
+import demoFile from './preferred_languages.live.vue?raw';
 </script>
 
-::: details Source code
-
-```ts
-import { createEvent } from 'effector';
-import { useStore } from 'effector-vue/composition';
-import { trackPreferredLanguages } from '@withease/web-api';
-
-const appStarted = createEvent();
-
-const { $languages } = trackPreferredLanguages({ setup: appStarted });
-
-const languages = useStore($languages);
-
-appStarted();
-```
-
-:::
-
-User's preferred languages:
-
-<ol>
-  <li v-for="lang in languages">{{ lang }}</li>
-</ol>
+<LiveDemo :demoFile="demoFile" />
 
 ## Service-side rendering (SSR)
 
