@@ -21,7 +21,9 @@ onMounted(appStarted);
   <p>Event's history:</p>
 
   <ul>
-    <li v-for="event in history">{{ event.action }} at {{ event.at.toLocaleTimeString() }}</li>
+    <li v-for="event in history">
+      {{ event.action }} at {{ event.at.toLocaleTimeString() }}
+    </li>
   </ul>
 
   <span v-if="history.length === 0">No events yet</span>

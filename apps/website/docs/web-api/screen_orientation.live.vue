@@ -6,17 +6,19 @@ import { onMounted } from 'vue';
 
 const appStarted = createEvent();
 
-const { $type, $angle } = trackScreenOrientation(
-  { setup: appStarted }
-);
+const { $type, $angle } = trackScreenOrientation({ setup: appStarted });
 
-const type = useStore($type)
-const angle = useStore($angle)
+const type = useStore($type);
+const angle = useStore($angle);
 
 onMounted(appStarted);
 </script>
 
 <template>
-  <p>Screen orientation type: <strong>{{ type }}</strong></p>
-  <p>Screen orientation angle: <strong>{{ angle }}</strong></p>
+  <p>
+    Screen orientation type: <strong>{{ type }}</strong>
+  </p>
+  <p>
+    Screen orientation angle: <strong>{{ angle }}</strong>
+  </p>
 </template>
