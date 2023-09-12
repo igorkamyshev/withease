@@ -71,49 +71,7 @@ desktop.matched; // Event<void>
 Let us show you a live demo of how it works. The following demo displays a `$matches` value of the query in the screen. _Change the screen size to see how it works._
 
 <script setup lang="ts">
-import { createEvent } from 'effector';
-import { useStore } from 'effector-vue/composition'
-
-import { trackMediaQuery } from '../../../../packages/web-api';
-
-const appStarted = createEvent();
-
-const { mobile, desktop } = trackMediaQuery(
-  { desktop: '(min-width: 601px)', mobile: '(max-width: 600px)' },
-  { setup: appStarted }
-);
-
-const matchesMobile = useStore(mobile.$matches)
-const matchesDesktop = useStore(desktop.$matches)
-
-appStarted();
-
+import demoFile from './media_query.live.vue?raw';
 </script>
 
-::: details Source code
-
-```ts
-import { createEvent } from 'effector';
-import { useStore } from 'effector-vue/composition';
-import { trackMediaQuery } from '@withease/web-api';
-
-const appStarted = createEvent();
-
-const { mobile, desktop } = trackMediaQuery(
-  {
-    desktop: '(min-width: 601px)',
-    mobile: '(max-width: 600px)',
-  },
-  { setup: appStarted }
-);
-
-const matchesMobile = useStore(mobile.$matches);
-const matchesDesktop = useStore(desktop.$matches);
-
-appStarted();
-```
-
-:::
-
-- Query matches mobile (max-width: 600px) : **{{ matchesMobile }}**
-- Query matches desktop (min-width: 601px) : **{{ matchesDesktop }}**
+<LiveDemo :demoFile="demoFile" />

@@ -59,6 +59,7 @@
     "vue": "^3.2.37"
   },
   "dependencies": {
-    "@algolia/client-search": "^4.14.3"
+    "@algolia/client-search": "^4.14.3",
+    "sandpack-vue3": "^3.1.7"
   }
 }
