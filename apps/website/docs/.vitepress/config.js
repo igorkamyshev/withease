@@ -8,9 +8,15 @@ export default defineConfig({
     'A set of libraries and recipes to make frontend development easier thanks to Effector',
   lastUpdated: true,
   outDir: '../../../dist/apps/website',
-  head: [],
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
+    ['link', { rel: 'icon', href: '/icon.svg', type: 'image/svg+xml' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
+    ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
+  ],
   themeConfig: {
     siteTitle: 'With Ease',
+    logo: '/logo.svg',
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2023-present Igor Kamyşev',
