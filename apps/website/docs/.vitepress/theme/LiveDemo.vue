@@ -1,5 +1,6 @@
 <script setup>
 import webApiRaw from '../../../../../dist/packages/web-api?raw';
+import keyboardRaw from '../../../../../dist/packages/keyboard?raw';
 import { Sandpack } from 'sandpack-vue3';
 
 const props = defineProps(['demoFile']);
@@ -7,6 +8,7 @@ const props = defineProps(['demoFile']);
 const files = {
   '/src/App.vue': props.demoFile,
   ...localPackage({ name: 'web-api', content: webApiRaw }),
+  ...localPackage({ name: 'keyboard', content: keyboardRaw }),
 };
 
 const customSetup = {
@@ -34,10 +36,5 @@ function localPackage({ name, content }) {
 </script>
 
 <template>
-  <Sandpack
-    template="vue3"
-    theme="auto"
-    :files="files"
-    :customSetup="customSetup"
-  />
+  <Sandpack template="vue3" theme="auto" :files="files" :customSetup="customSetup" />
 </template>

@@ -73,6 +73,10 @@ export default defineConfig({
       ]),
       ...createSidebar('keyboard', [
         { text: 'Get Started', link: '/keyboard/' },
+        {
+          text: 'APIs',
+          items: [{ text: 'keyboard.sequence', link: '/keyboard/sequence' }],
+        },
         { text: 'Credits', link: '/keyboard/credits' },
       ]),
       ...createSidebar('factories', [

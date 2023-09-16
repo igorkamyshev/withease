@@ -14,7 +14,7 @@
           "target": "prepare_changelog"
         },
         {
-          "projects": ["web-api"],
+          "projects": ["web-api", "keyboard"],
           "target": "build"
         }
       ]
@@ -27,6 +27,10 @@
       "dependsOn": [
         {
           "target": "prepare_changelog"
+        },
+        {
+          "projects": ["web-api", "keyboard"],
+          "target": "build"
         }
       ]
     },
