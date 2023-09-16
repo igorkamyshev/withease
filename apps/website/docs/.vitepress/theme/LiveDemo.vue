@@ -36,5 +36,10 @@ function localPackage({ name, content }) {
 </script>
 
 <template>
-  <Sandpack template="vue3" theme="auto" :files="files" :customSetup="customSetup" />
+  <Sandpack
+    template="vue3"
+    theme="auto"
+    :files="files"
+    :customSetup="customSetup"
+  />
 </template>
