@@ -1,4 +1,11 @@
-import { type Event, type Store, sample, createStore, is } from 'effector';
+import {
+  type Event,
+  type Store,
+  sample,
+  createStore,
+  createEvent,
+  is,
+} from 'effector';
 
 import { setupListener, type Setupable } from './shared';
 
@@ -58,5 +65,11 @@ export function trackKeyboard(config: Setupable): Keyboard {
 
       return typed;
     },
-  } as any;
+    hotkey(keys: Key[], opts?: { type?: 'keypress' | 'keyup' }) {
+      return createEvent();
+    },
+    mod(mod: Mod) {
+      return createStore(false);
+    },
+  };
 }
