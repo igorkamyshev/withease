@@ -1,5 +1,8 @@
 {
   "name": "@withease/keyboard",
   "version": "0.0.1",
-  "type": "commonjs"
+  "type": "commonjs",
+  "peerDependencies": {
+    "effector": "^22.5.0"
+  }
 }
