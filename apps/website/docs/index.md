@@ -5,6 +5,9 @@ hero:
   name: Effector
   text: with ease
   tagline: A set of libraries and recipes to make frontend development easier thanks to Effector
+  image:
+    src: /logo.svg
+    alt: With Ease
   actions:
     - theme: brand
       text: Magazine
