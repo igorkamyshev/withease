@@ -27,6 +27,11 @@ features:
     details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
+  - icon: ⌨️
+    title: keyboard
+    details: Keyboard bindings — hot-keys, sequences, and more
+    link: /keyboard/
+    linkText: Get Started
   - icon: 🪄
     title: Farfetched
     details: The advanced data fetching tool for web applications
