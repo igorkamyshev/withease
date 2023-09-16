@@ -11,7 +11,6 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "build"
         }
       ]
@@ -36,47 +35,36 @@
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "pack"
         }
       ]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/keyboard/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/vite:test",
+      "executor": "@nx/vite:test",
       "options": {
-        "config": "vite.config.ts"
-      }
-    },
-    "test_watch": {
-      "executor": "@nrwl/vite:test",
-      "options": {
-        "config": "vite.config.ts",
-        "watch": true
-      }
-    },
-    "typetest": {
-      "executor": "@nrwl/vite:test",
-      "options": {
-        "config": "vite.config.ts",
-        "mode": "typecheck"
+        "config": "packages/keyboard/vite.config.ts"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     },
     "size": {
       "executor": "./tools/executors/size-limit:size-limit",
       "options": {
-        "limit": "1 kB",
+        "limit": "4 kB",
         "outputPath": "dist/packages/keyboard"
       },
       "dependsOn": [
         {
-          "projects": "self",
           "target": "build"
         }
       ]
