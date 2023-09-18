@@ -43,7 +43,13 @@ export default defineConfig({
       { text: 'Protocols', link: '/protocols/' },
       {
         text: 'More',
-        items: [{ text: 'Effector', link: 'https://effector.dev' }],
+        items: [
+          {
+            text: 'Statements',
+            link: '/statements/',
+          },
+          { text: 'Effector', link: 'https://effector.dev' },
+        ],
       },
     ],
     sidebar: {
@@ -142,6 +148,17 @@ export default defineConfig({
               text: '@@trigger',
               link: '/protocols/trigger',
             },
+          ],
+        },
+      ],
+      '/statements': [
+        {
+          text: 'Statements',
+          items: [
+            { text: 'Releases policy', link: '/statements/releases' },
+            { text: 'Testing', link: '/statements/tests' },
+            { text: 'TypeScript', link: '/statements/typescript' },
+            { text: 'Compile target', link: '/statements/compile_target' },
           ],
         },
       ],
