@@ -1,5 +1,9 @@
 # @withease/web-api
 
+## 1.0.0
+
+- Nothing new, just a version bump to mark library as stable
+
 ## 0.4.5
 
 ### Patch Changes

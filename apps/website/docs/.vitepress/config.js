@@ -53,7 +53,10 @@ export default defineConfig({
       },
     ],
     sidebar: {
-      ...createSidebar('i18next', [{ text: 'Get Started', link: '/i18next/' }]),
+      ...createSidebar('i18next', [
+        { text: 'Get Started', link: '/i18next/' },
+        { text: 'Release policy', link: '/i18next/releases' },
+      ]),
       ...createSidebar('web-api', [
         { text: 'Get Started', link: '/web-api/' },
         {
