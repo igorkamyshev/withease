@@ -1,5 +1,11 @@
 # @withease/factories
 
+## 1.0.1
+
+### Patch Changes
+
+- e2dad7f: Fix ESM/CJS builds
+
 ## 1.0.0
 
 - Nothing new, just a version bump to mark library as stable
