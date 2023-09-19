@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import nxViteTsPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   cacheDir: '../../../node_modules/.vite/web-api-demo',
