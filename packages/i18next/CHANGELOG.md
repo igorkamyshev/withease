@@ -1,5 +1,11 @@
 # @withease/i18next
 
+## 22.0.1
+
+### Patch Changes
+
+- e2dad7f: Fix ESM/CJS builds
+
 ## 22.0.0
 
 - Nothing new, just a version bump to mark library as stable
