@@ -1,14 +1,14 @@
 import {
+  type Event,
+  type Store,
   attach,
   combine,
   createEffect,
   createEvent,
   createStore,
-  Event,
   is,
   sample,
   scopeBind,
-  Store,
 } from 'effector';
 import { type TFunction, i18n } from 'i18next';
 

@@ -29,7 +29,7 @@ importers:
       effector-vue: ^22.2.0
       eslint: 8.46.0
       glob: ^8.0.3
-      i18next: ^22.4.10
+      i18next: 23.0.0
       nx: 16.5.x
       playwright: ^1.32.2
       prettier: ^2.6.2
@@ -73,7 +73,7 @@ importers:
       effector-vue: 22.2.0_effector@22.8.6+vue@3.3.4
       eslint: 8.46.0
       glob: 8.1.0
-      i18next: 22.4.10
+      i18next: 23.0.0
       nx: 16.5.5
       playwright: 1.32.2
       prettier: 2.7.1
@@ -5326,10 +5326,10 @@ packages:
     resolution: {integrity: sha512-UNopramDEhHJD+VR+ehk8rOslwSfByxPIZyJRfV739NDhN5LF1fa1MqnzKm2lGTQRjNrjK19Q5fhkgIfjlVUKw==}
     dev: true
 
-  /i18next/22.4.10:
-    resolution: {integrity: sha512-3EqgGK6fAJRjnGgfkNSStl4mYLCjUoJID338yVyLMj5APT67HUtWoqSayZewiiC5elzMUB1VEUwcmSCoeQcNEA==}
+  /i18next/23.0.0:
+    resolution: {integrity: sha512-nwggKtf7ZQWq1t21qGUGhrwoyRWHJNTy016jOPl6ZDfxGZAUyK1FWm3EgELgfO4ujNifCHmxJ6pyDdcX7cagWg==}
     dependencies:
-      '@babel/runtime': 7.21.0
+      '@babel/runtime': 7.22.15
     dev: true
 
   /iconv-lite/0.4.24:
