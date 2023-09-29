@@ -131,6 +131,10 @@ export default defineConfig({
               text: "You Don't Need Domains",
               link: '/magazine/no_domains',
             },
+            {
+              text: 'Prefer Operators to Methods',
+              link: '/magazine/no_methods',
+            },
           ],
         },
       ],
