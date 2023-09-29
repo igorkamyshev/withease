@@ -63,16 +63,20 @@ It is even more noticeable when you need to filter an [_Event_](https://effector
 ```ts
 const formSubmitted = createEvent();
 
-const validFormSubmitted = formSubmitted.filter((form) => {
-  return form.isValid();
+const validFormSubmitted = formSubmitted.filter({
+  fn: (form) => {
+    return form.isValid();
+  },
 });
 ```
 
 Some time later, you need to add a new feature: use external service to validate form instead of using `isValid` method. In this case, you will need to completely rewrite the code:
 
 ```ts
-/* [!code --:3] */ const validFormSubmitted = formSubmitted.filter((form) => {
-  return form.isValid();
+/* [!code --:5] */ const validFormSubmitted = formSubmitted.filter({
+  fn: (form) => {
+    return form.isValid();
+  },
 });
 
 /* [!code ++:5] */ const validFormSubmitted = sample({
