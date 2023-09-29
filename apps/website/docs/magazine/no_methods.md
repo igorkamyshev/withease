@@ -1,6 +1,5 @@
 ---
 title: Prefer Operators to Methods
-outline: [2, 3]
 ---
 
 # Prefer Operators to Methods
@@ -10,13 +9,9 @@ In Effector, there are two ways to create a new unit from an existing one:
 - Methods, e.g. `event.map(...)`, `event.filter(...)`, `store.map(...)`
 - Operators, e.g. `combine(...)` and `sample(...)`
 
-In most cases, operators are more powerful and flexible than methods.
+In most cases, operators are more powerful and flexible than methods. You can add new features to operators without rewriting the code. Let us see how it works on a few examples.
 
-## Extensibility
-
-Operators are more extensible than methods. You can add new features to operators without rewriting the code. Let us see how it works on a few examples.
-
-### `combine` vs `store.map`
+## `combine`
 
 Let us say you have a derived [_Store_](https://effector.dev/docs/api/effector/store) to calculate a discount percentage for user:
 
@@ -61,7 +56,7 @@ const $discountPercentage = combine(
 );
 ```
 
-### `sample` vs `event.filter`/`event.map`
+## `sample`
 
 It is even more noticeable when you need to filter an [_Event_](https://effector.dev/docs/api/effector/event) by a payload. Let us say you have an [_Event_](https://effector.dev/docs/api/effector/event) representing form submission and derived [_Event_](https://effector.dev/docs/api/effector/event) representing valid form submission:
 
@@ -125,14 +120,6 @@ const validFormSubmitted = sample({
   }),
 });
 ```
-
-## Code transformation
-
-The second reason to prefer operators to methods is code transformation. Since [Effector requires some code transformation to work in specific cases like SSR](https://farfetched.pages.dev/recipes/sids.html), it is important to write code that can be transformed with robustness.
-
-Code transformation tools like Babel and SWC have access to the source code of the particular file, but they do not have access to the whole project. It means that they do not have any information about the types of variables and functions. So, they cannot transform code that uses methods like `map` and `filter` because they do not whether it is an Effector's unit or plain JavaScript's array of something else that has `map` and `filter` methods.
-
-Operators are functions imported from Effector's library, so code transformation tools can easily recognize them and transform the code.
 
 ## Summary
 
