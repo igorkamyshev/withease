@@ -1,5 +1,11 @@
 # @withease/factories
 
+## 1.0.2
+
+### Patch Changes
+
+- 1071cf6: Throw error for nested un-invoked factories anyway
+
 ## 1.0.1
 
 ### Patch Changes
