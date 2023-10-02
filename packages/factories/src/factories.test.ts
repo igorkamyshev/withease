@@ -48,3 +48,33 @@ describe('factories', () => {
     );
   });
 });
+
+describe('nested factories', () => {
+  test('throw error on call un-invoked factory inside invoked factoy', () => {
+    const internalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal = internalFactory();
+      return internal;
+    });
+
+    expect(() => invoke(externalFactory)).toThrowErrorMatchingInlineSnapshot(
+      '"Do not call factory directly, pass it to invoke function instead"'
+    );
+  });
+
+  test('do not throw error on call invoked factory inside invoked factoy', () => {
+    const internalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal = invoke(internalFactory);
+      return internal;
+    });
+
+    expect(() => invoke(externalFactory)).not.toThrowError();
+  });
+});

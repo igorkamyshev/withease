@@ -1,4 +1,5 @@
-import { markFactoryAsCalled, insideInvoke } from './invoke';
+import { factoryCalledDirectly, factoryHasMoreThanOneArgument } from './errors';
+import { markFactoryAsCalled, invokeLevel } from './invoke';
 
 export function createFactory<C extends (params: any) => any>(creator: C): C {
   /*
@@ -6,19 +7,15 @@ export function createFactory<C extends (params: any) => any>(creator: C): C {
    * when pass function with more than 1 argument
    */
   if (creator.length > 1) {
-    throw new Error(
-      'createFactory does not support functions with more than 1 argument'
-    );
+    throw factoryHasMoreThanOneArgument();
   }
 
   const create = (params: any) => {
     /*
      * DX improvement for users who try to call factory directly without invoke
      */
-    if (!insideInvoke) {
-      throw new Error(
-        `Do not call factory directly, pass it to invoke function instead`
-      );
+    if (invokeLevel === 0) {
+      throw factoryCalledDirectly();
     }
 
     const value = creator(params);

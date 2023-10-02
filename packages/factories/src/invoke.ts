@@ -1,15 +1,18 @@
+import { factoryCalledDirectly, invokeAcceptsOnlyFactories } from './errors';
+
+/*
+ * The following variables are used for checking that factory is called inside invoke function on correct nesting level
+ */
+export let invokeLevel = 0;
+let factoryCalledCount = 0;
+let maxInvokeLevel = 0;
+
 /**
  * Have to be called inside factory created by createFactory
  */
 export function markFactoryAsCalled() {
-  factoryCalled = true;
+  factoryCalledCount += 1;
 }
-
-/** This flag is used for defining that called function is created by createFactory */
-let factoryCalled = false;
-
-/** This flag is used for defining that internals of a factory can be called */
-export let insideInvoke = false;
 
 export function invoke<C extends (...args: any) => any>(
   factory: C
@@ -24,28 +27,35 @@ export function invoke<
   C extends (...args: any) => any,
   P extends OverloadParameters<C>[0]
 >(factory: C, params?: P): OverloadReturn<P, OverloadUnion<C>> {
-  /*
-   * Enable calling factory internals, so factory.__.create can be called with no exception
-   */
-  insideInvoke = true;
+  /* Increase invoke level before factory calling */
+  invokeLevel += 1;
 
   const result = factory(params);
 
-  if (!factoryCalled) {
-    throw new Error(
-      'Function passed to invoke is not created by createFactory'
-    );
+  /* Save max invoke level for later checks */
+  maxInvokeLevel = Math.max(maxInvokeLevel, invokeLevel);
+  /* And descrese in after */
+  invokeLevel -= 1;
+
+  const haveToThrowBecauseOfCalledFactory = factoryCalledCount === 0;
+  let haveToThrowErrorBecauseInvokeLevel = false;
+
+  if (invokeLevel === 0 /* Ending of nexted invoke calls */) {
+    haveToThrowErrorBecauseInvokeLevel /* Amount of invokes and factoies does not match */ =
+      factoryCalledCount !== maxInvokeLevel;
+
+    /* Reset related variables */
+    factoryCalledCount = 0;
+    maxInvokeLevel = 0;
   }
 
-  /*
-   * Disable calling factory internals, so call of factory.__.create will throw an exception
-   */
-  insideInvoke = false;
+  if (haveToThrowBecauseOfCalledFactory) {
+    throw invokeAcceptsOnlyFactories();
+  }
 
-  /*
-   * Reset flag for next invoke calls
-   */
-  factoryCalled = false;
+  if (haveToThrowErrorBecauseInvokeLevel) {
+    throw factoryCalledDirectly();
+  }
 
   return result;
 }
