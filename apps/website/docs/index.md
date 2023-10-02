@@ -27,6 +27,11 @@ features:
     details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
+  - icon: 👩‍🏭
+    title: factories
+    details: Set of helpers to create factories in your application
+    link: /factories/
+    linkText: Get Started
   - icon: 🪄
     title: Farfetched
     details: The advanced data fetching tool for web applications
@@ -37,9 +42,9 @@ features:
     details: Sync Stores with any external storage (like localStorage)
     link: https://github.com/yumauri/effector-storage
     linkText: Learn More
-  - icon: 👩‍🏭
-    title: factories
-    details: Set of helpers to create factories in your application
-    link: /factories/
-    linkText: Get Started
+  - icon: 🪞
+    title: reflect
+    details: API for bind Effector to React components in an efficient and composable way
+    link: https://github.com/effector/reflect
+    linkText: Learn More
 ---
