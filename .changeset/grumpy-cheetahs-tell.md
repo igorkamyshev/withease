@@ -2,4 +2,4 @@
 '@withease/factories': patch
 ---
 
-Throw error for nexted un-invoked factories anyway
+Throw error for nested un-invoked factories anyway
