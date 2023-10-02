@@ -415,6 +415,17 @@ That is it! Now we can use the same code for all environments and do not worry a
 Read more about `allSettled` function in the article about [explicit start _Event_ of the application](/magazine/explicit_start).
 :::
 
+Usage of resulted `$axios` store [_Store_](https://effector.dev/docs/api/effector/store) is the same as usage of any other [_Store_](https://effector.dev/docs/api/effector/store):
+
+```ts
+import { attach } from 'effector';
+
+const fetchUserFx = attach({
+  source: $axios,
+  effect: (axios, { id }) => axios.get(`/users/${id}`),
+});
+```
+
 ## Recap
 
 - Global state is a bad idea, because it can lead to unpredictable behavior in tests, SSR and other environments.
