@@ -131,6 +131,6 @@ Prefer `sample` to `event.filter`/`event.map` and `combine` to `store.map` to ma
 
 ::: tip Exception
 
-There are only one exception when you have to use methods instead of operators: `event.prepend(...)` does not have an operator equivalent.
+There is only one exception when you have to use method instead of operator: `event.prepend(...)` does not have an operator equivalent.
 
 :::
