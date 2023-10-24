@@ -4,8 +4,8 @@ import { factoryCalledDirectly, invokeAcceptsOnlyFactories } from './errors';
  * The following variables are used for checking that factory is called inside invoke function on correct nesting level
  */
 export let invokeLevel = 0;
+let invokeCount = 0;
 let factoryCalledCount = 0;
-let maxInvokeLevel = 0;
 
 /**
  * Have to be called inside factory created by createFactory
@@ -29,11 +29,10 @@ export function invoke<
 >(factory: C, params?: P): OverloadReturn<P, OverloadUnion<C>> {
   /* Increase invoke level before factory calling */
   invokeLevel += 1;
+  invokeCount += 1;
 
   const result = factory(params);
 
-  /* Save max invoke level for later checks */
-  maxInvokeLevel = Math.max(maxInvokeLevel, invokeLevel);
   /* And descrese in after */
   invokeLevel -= 1;
 
@@ -42,11 +41,11 @@ export function invoke<
 
   if (invokeLevel === 0 /* Ending of nexted invoke calls */) {
     haveToThrowErrorBecauseInvokeLevel /* Amount of invokes and factoies does not match */ =
-      factoryCalledCount !== maxInvokeLevel;
+      factoryCalledCount !== invokeCount;
 
     /* Reset related variables */
     factoryCalledCount = 0;
-    maxInvokeLevel = 0;
+    invokeCount = 0;
   }
 
   if (haveToThrowBecauseOfCalledFactory) {

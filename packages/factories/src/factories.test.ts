@@ -77,4 +77,72 @@ describe('nested factories', () => {
 
     expect(() => invoke(externalFactory)).not.toThrowError();
   });
+
+  test('valid many nested factories', () => {
+    const internalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal2 = invoke(internalFactory);
+      const internal1 = invoke(internalFactory);
+      return { internal1, internal2 };
+    });
+
+    expect(() => invoke(externalFactory)).not.toThrowError();
+  });
+
+  test('invalid many nested factories', () => {
+    const internalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal2 = invoke(internalFactory);
+      const internal1 = internalFactory();
+      return { internal1, internal2 };
+    });
+
+    expect(() => invoke(externalFactory)).toThrowErrorMatchingInlineSnapshot(
+      '"Do not call factory directly, pass it to invoke function instead"'
+    );
+  });
+
+  test('valid very many nested factories', () => {
+    const veryInternalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const internalFactory = createFactory(() => {
+      return invoke(veryInternalFactory);
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal2 = invoke(internalFactory);
+      const internal1 = invoke(internalFactory);
+      return { internal1, internal2 };
+    });
+
+    expect(() => invoke(externalFactory)).not.toThrowError();
+  });
+
+  test('invalid very many nested factories', () => {
+    const veryInternalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const internalFactory = createFactory(() => {
+      return veryInternalFactory();
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal2 = invoke(internalFactory);
+      const internal1 = invoke(internalFactory);
+      return { internal1, internal2 };
+    });
+
+    expect(() => invoke(externalFactory)).toThrowErrorMatchingInlineSnapshot(
+      '"Do not call factory directly, pass it to invoke function instead"'
+    );
+  });
 });
