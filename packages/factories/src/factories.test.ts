@@ -77,4 +77,18 @@ describe('nested factories', () => {
 
     expect(() => invoke(externalFactory)).not.toThrowError();
   });
+
+  test('many nested factories', () => {
+    const internalFactory = createFactory(() => {
+      return 1;
+    });
+
+    const externalFactory = createFactory(() => {
+      const internal2 = invoke(internalFactory);
+      const internal1 = invoke(internalFactory);
+      return { internal1, internal2 };
+    });
+
+    expect(() => invoke(externalFactory)).not.toThrowError();
+  });
 });
