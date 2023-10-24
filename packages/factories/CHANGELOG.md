@@ -1,5 +1,11 @@
 # @withease/factories
 
+## 1.0.3
+
+### Patch Changes
+
+- 2308868: Fix false-positive exception in case of many nexted factories
+
 ## 1.0.2
 
 ### Patch Changes
