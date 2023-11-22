@@ -4,6 +4,6 @@
   "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.5.0 || ^23.0.0",
-    "i18next": "^22.4.10"
+    "i18next": "^22.4.10 || ^23.0.0"
   }
 }
