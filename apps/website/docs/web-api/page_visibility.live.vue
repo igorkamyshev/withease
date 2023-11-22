@@ -1,7 +1,7 @@
 <script setup>
 import { trackPageVisibility } from '@withease/web-api';
 import { createEvent, createStore } from 'effector';
-import { useStore } from 'effector-vue/composition';
+import { useUnit } from 'effector-vue/composition';
 import { onMounted } from 'vue';
 
 const appStarted = createEvent();
@@ -12,7 +12,7 @@ const $history = createStore([])
   .on(visible, (state) => [...state, { at: new Date(), action: 'visible' }])
   .on(hidden, (state) => [...state, { at: new Date(), action: 'hidden' }]);
 
-const history = useStore($history);
+const history = useUnit($history);
 
 onMounted(appStarted);
 </script>
