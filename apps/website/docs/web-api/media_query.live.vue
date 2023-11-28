@@ -1,7 +1,7 @@
 <script setup>
 import { trackMediaQuery } from '@withease/web-api';
 import { createEvent } from 'effector';
-import { useStore } from 'effector-vue/composition';
+import { useUnit } from 'effector-vue/composition';
 import { onMounted } from 'vue';
 
 const appStarted = createEvent();
@@ -10,7 +10,7 @@ const mq = trackMediaQuery('(max-width: 320px)', {
   setup: appStarted,
 });
 
-const matchesSmall = useStore(mq.$matches);
+const matchesSmall = useUnit(mq.$matches);
 
 onMounted(appStarted);
 </script>
