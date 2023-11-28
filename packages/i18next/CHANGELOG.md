@@ -1,5 +1,15 @@
 # @withease/i18next
 
+## 23.1.0
+
+### Minor Changes
+
+- 41a00ef: Allow to use with Effector 23
+
+### Patch Changes
+
+- 41a00ef: Add forgotten allowance for usage with i18next 23 in peerDependencies
+
 ## 23.0.0
 
 ### Major Changes

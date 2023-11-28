@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 1.1.0
+
+### Minor Changes
+
+- 41a00ef: Allow to use with Effector 23
+
 ## 1.0.1
 
 ### Patch Changes
