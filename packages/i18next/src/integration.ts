@@ -51,17 +51,21 @@ export function createI18nextIntegration({
   // -- Parse options
   const $instance: Store<i18n | null> = is.store(instance)
     ? instance
-    : createStore(instance as i18n | null);
+    : createStore(instance as i18n | null, {
+        serialize: 'ignore',
+        name: '$instance',
+      });
 
   const destroy = teardown ?? createEvent();
 
   // -- Internal API
 
-  const $derivedT = $instance.map((i18next): TFunction | null =>
+  const $derivedT = combine($instance, (i18next): TFunction | null =>
     i18next ? i18next.t.bind(i18next) : null
   );
   const $stanaloneT = createStore<TFunction | null>(null, {
     serialize: 'ignore',
+    name: '$stanaloneT',
   });
 
   // -- Public API
@@ -110,7 +114,7 @@ export function createI18nextIntegration({
 
         const finalKey = result.join('');
 
-        return t(finalKey);
+        return t(finalKey) ?? finalKey;
       }
     );
   }
@@ -121,7 +125,7 @@ export function createI18nextIntegration({
   ): Store<string> {
     return combine(
       { t: $t, variables: combine(variables ?? {}) },
-      ({ t, variables }) => t(key, variables)
+      ({ t, variables }) => t(key, variables) ?? key
     );
   }
 
@@ -155,10 +159,12 @@ export function createI18nextIntegration({
 
   const $contextChangeListener = createStore<(() => void) | null>(null, {
     serialize: 'ignore',
+    name: '$contextChangeListener',
   });
 
   const $missingKeyListener = createStore<(() => void) | null>(null, {
     serialize: 'ignore',
+    name: '$missingKeyListener',
   });
 
   const setupListenersFx = createEffect((i18next: i18n) => {

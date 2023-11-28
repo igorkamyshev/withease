@@ -23,7 +23,7 @@ describe('integration.reporting.missingKey', () => {
 
     reporting.missingKey.watch(listener);
 
-    const $result = $t.map((t) => t('common:key'));
+    const $result = $t.map((t) => t('common:key') ?? null);
 
     const scope = fork();
 
@@ -51,7 +51,7 @@ describe('integration.reporting.missingKey', () => {
 
     reporting.missingKey.watch(listener);
 
-    const $result = $t.map((t) => t('common:other_key'));
+    const $result = $t.map((t) => t('common:other_key') ?? null);
 
     const scope = fork();
 

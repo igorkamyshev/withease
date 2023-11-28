@@ -13,7 +13,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:foo'));
+    const $result = $t.map((t) => t('common:foo') ?? null);
 
     const scope = fork();
 
@@ -28,7 +28,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:foo'));
+    const $result = $t.map((t) => t('common:foo') ?? null);
 
     const scope = fork();
 
@@ -50,7 +50,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:foo'));
+    const $result = $t.map((t) => t('common:foo') ?? null);
 
     const scope = fork();
 
@@ -72,7 +72,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:foo'));
+    const $result = $t.map((t) => t('common:foo') ?? null);
 
     const scope = fork();
 
@@ -95,7 +95,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:foo'));
+    const $result = $t.map((t) => t('common:foo') ?? null);
 
     const scope = fork();
 
@@ -123,7 +123,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
 
@@ -149,7 +149,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
 
@@ -174,7 +174,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
 
@@ -199,7 +199,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
 
@@ -230,7 +230,7 @@ describe('integration.$t', () => {
       teardown,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
 
@@ -260,7 +260,7 @@ describe('integration.$t', () => {
       teardown,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
 
@@ -289,7 +289,7 @@ describe('integration.$t', () => {
       setup,
     });
 
-    const $result = $t.map((t) => t('common:hello'));
+    const $result = $t.map((t) => t('common:hello') ?? null);
 
     const scope = fork();
     expect(scope.getState($result)).toBe('hello');
