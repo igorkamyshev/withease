@@ -34,3 +34,46 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm playwright install
       - run: pnpm test:e2e
+
+  checks_old_versions:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version: [22]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+
+      - run: node ./tools/other-majors/prepare.mjs {{ matrix.version }}
+      - run: pnpm install
+
+      - run: pnpm test
+      - run: pnpm test:types
+  e2e_old_versions:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version: [22]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+
+      - run: node ./tools/other-majors/prepare.mjs {{ matrix.version }}
+      - run: pnpm install
+
+      - run: pnpm playwright install
+      - run: pnpm test:e2e
