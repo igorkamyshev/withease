@@ -51,7 +51,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
 
-      - run: node ./tools/other-majors/prepare.mjs {{ matrix.version }}
+      - run: node ./tools/other-majors/prepare.mjs ${{ matrix.version }}
       - run: pnpm install
 
       - run: pnpm test
@@ -72,7 +72,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
 
-      - run: node ./tools/other-majors/prepare.mjs {{ matrix.version }}
+      - run: node ./tools/other-majors/prepare.mjs ${{ matrix.version }}
       - run: pnpm install
 
       - run: pnpm playwright install
