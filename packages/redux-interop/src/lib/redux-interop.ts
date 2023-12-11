@@ -14,7 +14,9 @@ import {
  * Utility function to create an Effector API to interact with Redux store,
  * useful for cases like soft migration from Redux to Effector.
  *
- * @param config {reduxStore: ReduxStore, setup: Unit<any>} - reduxStore is a redux store, setup is an effector unit which will setup subscription to the store
+ * @param config - interop config
+ * @param config.reduxStore - a redux store
+ * @param config.setup - effector unit which will setup subscription to the store
  * @returns Interop API object
  */
 export function createReduxInterop<
