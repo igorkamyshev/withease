@@ -67,7 +67,7 @@ describe('@withease/redux', () => {
       expect($state.getState()).toEqual('lol');
     });
 
-    test.only('Should work with Fork API', async () => {
+    test('Should work with Fork API', async () => {
       const reduxStore = legacy_createStore(() => ({}), {});
       const setup = createEvent();
       const interop = createReduxInterop({ reduxStore, setup });
