@@ -28,6 +28,50 @@ describe('@withease/redux', () => {
     );
   });
 
+  test('Init errors are logged into console', () => {
+    const fakeStore = {
+      dispatch: () => {
+        throw new Error('fake dispatch!');
+      },
+      getState: () => {
+        return {};
+      },
+      subscribe: () => {
+        throw new Error('fake subscribe!');
+      },
+    };
+
+    const setup = createEvent();
+
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {
+      // ok
+    });
+
+    // @ts-expect-error - fakeStore is not a Redux store
+    const int = createReduxInterop({ reduxStore: fakeStore, setup });
+
+    expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot('[]');
+
+    setup();
+
+    expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot(`
+      [
+        [Error: fake subscribe!],
+      ]
+    `);
+
+    int.dispatch({ type: 'kek' });
+
+    expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot(`
+      [
+        [Error: fake subscribe!],
+        [Error: fake dispatch!],
+      ]
+    `);
+
+    spy.mockRestore();
+  });
+
   describe('raw Redux', () => {
     test('Should take redux store in', () => {
       const reduxStore = legacy_createStore(() => ({}), {});
