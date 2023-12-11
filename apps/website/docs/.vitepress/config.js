@@ -37,6 +37,7 @@ export default defineConfig({
           { text: 'i18next', link: '/i18next/' },
           { text: 'web-api', link: '/web-api/' },
           { text: 'factories', link: '/factories/' },
+          { text: 'Effector <-> Redux interop', link: '/redux-interop/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
