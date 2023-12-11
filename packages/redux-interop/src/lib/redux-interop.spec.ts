@@ -1,6 +1,6 @@
 import { createReduxInterop } from './redux-interop';
 import { legacy_createStore } from 'redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { createEvent, fork, allSettled } from 'effector';
 
 describe('@withease/redux', () => {
@@ -58,7 +58,7 @@ describe('@withease/redux', () => {
       const interop = createReduxInterop({ reduxStore, setup });
       setup();
 
-      const $state = interop.fromState((x) => x['value']);
+      const $state = interop.fromState((x) => (x as any).value);
 
       expect($state.getState()).toEqual('kek');
 
@@ -72,7 +72,7 @@ describe('@withease/redux', () => {
       const setup = createEvent();
       const interop = createReduxInterop({ reduxStore, setup });
 
-      const $state = interop.fromState((x) => x['value']);
+      const $state = interop.fromState((x) => (x as any).value);
 
       const mockStore = legacy_createStore((_, x) => ({
         value: (x as any).value || 'kek',
@@ -92,6 +92,75 @@ describe('@withease/redux', () => {
       });
 
       expect(scope.getState($state)).toEqual('lol');
+    });
+  });
+
+  describe('Redux Toolkit', () => {
+    test('Should work with basic Redux Toolkit', () => {
+      const testSlice = createSlice({
+        name: 'test',
+        initialState: 'kek',
+        reducers: {
+          test: () => 'lol',
+        },
+      });
+      const reduxStore = configureStore({
+        reducer: {
+          test: testSlice.reducer,
+        },
+      });
+      const setup = createEvent();
+      const interop = createReduxInterop({ reduxStore, setup });
+      const $test = interop.fromState((x) => x.test);
+      setup();
+
+      expect(interop.$store.getState()).toBe(reduxStore);
+
+      expect($test.getState()).toEqual('kek');
+
+      interop.dispatch(testSlice.actions.test());
+
+      expect($test.getState()).toEqual('lol');
+    });
+
+    test('Should work with Fork API', async () => {
+      const reduxStore = legacy_createStore(() => ({}), {});
+      const testSlice = createSlice({
+        name: 'test',
+        initialState: 'kek',
+        reducers: {
+          test: () => 'lol',
+        },
+      });
+      const mockStore = configureStore({
+        reducer: {
+          test: testSlice.reducer,
+        },
+      });
+      const setup = createEvent();
+      const interop = createReduxInterop({ reduxStore, setup });
+      const $test = interop.fromState((x) => x.test);
+
+      const scope = fork({
+        values: [[interop.$store, mockStore]],
+      });
+
+      await allSettled(setup, { scope });
+
+      expect(scope.getState(interop.$store)).toBe(mockStore);
+
+      expect(scope.getState($test)).toEqual('kek');
+      expect($test.getState()).toEqual(undefined);
+
+      interop.dispatch(testSlice.actions.test());
+
+      await allSettled(interop.dispatch, {
+        scope,
+        params: testSlice.actions.test(),
+      });
+
+      expect(scope.getState($test)).toEqual('lol');
+      expect($test.getState()).toEqual(undefined);
     });
   });
 });

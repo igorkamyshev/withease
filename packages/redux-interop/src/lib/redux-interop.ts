@@ -21,7 +21,7 @@ export function createReduxInterop<
   BaseState = unknown,
   // Record type is used here instead of UnknownAction, because compatibility with redux ^4.0.0 is also needed
   Action = Record<string, unknown>,
-  StateExt = Record<string, unknown>
+  StateExt = unknown
 >(config: {
   reduxStore: ReduxStore;
   // We don't care about the type of the setup unit here
