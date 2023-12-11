@@ -27,8 +27,7 @@
       "executor": "@nx/vite:test",
       "outputs": ["coverage/packages/redux-interop"],
       "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/redux-interop"
+        "passWithNoTests": true
       }
     }
   },
