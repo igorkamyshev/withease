@@ -4,7 +4,9 @@ outline: [2, 3]
 
 # @withease/redux
 
-This is a minimalistic package to allow simpler migration from Redux to Effector.
+Minimalistic package to allow simpler migration from Redux to Effector.
+
+This is a API reference article, for the Redux -> Effector migration guide [see the "Migrating from Redux to Effector" article](/redux-interop/usage).
 
 ## Installation
 
