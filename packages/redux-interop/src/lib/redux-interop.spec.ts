@@ -51,14 +51,17 @@ describe('@withease/redux', () => {
     });
 
     test('Should allow reading state', () => {
-      const reduxStore = legacy_createStore((_, x) => ({
-        value: (x as any).value || 'kek',
+      const reduxStore = legacy_createStore<
+        { value: string },
+        { type: string; value: string }
+      >((_, x) => ({
+        value: x.value || 'kek',
       }));
       const setup = createEvent();
       const interop = createReduxInterop({ reduxStore, setup });
       setup();
 
-      const $state = interop.fromState((x) => (x as any).value);
+      const $state = interop.fromState((x) => x.value);
 
       expect($state.getState()).toEqual('kek');
 
@@ -68,14 +71,20 @@ describe('@withease/redux', () => {
     });
 
     test('Should work with Fork API', async () => {
-      const reduxStore = legacy_createStore(() => ({}), {});
+      const reduxStore = legacy_createStore<
+        { value: string },
+        { type: string; value: string }
+      >(() => ({ value: '' }), { value: '' });
       const setup = createEvent();
       const interop = createReduxInterop({ reduxStore, setup });
 
-      const $state = interop.fromState((x) => (x as any).value);
+      const $state = interop.fromState((x) => x.value);
 
-      const mockStore = legacy_createStore((_, x) => ({
-        value: (x as any).value || 'kek',
+      const mockStore = legacy_createStore<
+        { value: string },
+        { type: string; value: string }
+      >((_, x) => ({
+        value: x.value || 'kek',
       }));
 
       const scope = fork({
@@ -124,7 +133,11 @@ describe('@withease/redux', () => {
     });
 
     test('Should work with Fork API', async () => {
-      const reduxStore = legacy_createStore(() => ({}), {});
+      const reduxStore = legacy_createStore<{ test: string }, { type: string }>(
+        () => ({ test: '' }),
+        { test: '' }
+      );
+
       const testSlice = createSlice({
         name: 'test',
         initialState: 'kek',
@@ -150,9 +163,7 @@ describe('@withease/redux', () => {
       expect(scope.getState(interop.$store)).toBe(mockStore);
 
       expect(scope.getState($test)).toEqual('kek');
-      expect($test.getState()).toEqual(undefined);
-
-      interop.dispatch(testSlice.actions.test());
+      expect($test.getState()).toEqual('');
 
       await allSettled(interop.dispatch, {
         scope,
@@ -160,7 +171,7 @@ describe('@withease/redux', () => {
       });
 
       expect(scope.getState($test)).toEqual('lol');
-      expect($test.getState()).toEqual(undefined);
+      expect($test.getState()).toEqual('');
     });
   });
 });

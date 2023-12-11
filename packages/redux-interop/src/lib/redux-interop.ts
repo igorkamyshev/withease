@@ -1,5 +1,5 @@
-import type { Unit } from 'effector';
-import type { Store as ReduxStore } from 'redux';
+import type { Unit, Store, EventCallable } from 'effector';
+import type { Store as ReduxStore, Action } from 'redux';
 import {
   createStore,
   createEvent,
@@ -18,18 +18,49 @@ import {
  * @returns Interop API object
  */
 export function createReduxInterop<
-  BaseState = unknown,
-  // Record type is used here instead of UnknownAction, because compatibility with redux ^4.0.0 is also needed
-  Action = Record<string, unknown>,
-  StateExt = unknown
+  State = unknown,
+  Act extends Action = { type: string; [k: string]: unknown },
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  Ext extends {} = {}
 >(config: {
-  reduxStore: ReduxStore;
+  reduxStore: ReduxStore<State, Act, Ext>;
   // We don't care about the type of the setup unit here
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setup: Unit<any>;
-}) {
-  type State = BaseState & StateExt;
-
+}): {
+  /**
+   * Effector store containing the Redux store
+   *
+   * You can use it to substitute Redux store instance, while writing tests via Effector's Fork API
+   * @example
+   * ```
+   * const scope = fork({
+   *  values: [
+   *   [reduxInterop.$store, reduxStoreMock]
+   *  ]
+   * })
+   * ```
+   */
+  $store: Store<ReduxStore>;
+  /**
+   * Effector's event, which will trigger Redux store dispatch
+   *
+   * @example
+   * ```
+   * const updateName = reduxInterop.dispatch.prepend((name: string) => updateNameAction(name));
+   * ```
+   */
+  dispatch: EventCallable<Act>;
+  /**
+   * Function to get Effector store containing selected part of the Redux store
+   *
+   * @example
+   * ```
+   * const $user = reduxInterop.fromState(state => state.user);
+   * ```
+   */
+  fromState: <R>(selector: (state: State & Ext) => R) => Store<R>;
+} {
   const { reduxStore, setup } = config;
   if (!is.unit(setup)) {
     throw new Error('setup must be an effector unit');
@@ -48,22 +79,22 @@ export function createReduxInterop<
     name: 'redux-interop/$store',
   });
 
-  const stateUpdated = createEvent<State>();
+  const stateUpdated = createEvent<State & Ext>();
 
-  const $state = createStore<State>(reduxStore.getState(), {
+  const $state = createStore<State & Ext>(reduxStore.getState(), {
     serialize: 'ignore',
     name: 'redux-interop/$state',
     skipVoid: false,
   }).on(stateUpdated, (_, state) => state);
 
-  function fromState<R>(selector: (state: State) => R) {
+  function fromState<R>(selector: (state: State & Ext) => R) {
     return $state.map(selector);
   }
 
-  const dispatch = createEvent<Action>();
+  const dispatch = createEvent<Act>();
   const dispatchFx = attach({
     source: $store,
-    effect(store, action: Action) {
+    effect(store, action: Act) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       store.dispatch(action as any);
     },
@@ -102,37 +133,8 @@ export function createReduxInterop<
   }).watch(console.error);
 
   return {
-    /**
-     * Effector store containing the Redux store
-     *
-     * You can use it to substitute Redux store instance, while writing tests via Effector's Fork API
-     * @example
-     * ```
-     * const scope = fork({
-     *  values: [
-     *   [reduxInterop.$store, reduxStoreMock]
-     *  ]
-     * })
-     * ```
-     */
     $store,
-    /**
-     * Effector's event, which will trigger Redux store dispatch
-     *
-     * @example
-     * ```
-     * const updateName = reduxInterop.dispatch.prepend((name: string) => updateNameAction(name));
-     * ```
-     */
     dispatch,
-    /**
-     * Function to get Effector store containing selected part of the Redux store
-     *
-     * @example
-     * ```
-     * const $user = reduxInterop.fromState(state => state.user);
-     * ```
-     */
     fromState,
   };
 }
