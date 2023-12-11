@@ -1,0 +1,36 @@
+{
+  "name": "redux-interop",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/redux-interop/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/rollup:rollup",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/redux-interop",
+        "main": "packages/redux-interop/src/index.ts",
+        "tsConfig": "packages/redux-interop/tsconfig.lib.json",
+        "assets": [],
+        "project": "packages/redux-interop/package.json",
+        "compiler": "swc"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/redux-interop/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/packages/redux-interop"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/redux-interop"
+      }
+    }
+  },
+  "tags": []
+}
