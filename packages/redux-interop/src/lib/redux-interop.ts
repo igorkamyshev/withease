@@ -47,10 +47,14 @@ export function createReduxInterop<
     serialize: 'ignore',
     name: 'redux-interop/$store',
   });
+
+  const stateUpdated = createEvent<State>();
+
   const $state = createStore<State>(reduxStore.getState(), {
     serialize: 'ignore',
     name: 'redux-interop/$state',
-  });
+    skipVoid: false,
+  }).on(stateUpdated, (_, state) => state);
 
   function fromState<R>(selector: (state: State) => R) {
     return $state.map(selector);
@@ -72,12 +76,13 @@ export function createReduxInterop<
     batch: false,
   });
 
-  const stateUpdated = createEvent<State>();
-
   const reduxInteropSetupFx = attach({
     source: $store,
     effect(store) {
       const sendUpdate = scopeBind(stateUpdated, { safe: true });
+
+      sendUpdate(store.getState());
+
       store.subscribe(() => {
         sendUpdate(store.getState());
       });
@@ -99,7 +104,7 @@ export function createReduxInterop<
   return {
     /**
      * Effector store containing the Redux store
-     * 
+     *
      * You can use it to substitute Redux store instance, while writing tests via Effector's Fork API
      * @example
      * ```
@@ -113,7 +118,7 @@ export function createReduxInterop<
     $store,
     /**
      * Effector's event, which will trigger Redux store dispatch
-     * 
+     *
      * @example
      * ```
      * const updateName = reduxInterop.dispatch.prepend((name: string) => updateNameAction(name));
@@ -122,7 +127,7 @@ export function createReduxInterop<
     dispatch,
     /**
      * Function to get Effector store containing selected part of the Redux store
-     * 
+     *
      * @example
      * ```
      * const $user = reduxInterop.fromState(state => state.user);
