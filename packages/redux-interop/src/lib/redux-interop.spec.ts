@@ -28,7 +28,7 @@ describe('@withease/redux', () => {
     );
   });
 
-  test('Init errors are logged into console', () => {
+  test('Any errors are logged into console', () => {
     const fakeStore = {
       dispatch: () => {
         throw new Error('fake dispatch!');
