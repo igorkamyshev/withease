@@ -1,7 +1,7 @@
 import { createReduxInterop } from './redux-interop';
 import { legacy_createStore } from 'redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { createEvent, fork, allSettled } from 'effector';
+import { createEvent, fork, allSettled, createStore, sample } from 'effector';
 
 describe('@withease/redux', () => {
   test('Should throw if setup is not an effector unit', () => {
@@ -145,6 +145,75 @@ describe('@withease/redux', () => {
       });
 
       expect(scope.getState($state)).toEqual('lol');
+    });
+
+    test('edge case: should allow synchronous cycle update', async () => {
+      /**
+       * This is an edge case, where we have a cycle between effector and redux,
+       * it is useful for cases, when a feature is not entierly migrated to effector,
+       * so it is still needed to keep redux and effector parts in sync.
+       */
+
+      const reduxStore = legacy_createStore<
+        { c: number },
+        { type: string; c: number }
+      >((s, a) => ({ c: (s || { c: 0 }).c + (a.c || 0) }), { c: 0 });
+
+      const setup = createEvent();
+      const interop = createReduxInterop({
+        reduxStore,
+        setup,
+      });
+
+      const updateCount = createEvent<number>();
+      const $count = createStore(0).on(updateCount, (s, a) => s + a);
+
+      const $reduxCount = interop.fromState((x) => x.c);
+
+      // effector updates redux
+      const updateReduxCount = interop.dispatch.prepend((x: number) => ({
+        type: 'test',
+        c: x,
+      }));
+      sample({
+        clock: $count,
+        source: $reduxCount,
+        filter: (r, e) => r !== e,
+        fn: (_r, e) => e,
+        target: updateReduxCount,
+      });
+
+      // redux updates effector - cycle
+      sample({
+        clock: $reduxCount,
+        source: $count,
+        filter: (r, e) => r !== e,
+        fn: (_s, reduxCount) => reduxCount,
+        target: $count,
+      });
+
+      const scope = fork();
+
+      expect(scope.getState($count)).toEqual(0);
+      expect(scope.getState($reduxCount)).toEqual(0);
+
+      await allSettled(setup, { scope });
+
+      await allSettled(updateCount, {
+        scope,
+        params: 1,
+      });
+
+      expect(scope.getState($count)).toEqual(1);
+      expect(scope.getState($reduxCount)).toEqual(1);
+
+      await allSettled(updateReduxCount, {
+        scope,
+        params: 1,
+      });
+
+      expect(scope.getState($count)).toEqual(2);
+      expect(scope.getState($reduxCount)).toEqual(2);
     });
   });
 
