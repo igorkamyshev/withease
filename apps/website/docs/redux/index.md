@@ -50,9 +50,9 @@ Explicit `setup` event is required to initilize the interoperability. Usually it
 
 You can read more about this practice [in the "Explicit start of the app" article](/magazine/explicit_start).
 
-### Interop object
+### Interoperability object
 
-Redux Interop object provides few useful APIs.
+Redux Interoperability object provides few useful APIs.
 
 #### `reduxInterop.fromState`
 
