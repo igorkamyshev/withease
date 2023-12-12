@@ -237,3 +237,70 @@ Adding a new feature on Effector to a Redux project is not much different from t
 
 1. Any new code is written in Effector
 2. Any dependencies to Redux Store should work through `reduxInterop` API
+
+## Special cases
+
+### Middleware with side-effects
+
+Sometimes Redux actions are not changing state, but trigger side-effects via middlewares.
+
+Suppose Redux Store has middleware that reacts to action like `{ type: SEND_ANALYTICS_EVENT, payload }` and sends the event to our analytics.
+
+Sending analytics is usually involved in almost all code of the application and migration of such a feature will be much more complicated.
+
+In this case, the recommended upgrade path is as follows:
+
+#### Mirror of the action
+
+First, create a mirror Effector's event of the `SEND_ANALYTICS_EVENT` action by using its action-creator:
+
+```ts
+// src/shared/analytics/model.ts
+import { reduxInterop } from 'root/redux-store';
+import { sendAnalyticsEventAction } from './actions';
+
+export const sendAnalytics = reduxInterop.dispatch.prepend((payload) =>
+  sendAnalyticsEventAction(payload)
+);
+```
+
+#### Move to event instead of an action
+
+As a second step, gradually change all dispatches of this action to a event call.
+
+E.g. instead of
+
+```ts
+import { sendAnalyticsEventAction } from 'root/analytics';
+
+dispatch(sendAnalyticsEventAction(payload));
+```
+
+do
+
+```ts
+import { sendAnalytics } from 'root/analytics';
+
+sendAnalytics(payload);
+```
+
+It is safe to do, because the `sendAnalytics(payload)` call here is a full equivalent of the `dispatch(sendAnalyticsEventAction(payload))` and can be used instead of it - the action will still be dispatched by the `reduxInterop.dispatch` under the hood.
+
+#### Move the implementation
+
+After that both Redux, Effector and UI-framework's code can use the same event to handle any analytics events and it is now possible to fully move from a analytics middleware to Effector's model:
+
+```ts
+// src/shared/analytics/model.ts
+import { createEvent, createEffect, sample } from 'effector';
+import { sendEvent } from 'root/shared/analytics-client';
+
+export const sendAnalytics = createEvent();
+
+const sendEventFx = createEffect(sendEvent);
+
+sample({
+  clock: sendAnalytics,
+  target: sendEventFx,
+});
+```
