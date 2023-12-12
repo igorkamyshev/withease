@@ -123,6 +123,10 @@ export default defineConfig({
               text: 'Events in UI-frameworks',
               link: '/magazine/handle_events_in_ui_frameworks',
             },
+            {
+              text: 'Migrating from Redux to Effector',
+              link: '/magazine/migration_from_redux',
+            }
           ],
         },
         {

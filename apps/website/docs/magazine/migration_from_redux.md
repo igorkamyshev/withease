@@ -286,9 +286,11 @@ sendAnalytics(payload);
 
 It is safe to do, because the `sendAnalytics(payload)` call here is a full equivalent of the `dispatch(sendAnalyticsEventAction(payload))` and can be used instead of it - the action will still be dispatched by the `reduxInterop.dispatch` under the hood.
 
+In the end Redux, Effector and your UI-framework should all use this event instead of dispatching the action.
+
 #### Move the implementation
 
-After that both Redux, Effector and UI-framework's code can use the same event to handle any analytics events and it is now possible to fully move from a analytics middleware to Effector's model:
+Since now all analytics is sent via this event, it is now possible to fully move from a analytics middleware to Effector's model:
 
 ```ts
 // src/shared/analytics/model.ts
