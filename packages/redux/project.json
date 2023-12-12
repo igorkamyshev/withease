@@ -1,18 +1,18 @@
 {
-  "name": "redux-interop",
+  "name": "redux",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/redux-interop/src",
+  "sourceRoot": "packages/redux/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/redux-interop",
-        "main": "packages/redux-interop/src/index.ts",
-        "tsConfig": "packages/redux-interop/tsconfig.lib.json",
+        "outputPath": "dist/packages/redux",
+        "main": "packages/redux/src/index.ts",
+        "tsConfig": "packages/redux/tsconfig.lib.json",
         "assets": [],
-        "project": "packages/redux-interop/package.json",
+        "project": "packages/redux/package.json",
         "compiler": "swc"
       }
     },
@@ -20,12 +20,12 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/redux-interop/**/*.ts"]
+        "lintFilePatterns": ["packages/redux/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/redux-interop"],
+      "outputs": ["coverage/packages/redux"],
       "options": {
         "passWithNoTests": true
       }

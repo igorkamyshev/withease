@@ -78,14 +78,14 @@ export function createReduxInterop<
 
   const $store = createStore(reduxStore, {
     serialize: 'ignore',
-    name: 'redux-interop/$store',
+    name: 'redux/$store',
   });
 
   const stateUpdated = createEvent<State & Ext>();
 
   const $state = createStore<State & Ext>(reduxStore.getState(), {
     serialize: 'ignore',
-    name: 'redux-interop/$state',
+    name: 'redux/$state',
     skipVoid: false,
   }).on(stateUpdated, (_, state) => state);
 

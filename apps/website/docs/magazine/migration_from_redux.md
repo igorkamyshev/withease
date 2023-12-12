@@ -17,7 +17,7 @@ E.g. you can read [Effector-related terminology here](https://effector.dev/en/ex
 
 This guide uses the `@withease/redux` package, which is a minimalistic set of helpers to simplify the migration, so it is recommended to install it too.
 
-See [the package documentation](/redux-interop/) for detailed installation instructions.
+See [the package documentation](/redux/) for detailed installation instructions.
 
 ### Create Redux interoperability object
 

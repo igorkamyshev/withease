@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/redux-interop',
+  cacheDir: '../../node_modules/.vite/redux',
 
   plugins: [
     viteTsConfigPaths({

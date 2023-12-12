@@ -109,7 +109,7 @@ importers:
   packages/i18next:
     specifiers: {}
 
-  packages/redux-interop:
+  packages/redux:
     specifiers: {}
 
   packages/web-api:

@@ -1,4 +1,4 @@
-import { createReduxInterop } from './redux-interop';
+import { createReduxInterop } from './redux';
 import { legacy_createStore } from 'redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { createEvent, fork, allSettled, createStore, sample } from 'effector';
