@@ -23,20 +23,20 @@ See [the package documentation](/redux/) for detailed installation instructions.
 
 In order for Redux and Effector to communicate effectively with each other, a special object must be created.
 
-You should do it by using `createReduxInterop` method of the `@withease/redux` somewhere near the Redux Store configuration itself.
+You should do it by using `createReduxIntegration` method of the `@withease/redux` somewhere near the Redux Store configuration itself.
 
 Redux Toolkit `configureStore` is used here as an example, `@withease/redux` supports any kind of Redux Store.
 
 ```ts
 // src/redux-store
-import { createReduxInterop } from '@withease/redux';
+import { createReduxIntegration } from '@withease/redux';
 import { configureStore } from '@reduxjs/tookit';
 
 export const myReduxStore = configureStore({
   // ...
 });
 
-export const reduxInterop = createReduxInterop({
+export const reduxInterop = createReduxIntegration({
   reduxStore: myReduxStore,
   setup: appStarted,
 });

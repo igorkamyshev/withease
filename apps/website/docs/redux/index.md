@@ -31,7 +31,7 @@ npm install @withease/redux
 
 ## API
 
-### `createReduxInterop`
+### `createReduxIntegration`
 
 Effector <-> Redux interoperability works through special "interop" object, which provides Effector-compatible API to Redux Store.
 
@@ -40,7 +40,7 @@ const myReduxStore = configureStore({
   // ...
 });
 
-const reduxInterop = createReduxInterop({
+const reduxInterop = createReduxIntegration({
   reduxStore: myReduxStore,
   setup: appStarted,
 });
@@ -99,7 +99,7 @@ const myReduxStore = configureStore({
   // ...
 });
 
-const reduxInterop = createReduxInterop({
+const reduxInterop = createReduxIntegration({
   reduxStore: myReduxStore,
   setup: appStarted,
 });

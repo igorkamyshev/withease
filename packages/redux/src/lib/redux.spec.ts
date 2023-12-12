@@ -1,4 +1,4 @@
-import { createReduxInterop } from './redux';
+import { createReduxIntegration } from './redux';
 import { legacy_createStore } from 'redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { createEvent, fork, allSettled, createStore, sample } from 'effector';
@@ -12,7 +12,7 @@ describe('@withease/redux', () => {
 
     expect(() =>
       // @ts-expect-error - setup is not an effector unit
-      createReduxInterop({ reduxStore, setup })
+      createReduxIntegration({ reduxStore, setup })
     ).toThrowErrorMatchingInlineSnapshot('"setup must be an effector unit"');
   });
 
@@ -22,7 +22,7 @@ describe('@withease/redux', () => {
 
     expect(() =>
       // @ts-expect-error - reduxStore is not a Redux store
-      createReduxInterop({ reduxStore, setup })
+      createReduxIntegration({ reduxStore, setup })
     ).toThrowErrorMatchingInlineSnapshot(
       '"reduxStore must be provided and should be a Redux store"'
     );
@@ -48,7 +48,7 @@ describe('@withease/redux', () => {
     });
 
     // @ts-expect-error - fakeStore is not a Redux store
-    const int = createReduxInterop({ reduxStore: fakeStore, setup });
+    const int = createReduxIntegration({ reduxStore: fakeStore, setup });
 
     expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot('[]');
 
@@ -76,7 +76,7 @@ describe('@withease/redux', () => {
     test('Should take redux store in', () => {
       const reduxStore = legacy_createStore(() => ({}), {});
       const setup = createEvent();
-      const interop = createReduxInterop({ reduxStore, setup });
+      const interop = createReduxIntegration({ reduxStore, setup });
       setup();
 
       expect(interop.$store.getState()).toBe(reduxStore);
@@ -85,7 +85,7 @@ describe('@withease/redux', () => {
     test('Should allow dispatching actions', () => {
       const reduxStore = legacy_createStore((_, x) => x, {});
       const setup = createEvent();
-      const interop = createReduxInterop({ reduxStore, setup });
+      const interop = createReduxIntegration({ reduxStore, setup });
       setup();
 
       const action = { type: 'test' };
@@ -102,7 +102,7 @@ describe('@withease/redux', () => {
         value: x.value || 'kek',
       }));
       const setup = createEvent();
-      const interop = createReduxInterop({ reduxStore, setup });
+      const interop = createReduxIntegration({ reduxStore, setup });
       setup();
 
       const $state = interop.fromState((x) => x.value);
@@ -120,7 +120,7 @@ describe('@withease/redux', () => {
         { type: string; value: string }
       >(() => ({ value: '' }), { value: '' });
       const setup = createEvent();
-      const interop = createReduxInterop({ reduxStore, setup });
+      const interop = createReduxIntegration({ reduxStore, setup });
 
       const $state = interop.fromState((x) => x.value);
 
@@ -160,7 +160,7 @@ describe('@withease/redux', () => {
       >((s, a) => ({ c: (s || { c: 0 }).c + (a.c || 0) }), { c: 0 });
 
       const setup = createEvent();
-      const interop = createReduxInterop({
+      const interop = createReduxIntegration({
         reduxStore,
         setup,
       });
@@ -232,7 +232,7 @@ describe('@withease/redux', () => {
         },
       });
       const setup = createEvent();
-      const interop = createReduxInterop({ reduxStore, setup });
+      const interop = createReduxIntegration({ reduxStore, setup });
       const $test = interop.fromState((x) => x.test);
       setup();
 
@@ -264,7 +264,7 @@ describe('@withease/redux', () => {
         },
       });
       const setup = createEvent();
-      const interop = createReduxInterop({ reduxStore, setup });
+      const interop = createReduxIntegration({ reduxStore, setup });
       const $test = interop.fromState((x) => x.test);
 
       const scope = fork({

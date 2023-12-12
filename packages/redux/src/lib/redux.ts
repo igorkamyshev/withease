@@ -19,7 +19,7 @@ import {
  * @param config.setup - effector unit which will setup subscription to the store
  * @returns Interop API object
  */
-export function createReduxInterop<
+export function createReduxIntegration<
   State = unknown,
   Act extends Action = { type: string; [k: string]: unknown },
   // eslint-disable-next-line @typescript-eslint/ban-types
