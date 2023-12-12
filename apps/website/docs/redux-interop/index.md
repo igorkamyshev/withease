@@ -5,6 +5,7 @@ outline: [2, 3]
 # @withease/redux
 
 Minimalistic package to allow simpler migration from Redux to Effector.
+Also can handle any other usecase, where one needs to communicate with Redux Store from Effector's code.
 
 This is a API reference article, for the Redux -> Effector migration guide [see the "Migrating from Redux to Effector" article](/redux-interop/usage).
 
@@ -62,6 +63,8 @@ const $user = reduxInterop.fromState((x) => x.user);
 ```
 
 It is useful to mirror some part of the Redux state into Effector's world.
+
+Notice, that `fromState` method supports Redux Store typings, which can be useful
 
 #### `reduxInterop.dispatch`
 
@@ -125,7 +128,7 @@ test('username updated after save button click', async () => {
 
   const scope = fork({
     values: [
-      // Providing mock version of the redux store, *if needed*
+      // Providing mock version of the redux store
       [reduxInterop.$store, mockStore],
       // Mocking anything else, if needed
       [$nextName, 'updated'],
@@ -143,3 +146,5 @@ test('username updated after save button click', async () => {
 ```
 
 ☝️ This test will be especially useful in the future, when this part of logic will be ported to Effector.
+
+Notice, that it is recommended to create a mock version of Redux Store for any test like this, since the Store is containg state, which could leak between the tests.
