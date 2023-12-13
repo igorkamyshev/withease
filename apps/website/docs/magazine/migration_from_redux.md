@@ -8,7 +8,9 @@ This guide explains how to perform a gradual, non-blocking code migration from R
 
 First of all, you need to install the `effector` package. See [the official documentation for instructions](https://effector.dev/en/introduction/installation/).
 
+:::tip
 It is also highly recommended to set up the official [Effector Eslint Plugin](https://eslint.effector.dev/), so it would be easier for you to follow Effector's best practices.
+:::
 
 Also, it is recommended to read at least some of the Effector's docs, so it is easier to follow the guide.
 E.g. you can read [Effector-related terminology here](https://effector.dev/en/explanation/glossary/).
@@ -25,7 +27,9 @@ In order for Redux and Effector to communicate effectively with each other, a sp
 
 You should do it by using `createReduxIntegration` method of the `@withease/redux` somewhere near the Redux Store configuration itself.
 
+:::info
 Redux Toolkit `configureStore` is used here as an example, `@withease/redux` supports any kind of Redux Store.
+:::
 
 ```ts
 // src/redux-store
@@ -72,7 +76,11 @@ After that, you have everything ready to start a gradual migration.
 Now you have existing code with Redux" that implements the features of your product.
 There is no point in stopping development altogether to migrate between technologies, this process should be integrated into the product development.
 
-It's a good idea to pick one of the existing features in your code, rewrite it to the new technology, and show the resulting Pull Request to your colleagues. This way you can evaluate whether this technology helps you solve your problems and how well it suits your team.
+:::tip
+It is a good idea to select one of the existing functions in your code, rewrite it for the new technology and **show the resulting Pull Request to your colleagues** before starting a full-fledged migration.
+
+This way you can **evaluate** whether this technology helps you solve your problems and **how well it suits** your team.
+:::
 
 This is a list of cases with examples of organizing a migration from Redux code to Effector code.
 
@@ -94,7 +102,11 @@ export const updateName = reduxInterop.dispatch.prepend((name: string) =>
 );
 ```
 
-☝️ It is recommended to use `.prepend` API of `reduxInterop.dispatch` event to create separate Effector events, connected to their Redux action counterparts.
+:::tip
+It is recommended to use `.prepend` API of `reduxInterop.dispatch` effect to create separate Effector events, connected to their Redux action counterparts.
+
+But since `reduxInterop.dispatch` is a normal Effect, you can safely use it like so.
+:::
 
 This model then can be used anywhere in place of classic actions and selectors.
 
@@ -128,7 +140,11 @@ You can find [API reference of UI-framework integrations in the Effector's docum
 
 Now that we have the Effector API for the old code, we can write some tests for it, so that the behavior of the Redux code will be captured and we won't break anything when porting the feature implementation to Effector.
 
+:::tip
 Notice, that we also need to create mock version of the Redux Store, so this test is independent of any other.
+
+Testable version of the Redux Store should also properly mock any thunks or custom middlewares, which are used in the test.
+:::
 
 ```ts
 import { configureStore } from '@reduxjs/tookit';
@@ -161,7 +177,9 @@ test('username is updated', async () => {
 
 Such tests will allow us to notice any changes in logic early on.
 
+:::info
 You can find more details about Effector-way testing [in the "Writing tests" guide in the documentation](https://effector.dev/en/guides/testing/).
+:::
 
 #### Gradual rewrite
 
@@ -210,6 +228,8 @@ sample({
 ```
 
 ☝️ Feature is completely ported to Effector, `reduxInterop` is not used here anymore.
+
+##### Edge-case
 
 If there is still code that consumes this state via the Redux Store selector, and there is currently no way to move that consumer to use the Effector model, it is still possible to "sync" the state back into Redux as a read-only mirror of the Effector model state:
 
@@ -349,6 +369,12 @@ sample({
   target: someFx,
 });
 ```
+
+:::info
+Adding of `Fx` postfix for Effects is an Effector's naming convention, just like adding `$` to the store names.
+
+It is described in details in [the "Naming convention" article in the docs](https://effector.dev/en/conventions/naming/).
+:::
 
 #### Use this Effect instead of original Thunk
 

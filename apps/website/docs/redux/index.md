@@ -7,7 +7,9 @@ outline: [2, 3]
 Minimalistic package to allow simpler migration from Redux to Effector.
 Also can handle any other usecase, where one needs to communicate with Redux Store from Effector's code.
 
+:::info
 This is an API reference article, for the Redux -> Effector migration guide [see the "Migrating from Redux to Effector" article](/magazine/migration_from_redux).
+:::
 
 ## Installation
 
@@ -64,14 +66,18 @@ const $user = reduxInterop.fromState((x) => x.user);
 
 It is useful to mirror some part of the Redux state into Effector's world.
 
-Notice, that `fromState` method supports Redux Store typings, which can be useful.
+:::tip
+Notice, that `fromState` method supports Redux Store typings, if those are provided - so it is recommended to properly type your Redux Store.
+:::
 
 #### `reduxInterop.dispatch`
 
 This is an Effector's Effect, which calls Redux Store's `dispatch` method under the hood.
 Since it is a normal [Effect](https://effector.dev/en/api/effector/effect) - it supports all methods of `Effect` type.
 
+:::tip
 It is recommended to create separate events for each specific action via `.prepend` method of `Effect`.
+:::
 
 ```ts
 const updateUserName = reduxInterop.dispatch.prepend((name: string) =>
@@ -177,4 +183,6 @@ test('username updated after save button click', async () => {
 
 ☝️ This test will be especially useful in the future, when this part of logic will be ported to Effector.
 
+:::tip
 Notice, that it is recommended to create a mock version of Redux Store for any tests like this, since the Store contains state, which could leak between the tests.
+:::
