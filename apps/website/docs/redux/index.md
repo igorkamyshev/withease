@@ -117,7 +117,7 @@ const promise = someThunkFx(42);
 
 #### `reduxInterop.$store`
 
-This is a Effector's Store, which contains provided instance of Redux Store.
+This is an Effector's Store, which contains provided instance of Redux Store.
 
 It is useful, since it makes possible to use [Effector's Fork API to write tests](https://effector.dev/en/guides/testing/) for the logic, contained in the Redux Store!
 
