@@ -68,7 +68,7 @@ Notice, that `fromState` method supports Redux Store typings, which can be usefu
 
 #### `reduxInterop.dispatch`
 
-This is a Effector's Effect, which calls Redux Store's `dispatch` method under the hood.
+This is an Effector's Effect, which calls Redux Store's `dispatch` method under the hood.
 Since it is a normal [Effect](https://effector.dev/en/api/effector/effect) - it supports all methods of `Effect` type.
 
 It is recommended to create separate events for each specific action via `.prepend` method of `Effect`.
