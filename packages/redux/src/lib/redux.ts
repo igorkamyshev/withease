@@ -96,7 +96,7 @@ export function createReduxIntegration<
   const dispatchFx = attach({
     source: $store,
     effect(store, action: Act) {
-      return store.dispatch(action);
+      return store.dispatch(action) as unknown;
     },
   });
 
