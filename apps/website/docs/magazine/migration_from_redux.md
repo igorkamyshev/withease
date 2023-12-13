@@ -306,3 +306,131 @@ sample({
   target: sendEventFx,
 });
 ```
+
+### Redux Thunks
+
+Redux Thunks are a standard approach for writing async logic in Redux apps, and are commonly used for data fetching, so your app is probably already have a bunch of thunks, which should also be migrated at some point.
+
+The closest equivalent to Thunk in Effector is an [Effect](https://effector.dev/en/api/effector/effect/), which is a container for any function, which produces side-effects (like fetching the data from remote source) - so Thunks should be converted to Effects.
+
+#### Create a Effect representation for a Thunk
+
+You can convert any Thunk to Effect by using Effector's [`attach` operator](https://effector.dev/en/api/effector/attach/) and wrapping a `reduxInterop.dispatch` with it.
+
+```ts
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { attach } from 'effector';
+
+import { reduxInterop } from 'root/redux-store';
+
+const someThunk = createAsyncThunk(
+  'some/thunk',
+  async (p: number, thunkApi) => {
+    // thunk code
+  }
+);
+
+/**
+ * This is a redux-thunk, converted into an effector Effect.
+ *
+ * This allows gradual migration from redux-thunks to effector Effects
+ */
+const someFx = attach({
+  mapParams: (p: number) => someThunk(p),
+  effect: interop.dispatch,
+});
+```
+
+Now you can use it in any new code with Effector:
+
+```ts
+sample({
+  clock: doSomeButtonClicked,
+  target: someFx,
+});
+```
+
+#### Use this Effect instead of original Thunk
+
+Created Effect can be safely used anywhere, where you would use the original thunk - this will allow to simply swap Effect's implementation from Thunk usage later.
+
+##### UI Component
+
+```tsx
+const doSome = useUnit(someThunkFx);
+
+return <button onClick={doSome}>Do thunk</button>;
+```
+
+##### Other Thunk
+
+```ts
+const makeASandwichWithSecretSauce = (clientName) = async (dispatch) => {
+  try {
+    const result = await sandwichApi.getSandwichFor(clientName)
+
+    dispatch(sandwichSlice.ready(result))
+  } catch(error) {
+    dispatch(sandwichSlice.failed(error))
+  }
+};
+
+const makeASandwichFx = attach({
+  mapParams(client) {
+    return makeASandwichWithSecretSauce(client)
+  },
+  effect: reduxInterop.dispatch,
+})
+
+function makeSandwichesForEverybody() {
+  return function (dispatch, getState) {
+    if (!getState().sandwiches.isShopOpen) {
+      return Promise.resolve();
+    }
+
+    return dispatch(makeASandwichWithSecretSauce('My Grandma'))
+      .then(() =>
+        Promise.all([
+          makeASandwichFx('Me')),
+          // ☝️ Notice, that this Effect is intertwined with the Thunk flow
+          dispatch(makeANormalSandwich('My wife')),
+        ])
+      )
+  };
+}
+```
+
+### Swap Effect's implementation
+
+After this Effect is used everywhere instead of a Thunk you can safely swap implementation:
+
+```ts
+// If Thunk was dispatching some actions internally, you can also preserve this logic in Effector's model
+// and then migrate for it by following "Migrating existing feature" part of this guide
+const sandwichReady = reduxInterop.dispatch.prepend((result) =>
+  sandwichSlice.ready(result)
+);
+const sandiwchFailed = reduxInterop.dispatch.prepend((error) =>
+  sandwichSlice.fail(error)
+);
+
+const makeASandwichFx = createEffect((clientName) =>
+  sandwichApi.getSandwichFor(clientName)
+);
+
+sample({
+  clock: makeASandwichFx.doneData,
+  target: sandwichReady,
+});
+
+sample({
+  clock: makeASandwichFx.failData,
+  target: [
+    sandwichFailed,
+    reportErrorToSentry,
+    // ...
+  ],
+});
+```
+
+That's it, Thunk is now Effect!
