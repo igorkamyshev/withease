@@ -85,6 +85,36 @@ sample({
 });
 ```
 
+It is also possible to convert an Redux Thunk to `Effect` by using Effector's [`attach` operator](https://effector.dev/en/api/effector/attach/).
+
+```ts
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { attach } from 'effector';
+
+const someThunk = createAsyncThunk(
+  'some/thunk',
+  async (p: number, { dispatch }) => {
+    await new Promise((resolve) => setTimeout(resolve, p));
+
+    return dispatch(someSlice.actions.doSomething());
+  }
+);
+
+/**
+ * This is a redux-thunk, converted into an effector Effect.
+ *
+ * This allows gradual migration from redux-thunks to effector Effects
+ */
+const someThunkFx = attach({
+  mapParams: (p: number) => someThunk(p),
+  effect: interop.dispatch,
+});
+
+const promise = someThunkFx(42);
+// ☝️ `someThunk` will be dispatched under the hood
+// `someThunkFx` will return an Promise, which will be resolved once someThunk is resolved
+```
+
 #### `reduxInterop.$store`
 
 This is a Effector's Store, which contains provided instance of Redux Store.
