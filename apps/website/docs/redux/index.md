@@ -68,10 +68,10 @@ Notice, that `fromState` method supports Redux Store typings, which can be usefu
 
 #### `reduxInterop.dispatch`
 
-This is a Effector's Event, which calls are redirected into Redux Store's `dispatch` method.
-Since it is a normal [Event](https://effector.dev/en/api/effector/event) - it supports all methods of `EventCallable` type.
+This is a Effector's Effect, which calls Redux Store's `dispatch` method under the hood.
+Since it is a normal [Effect](https://effector.dev/en/api/effector/effect) - it supports all methods of `Effect` type.
 
-It is recommended to create separate events for each specific action via `.prepend` method of `EventCallable`.
+It is recommended to create separate events for each specific action via `.prepend` method of `Effect`.
 
 ```ts
 const updateUserName = reduxInterop.dispatch.prepend((name: string) =>

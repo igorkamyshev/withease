@@ -1,4 +1,4 @@
-import type { Unit, Store, EventCallable } from 'effector';
+import type { Unit, Store, Effect } from 'effector';
 import type { Store as ReduxStore, Action } from 'redux';
 import {
   createStore,
@@ -52,7 +52,7 @@ export function createReduxIntegration<
    * const updateName = reduxInterop.dispatch.prepend((name: string) => updateNameAction(name));
    * ```
    */
-  dispatch: EventCallable<Act>;
+  dispatch: Effect<Act, unknown, Error>;
   /**
    * Function to get Effector store containing selected part of the Redux store
    *
@@ -93,20 +93,11 @@ export function createReduxIntegration<
     return $state.map(selector);
   }
 
-  const dispatch = createEvent<Act>();
   const dispatchFx = attach({
     source: $store,
     effect(store, action: Act) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      store.dispatch(action as any);
+      return store.dispatch(action);
     },
-  });
-
-  sample({
-    clock: dispatch,
-    target: dispatchFx,
-    // We should not batch dispatches, because redux store must see every action
-    batch: false,
   });
 
   const reduxInteropSetupFx = attach({
@@ -136,7 +127,7 @@ export function createReduxIntegration<
 
   return {
     $store,
-    dispatch,
+    dispatch: dispatchFx,
     fromState,
   };
 }
