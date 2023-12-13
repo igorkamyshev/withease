@@ -1,5 +1,5 @@
 import { createReduxIntegration } from './redux';
-import { UnknownAction, legacy_createStore } from 'redux';
+import { legacy_createStore } from 'redux';
 import {
   configureStore,
   createSlice,
@@ -327,8 +327,7 @@ describe('@withease/redux', () => {
        * This allows gradual migration from redux-thunks to effector Effects
        */
       const lolThunkFx = attach({
-        // thunk is not explicitly a redux action
-        mapParams: (p: number) => lolThunk(p) as unknown as UnknownAction,
+        mapParams: (p: number) => lolThunk(p),
         effect: interop.dispatch,
       });
 
@@ -393,7 +392,7 @@ describe('@withease/redux', () => {
        */
       const lolThunkFx = attach({
         // thunk is not explicitly a redux action
-        mapParams: (p: number) => lolThunk(p) as unknown as UnknownAction,
+        mapParams: (p: number) => lolThunk(p),
         effect: interop.dispatch,
       });
 

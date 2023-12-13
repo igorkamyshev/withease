@@ -10,6 +10,13 @@ import {
 } from 'effector';
 
 /**
+ * Type for any thunk-like thing, which can be dispatched to Redux store
+ *
+ * Since generally Thunk is a any function, we can't type it properly
+ */
+type AnyThunkLikeThing = (...args: any[]) => any;
+
+/**
  *
  * Utility function to create an Effector API to interact with Redux store,
  * useful for cases like soft migration from Redux to Effector.
@@ -52,7 +59,7 @@ export function createReduxIntegration<
    * const updateName = reduxInterop.dispatch.prepend((name: string) => updateNameAction(name));
    * ```
    */
-  dispatch: Effect<Act, unknown, Error>;
+  dispatch: Effect<Act | AnyThunkLikeThing, unknown, Error>;
   /**
    * Function to get Effector store containing selected part of the Redux store
    *
@@ -95,8 +102,8 @@ export function createReduxIntegration<
 
   const dispatchFx = attach({
     source: $store,
-    effect(store, action: Act) {
-      return store.dispatch(action) as unknown;
+    effect(store, action: Act | AnyThunkLikeThing) {
+      return store.dispatch(action as Act) as unknown;
     },
   });
 
