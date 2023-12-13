@@ -1,7 +1,18 @@
 import { createReduxIntegration } from './redux';
-import { legacy_createStore } from 'redux';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { createEvent, fork, allSettled, createStore, sample } from 'effector';
+import { UnknownAction, legacy_createStore } from 'redux';
+import {
+  configureStore,
+  createSlice,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
+import {
+  createEvent,
+  fork,
+  allSettled,
+  createStore,
+  sample,
+  attach,
+} from 'effector';
 
 describe('@withease/redux', () => {
   test('Should throw if setup is not an effector unit', () => {
@@ -285,6 +296,133 @@ describe('@withease/redux', () => {
 
       expect(scope.getState($test)).toEqual('lol');
       expect($test.getState()).toEqual('');
+    });
+
+    test('Should support redux-thunks', async () => {
+      const testSlice = createSlice({
+        name: 'test',
+        initialState: 'kek',
+        reducers: {
+          test: () => 'lol',
+        },
+      });
+      const reduxStore = configureStore({
+        reducer: {
+          test: testSlice.reducer,
+        },
+      });
+      const setup = createEvent();
+      const interop = createReduxIntegration({ reduxStore, setup });
+      const $test = interop.fromState((x) => x.test);
+
+      const lolThunk = (p: number) => async (dispatch: any) => {
+        await new Promise((resolve) => setTimeout(resolve, p));
+
+        return dispatch(testSlice.actions.test());
+      };
+
+      /**
+       * This is a redux-thunk, converted into an effector Effect.
+       *
+       * This allows gradual migration from redux-thunks to effector Effects
+       */
+      const lolThunkFx = attach({
+        // thunk is not explicitly a redux action
+        mapParams: (p: number) => lolThunk(p) as unknown as UnknownAction,
+        effect: interop.dispatch,
+      });
+
+      const scope = fork({
+        values: [
+          [
+            interop.$store,
+            // Independent copy of original store
+            configureStore({
+              reducer: {
+                test: testSlice.reducer,
+              },
+            }),
+          ],
+        ],
+      });
+
+      expect(scope.getState($test)).toEqual('kek');
+      expect($test.getState()).toEqual('kek'); // non-scope state
+
+      await allSettled(setup, { scope });
+
+      await allSettled(lolThunkFx, {
+        scope,
+        params: 100,
+      });
+
+      expect(scope.getState($test)).toEqual('lol');
+      expect($test.getState()).toEqual('kek'); // non-scope state should not have changed
+    });
+
+    test('Should support RTK Async Thunks', async () => {
+      const testSlice = createSlice({
+        name: 'test',
+        initialState: 'kek',
+        reducers: {
+          test: () => 'lol',
+        },
+      });
+      const reduxStore = configureStore({
+        reducer: {
+          test: testSlice.reducer,
+        },
+      });
+      const setup = createEvent();
+      const interop = createReduxIntegration({ reduxStore, setup });
+      const $test = interop.fromState((x) => x.test);
+
+      const lolThunk = createAsyncThunk(
+        'test/lol',
+        async (p: number, { dispatch }) => {
+          await new Promise((resolve) => setTimeout(resolve, p));
+
+          return dispatch(testSlice.actions.test());
+        }
+      );
+
+      /**
+       * This is a redux-thunk, converted into an effector Effect.
+       *
+       * This allows gradual migration from redux-thunks to effector Effects
+       */
+      const lolThunkFx = attach({
+        // thunk is not explicitly a redux action
+        mapParams: (p: number) => lolThunk(p) as unknown as UnknownAction,
+        effect: interop.dispatch,
+      });
+
+      const scope = fork({
+        values: [
+          [
+            interop.$store,
+            // Independent copy of original store
+            configureStore({
+              reducer: {
+                test: testSlice.reducer,
+              },
+            }),
+          ],
+        ],
+      });
+
+      expect(scope.getState($test)).toEqual('kek');
+      expect($test.getState()).toEqual('kek'); // non-scope state
+
+      await allSettled(setup, { scope });
+
+      await allSettled(lolThunkFx, {
+        scope,
+        params: 100,
+      });
+
+      expect(scope.getState($test)).toEqual('lol');
+      expect($test.getState()).toEqual('kek'); // non-scope state should not have changed
     });
   });
 });
