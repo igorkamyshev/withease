@@ -290,7 +290,7 @@ In the end Redux, Effector and your UI-framework should all use this event inste
 
 #### Move the implementation
 
-Since now all analytics is sent via this event, it is now possible to fully move from a analytics middleware to Effector's model:
+Since now all analytics is sent via this event, it is now possible to fully move from the analytics middleware to Effector's model:
 
 ```ts
 // src/shared/analytics/model.ts
