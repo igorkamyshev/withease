@@ -461,6 +461,218 @@ sample({
 
 That's it, Thunk is now Effect!
 
+### Redux Sagas
+
+Redux-Saga is a side effect management library for Redux.
+Coincidentally, side effect management is also the main focus of Effector, so to migrate you will need to simply rewrite your sagas to Effector's concepts.
+
+Thanks to `@withease/redux` you can do it partially and in any order. Here are few examples of the Saga code ported to Effector.
+
+:::tip
+These examples show the ported code, but the use of redux actions and states is left as is, since other sagas (and any middlewares in general) may depend on them.
+
+See the "Migrating Existing Functions" part of this guide for how to migrate from dispatchers and selectors to events and stores completely.
+:::
+
+#### Data fetching
+
+::: code-group
+
+```ts [saga]
+function* fetchPosts() {
+  yield put(actions.requestPosts());
+  const page = yield select((state) => state.currentPage);
+  const products = yield call(fetchApi, '/products', page);
+  yield put(actions.receivePosts(products));
+}
+
+function* watchFetch() {
+  while (yield take('FETCH_POSTS')) {
+    yield call(fetchPosts); // waits for the fetchPosts task to terminate
+  }
+}
+```
+
+```ts [effector + @withease/redux]
+const $page = reduxInterop.fromState((state) => state.currentPage);
+const postsRequested = reduxInterop.dispatch.prepend(actions.requestPosts);
+const postsReceived = reduxInterop.dispatch.prepend(actions.receivePosts);
+// This event should be used to dispatch this action in place of original dispatch
+// See "Middleware with side-effects" part of this guide for explanation
+const fetchPosts = reduxInterop.dispatch.prepend(() => ({
+  type: 'FETCH_POSTS',
+}));
+
+const fetchProductsByPageFx = createEffect((page) =>
+  fetchApi('/products', page)
+);
+
+// this sample describes the key part of the saga's logic
+sample({
+  clock: postsRequested,
+  source: $page,
+  target: fetchProductsByPageFx,
+});
+
+// Notice, that these two `sample`s here are used only to preserve actions dispatching,
+// as there is might be other redux code depending on them
+sample({
+  clock: fetchPosts,
+  target: postsRequested,
+});
+
+sample({
+  clock: fetchProductsByPageFx.doneData,
+  target: postsReceived,
+});
+```
+
+:::
+
+#### Throttle, delay and debounce
+
+:::tip
+You can implement debounce, delay and throttle logic in Effector by yourself.
+
+But since those are common patterns, **it is recommended** to use [Patronum - the official utility library for Effector](https://patronum.effector.dev/methods/).
+:::
+
+::: code-group
+
+```ts [saga]
+import { throttle, debounce, delay } from 'redux-saga/effects';
+
+function* handleInput(input) {
+  // ...
+}
+
+function* throttleInput() {
+  yield throttle(500, 'INPUT_CHANGED', handleInput);
+}
+
+function* debounceInput() {
+  yield debounce(1000, 'INPUT_CHANGED', handleInput);
+}
+
+function* delayInput() {
+  yield take('INPUT_CHANGED');
+  yield delay(5000);
+}
+```
+
+```ts [effector + @withease/redux]
+import { debounce, delay, throttle } from 'patronum';
+import { createEffect, createEvent, sample } from 'effector';
+
+const inputChanged = createEvent();
+const handleInputChangeFx = createEffect((input) => {
+  // ...
+});
+
+sample({
+  clock: [
+    throttle({
+      source: inputChanged,
+      timeout: 500,
+    }),
+    debounce({
+      source: inputChanged,
+      timeout: 1000,
+    }),
+    delay({
+      source: inputChanged,
+      timeout: 5000,
+    }),
+  ],
+  target: handleInputChangeFx,
+});
+```
+
+:::
+
+#### Background task
+
+::: code-group
+
+```ts [saga]
+function* bgSync() {
+  try {
+    while (true) {
+      yield put(actions.requestStart());
+      const result = yield call(someApi);
+      yield put(actions.requestSuccess(result));
+      yield delay(5000);
+    }
+  } finally {
+    if (yield cancelled()) yield put(actions.requestFailure('Sync cancelled!'));
+  }
+}
+
+function* main() {
+  while (yield take('START_BACKGROUND_SYNC')) {
+    // starts the task in the background
+    const bgSyncTask = yield fork(bgSync);
+
+    // wait for the user stop action
+    yield take('STOP_BACKGROUND_SYNC');
+    // user clicked stop. cancel the background task
+    // this will cause the forked bgSync task to jump into its finally block
+    yield cancel(bgSyncTask);
+  }
+}
+```
+
+```ts [effector + @withease/redux]
+import { createStore, sample, createEffect } from 'effector';
+import { delay } from 'patronum';
+
+import { reduxInterop } from 'root/redux-store';
+
+const startRequested = reduxInterop.dispatch.prepend(actions.requestStart);
+const requestSuccess = reduxInterop.dispatch.prepend(actions.requestSuccess);
+
+export const backgroundSyncStarted = reduxInterop.dispatch.prepend(
+  actions.startBackgroundSync
+);
+export const backgroundSyncStopped = reduxInterop.dispatch.prepend(
+  actions.stopBackgroundSync
+);
+
+const $needSync = createStore(false)
+  .on(backgroundSyncStarted, () => true)
+  .on(backgroundSyncStopped, () => false);
+const someApiFx = createEffect(someApi);
+
+// This sample will run someApiFx in cycle with 5 second delays,
+// until background sync is stopped
+sample({
+  clock: [
+    backgroundSyncStarted,
+    delay({
+      source: someApiFx.done,
+      timeout: 5_000,
+    }),
+  ],
+  filter: $needSync,
+  target: [
+    // Dispatching original action for compatibility
+    // with the rest of the project
+    startRequested,
+    // Calling the API
+    someApiFx,
+  ],
+});
+
+// Dispatching original action for compatibility
+// with the rest of the project
+sample({
+  clock: someApiFx.doneData,
+  target: requestSuccess,
+});
+```
+
+:::
+
 ## Summary
 
 To perform a gradual, non-blocking code migration from Redux to Effector you will need to:
