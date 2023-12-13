@@ -673,6 +673,45 @@ sample({
 
 :::
 
+#### Partial Saga migration
+
+Previous examples shown the full rewrite of sagas, but it is not neccessary.
+You can move parts of the logic from any saga step-by-step, without rewriting the whole thing.
+
+Here is a first "Data fetching" example, but in a state of partial rewrite.
+
+```ts
+const $page = reduxInterop.fromState((state) => state.currentPage);
+
+const postsRequested = reduxInterop.dispatch.prepend(actions.requestPosts);
+const postsReceived = reduxInterop.dispatch.prepend(actions.receivePosts);
+
+export const fetchPosts = reduxInterop.dispatch.prepend(() => ({
+  type: 'FETCH_POSTS',
+}));
+
+const fetchProductsByPageFx = attach({
+  source: $page,
+  effect(page) {
+    return fetchApi('/products', page);
+  },
+});
+
+function* fetchPosts() {
+  yield call(postsRequested);
+  const products = yield call(fetchProductsByPageFx);
+  yield call(postsReceived, products);
+}
+
+function* watchFetch() {
+  while (yield take('FETCH_POSTS')) {
+    yield call(fetchPosts); // waits for the fetchPosts task to terminate
+  }
+}
+```
+
+☝️ Notice how `yield call(effectorEvent, argument)` is used instead of `yield put(action)` here. It allows to both call Effector's event (to use it in Effector-based code) and dispatch an action (to use it in Redux-based code).
+
 ## Summary
 
 To perform a gradual, non-blocking code migration from Redux to Effector you will need to:
