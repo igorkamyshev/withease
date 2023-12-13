@@ -177,4 +177,4 @@ test('username updated after save button click', async () => {
 
 ☝️ This test will be especially useful in the future, when this part of logic will be ported to Effector.
 
-Notice, that it is recommended to create a mock version of Redux Store for any test like this, since the Store is containg state, which could leak between the tests.
+Notice, that it is recommended to create a mock version of Redux Store for any tests like this, since the Store contains state, which could leak between the tests.
