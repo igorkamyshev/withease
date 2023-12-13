@@ -464,6 +464,7 @@ That's it, Thunk is now Effect!
 ## Summary
 
 To perform a gradual, non-blocking code migration from Redux to Effector you will need to:
+
 1. Install `@withease/redux` helpers package.
 2. Convert a single feature to Effector, so you and your collegaues are able to evaluate if it fits you.
 3. Rewrite Redux code to Effector, by converting entities of the former to their counterparts of the latter. You can do it gradually over the course of months and years, without stopping feature development of your product.
