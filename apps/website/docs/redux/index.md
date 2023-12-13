@@ -7,7 +7,7 @@ outline: [2, 3]
 Minimalistic package to allow simpler migration from Redux to Effector.
 Also can handle any other usecase, where one needs to communicate with Redux Store from Effector's code.
 
-This is a API reference article, for the Redux -> Effector migration guide [see the "Migrating from Redux to Effector" article](/magazine/migration_from_redux).
+This is an API reference article, for the Redux -> Effector migration guide [see the "Migrating from Redux to Effector" article](/magazine/migration_from_redux).
 
 ## Installation
 
