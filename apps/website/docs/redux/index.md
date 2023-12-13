@@ -64,7 +64,7 @@ const $user = reduxInterop.fromState((x) => x.user);
 
 It is useful to mirror some part of the Redux state into Effector's world.
 
-Notice, that `fromState` method supports Redux Store typings, which can be useful
+Notice, that `fromState` method supports Redux Store typings, which can be useful.
 
 #### `reduxInterop.dispatch`
 
