@@ -4,17 +4,40 @@
   "sourceRoot": "packages/redux/src",
   "projectType": "library",
   "targets": {
+    "pack": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/typepack.mjs --package redux"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
+    },
     "build": {
-      "executor": "@nx/rollup:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/redux",
-        "main": "packages/redux/src/index.ts",
-        "tsConfig": "packages/redux/tsconfig.lib.json",
-        "assets": [],
+        "outputPath": "dist/packages/i18next",
+        "entryFile": "packages/redux/index.ts",
+        "tsConfig": "packages/redux/tsconfig.build.json",
         "project": "packages/redux/package.json",
-        "compiler": "swc"
+        "format": ["esm", "cjs"],
+        "generateExportsField": true,
+        "compiler": "babel"
       }
+    },
+    "publish": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/scripts/publish.mjs redux"
+      },
+      "dependsOn": [
+        {
+          "target": "pack"
+        }
+      ]
     },
     "lint": {
       "executor": "@nx/linter:eslint",
@@ -25,10 +48,19 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/redux"],
+      "outputs": ["coverage/packages/redux"]
+    },
+    "size": {
+      "executor": "./tools/executors/size-limit:size-limit",
       "options": {
-        "passWithNoTests": true
-      }
+        "limit": "2 kB",
+        "outputPath": "dist/packages/redux"
+      },
+      "dependsOn": [
+        {
+          "target": "build"
+        }
+      ]
     }
   },
   "tags": []
