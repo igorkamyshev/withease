@@ -56,18 +56,20 @@ You can read more about this practice [in the "Explicit start of the app" articl
 
 Redux Interoperability object provides few useful APIs.
 
-#### `reduxInterop.fromState`
+#### `reduxInterop.$state`
 
-This method takes a selector and returns Effector's store.
+This is an Effector's Store, which contains **the state** of the provided instance of Redux Store.
+
+It is useful, as it allows to represent any part of Redux state as an Effector store.
 
 ```ts
-const $user = reduxInterop.fromState((x) => x.user);
+import { combine } from 'effector';
+
+const $user = combine(reduxInterop.$state, (x) => x.user);
 ```
 
-It is useful to mirror some part of the Redux state into Effector's world.
-
 :::tip
-Notice, that `fromState` method supports Redux Store typings, if those are provided - so it is recommended to properly type your Redux Store.
+Notice, that `reduxInterop.$state` store will use Redux Store typings, if those are provided. So it is recommended to properly type your Redux Store.
 :::
 
 #### `reduxInterop.dispatch`
@@ -141,7 +143,7 @@ const reduxInterop = createReduxIntegration({
 });
 
 // user model
-const $user = reduxInterop.fromState((x) => x.user);
+const $user = combine(reduxInterop.$state, (x) => x.user);
 
 const updateUserName = reduxInterop.dispatch.prepend((name: string) =>
   userSlice.changeName(name)

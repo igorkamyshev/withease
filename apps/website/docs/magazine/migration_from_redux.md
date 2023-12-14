@@ -94,7 +94,8 @@ At first new model will only contain a "mirrored" stores and events, which are r
 
 ```ts
 // src/features/user-info/model.ts
-export const $userName = reduxInterop.fromState(
+export const $userName = combine(
+  reduxInterop.$state,
   (state) => state.userInfo.name ?? ''
 );
 export const updateName = reduxInterop.dispatch.prepend((name: string) =>
@@ -105,7 +106,9 @@ export const updateName = reduxInterop.dispatch.prepend((name: string) =>
 :::tip
 It is recommended to use `.prepend` API of `reduxInterop.dispatch` effect to create separate Effector events, connected to their Redux action counterparts.
 
-But since `reduxInterop.dispatch` is a normal Effect, you can safely use it like so.
+The same is recommended for `reduxInterop.$state` - it is better to create separate stores via `combine` for "slices" of the Redux state, because it makes gradual migration easier.
+
+But since `reduxInterop.dispatch` is a normal Effect and `reduxInterop.$state` is a normal store, you can safely use both of them like so.
 :::
 
 This model then can be used anywhere in place of classic actions and selectors.
@@ -187,7 +190,8 @@ We can now extend this model with new logic or carry over existing logic from Re
 
 ```ts
 // src/features/user-info/model.ts
-export const $userName = reduxInterop.fromState(
+export const $userName = combine(
+  reduxInterop.$state,
   (state) => state.userInfo.name ?? ''
 );
 export const updateName = createEvent<string>();
@@ -494,7 +498,7 @@ function* watchFetch() {
 ```
 
 ```ts [effector + @withease/redux]
-const $page = reduxInterop.fromState((state) => state.currentPage);
+const $page = combine(reduxInterop.$state, (state) => state.currentPage);
 const postsRequested = reduxInterop.dispatch.prepend(actions.requestPosts);
 const postsReceived = reduxInterop.dispatch.prepend(actions.receivePosts);
 // This event should be used to dispatch this action in place of original dispatch
@@ -681,7 +685,7 @@ You can move parts of the logic from any saga step-by-step, without rewriting th
 Here is a first "Data fetching" example, but in a state of partial rewrite.
 
 ```ts
-const $page = reduxInterop.fromState((state) => state.currentPage);
+const $page = combine(reduxInterop.$state, (state) => state.currentPage);
 
 const postsRequested = reduxInterop.dispatch.prepend(actions.requestPosts);
 const postsReceived = reduxInterop.dispatch.prepend(actions.receivePosts);
