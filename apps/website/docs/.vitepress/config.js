@@ -35,9 +35,9 @@ export default defineConfig({
         text: 'Packages',
         items: [
           { text: 'i18next', link: '/i18next/' },
+          { text: 'redux', link: '/redux/' },
           { text: 'web-api', link: '/web-api/' },
           { text: 'factories', link: '/factories/' },
-          { text: 'Redux -> Effector', link: '/redux/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
@@ -57,6 +57,9 @@ export default defineConfig({
       ...createSidebar('i18next', [
         { text: 'Get Started', link: '/i18next/' },
         { text: 'Release policy', link: '/i18next/releases' },
+      ]),
+      ...createSidebar('redux', [
+        { text: 'Get Started', link: '/redux/' },
       ]),
       ...createSidebar('web-api', [
         { text: 'Get Started', link: '/web-api/' },

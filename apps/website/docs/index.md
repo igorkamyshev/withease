@@ -22,6 +22,11 @@ features:
     details: A powerful internationalization framework based on i18next
     link: /i18next/
     linkText: Get Started
+  - icon: 🌐
+    title: redux
+    details: Minimalistic package to allow simpler migration from Redux to Effector
+    link: /redux/
+    linkText: Get Started
   - icon: 👩🏽‍💻
     title: web-api
     details: Web API bindings — network status, tab visibility, and more
