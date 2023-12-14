@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "type": "commonjs",
   "peerDependencies": {
-    "effector": "^23.0.0",
+    "effector": "^22.8.8 || ^23.0.0",
     "redux": "^4.0.0 || ^5.0.0"
   }
 }
