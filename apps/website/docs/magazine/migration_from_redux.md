@@ -688,7 +688,7 @@ You can move parts of the logic from any saga step-by-step, without rewriting th
 :::warning
 Note that it is generally **not recommended** calling the `getState` method of Effector Stores, because it is imperative and non-reactive. This method is an escape-hatch for cases where there is no other way.
 
-But you can sometimes use it in Sagas, since they themselves are imperative and non-reactive, and you won't always have the option to write the state to the effector right away.
+But you can sometimes use it in Sagas, because they are imperative and non-reactive themselves, and you're not always going to have the option to rewrite it to Effector right away.
 :::
 
 Here is an earlier "Data fetching" example, but in a state of partial rewrite.
