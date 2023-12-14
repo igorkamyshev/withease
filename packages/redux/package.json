@@ -1,6 +1,6 @@
 {
   "name": "@withease/redux",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.8.8 || ^23.0.0",
