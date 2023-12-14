@@ -6,10 +6,10 @@ This guide explains how to perform a gradual, non-blocking code migration from R
 
 ### Install effector
 
-First of all, you need to install the `effector` package. See [the official documentation for instructions](https://effector.dev/en/introduction/installation/).
+First, you need to install the `effector` package. See [the official documentation for instructions](https://effector.dev/en/introduction/installation/).
 
 :::tip
-It is also highly recommended to set up the official [Effector Eslint Plugin](https://eslint.effector.dev/), so it would be easier for you to follow Effector's best practices.
+It is also highly recommended setting up the official [Effector ESlint Plugin](https://eslint.effector.dev/), so it would be easier for you to follow Effector's best practices.
 :::
 
 Also, it is recommended to read at least some of the Effector's docs, so it is easier to follow the guide.
@@ -46,7 +46,7 @@ export const reduxInterop = createReduxIntegration({
 });
 ```
 
-☝️ Notice, how explicit `setup` event is required to initilize the interoperability. Usually it would be an `appStarted` event or any other "app's lifecycle" event.
+☝️ Notice, how explicit `setup` event is required to initialize the interoperability. Usually it would be an `appStarted` event or any other "app's lifecycle" event.
 
 You can read more about this best-practice [in the "Explicit start of the app" article](/magazine/explicit_start).
 
@@ -59,7 +59,7 @@ import { createEvent } from 'effector';
 export const appStarted = createEvent();
 ```
 
-and then call this event in the point, which corresponds to "start of the app" - usually this is somewhere near the render.
+And then call this event in the point, which corresponds to "start of the app" - usually this is somewhere near the render.
 
 ```tsx
 import { appStarted } from 'root/shared/app-lifecycle';
@@ -110,7 +110,7 @@ But since `reduxInterop.dispatch` is a normal Effect, you can safely use it like
 
 This model then can be used anywhere in place of classic actions and selectors.
 
-E.g. an UI component:
+E.g. a UI component:
 
 ```tsx
 import { useUnit } from 'effector-react';
@@ -138,7 +138,7 @@ You can find [API reference of UI-framework integrations in the Effector's docum
 
 #### Testing
 
-Now that we have the Effector API for the old code, we can write some tests for it, so that the behavior of the Redux code will be captured and we won't break anything when porting the feature implementation to Effector.
+Now that we have the Effector API for the old code, we can write some tests for it, so that the behavior of the Redux code will be captured, and we won't break anything when porting the feature implementation to Effector.
 
 :::tip
 Notice, that we also need to create mock version of the Redux Store, so this test is independent of any other.
@@ -210,8 +210,8 @@ sample({
 Eventually you should end up with a situation where:
 
 1. The state of the feature is still stored in Redux
-2. But all related logic and side-effects are now managed by the Effector
-3. and all external consumers (UI-components, other features, etc) interact with the feature through its Effector-model.
+2. But all related logic and side effects are now managed by the Effector
+3. and all external consumers (UI-components, other features, etc.) interact with the feature through its Effector-model.
 
 After that you can safely move the state into the model and get rid of Redux-reducer for it:
 
@@ -260,9 +260,9 @@ Adding a new feature on Effector to a Redux project is not much different from t
 
 ## Special cases
 
-### Middleware with side-effects
+### Middleware with side effects
 
-Sometimes Redux actions are not changing state, but trigger side-effects via middlewares.
+Sometimes Redux actions are not changing state, but trigger side effects via middlewares.
 
 Suppose Redux Store has middleware that reacts to action like `{ type: SEND_ANALYTICS_EVENT, payload }` and sends the event to our analytics.
 
@@ -286,7 +286,7 @@ export const sendAnalytics = reduxInterop.dispatch.prepend((payload) =>
 
 #### Move to event instead of an action
 
-As a second step, gradually change all dispatches of this action to a event call.
+As a second step, gradually change all dispatches of this action to an event call.
 
 E.g. instead of
 
@@ -329,11 +329,11 @@ sample({
 
 ### Redux Thunks
 
-Redux Thunks are a standard approach for writing async logic in Redux apps, and are commonly used for data fetching, so your app is probably already have a bunch of thunks, which should also be migrated at some point.
+Redux Thunks are a standard approach for writing asynchronous logic in Redux apps, and are commonly used for data fetching, so your app is probably already have a bunch of thunks, which should also be migrated at some point.
 
-The closest equivalent to Thunk in Effector is an [Effect](https://effector.dev/en/api/effector/effect/), which is a container for any function, which produces side-effects (like fetching the data from remote source) - so Thunks should be converted to Effects.
+The closest equivalent to Thunk in Effector is an [Effect](https://effector.dev/en/api/effector/effect/), which is a container for any function, which produces side effects (like fetching the data from remote source) - so Thunks should be converted to Effects.
 
-#### Create a Effect representation for a Thunk
+#### Create an Effect representation for a Thunk
 
 You can convert any Thunk to Effect by using Effector's [`attach` operator](https://effector.dev/en/api/effector/attach/) and wrapping a `reduxInterop.dispatch` with it.
 
@@ -469,7 +469,7 @@ Coincidentally, side effect management is also the main focus of Effector, so to
 Thanks to `@withease/redux` you can do it partially and in any order. Here are few examples of the Saga code ported to Effector.
 
 :::tip
-These examples show the ported code, but the use of redux actions and states is left as is, since other sagas (and any middlewares in general) may depend on them.
+These examples show the ported code, but the use of Redux actions and states is left as is, since other sagas (and any middlewares in general) may depend on them.
 
 See the "Migrating Existing Functions" part of this guide for how to migrate from dispatchers and selectors to events and stores completely.
 :::
@@ -675,7 +675,7 @@ sample({
 
 #### Partial Saga migration
 
-Previous examples shown the full rewrite of sagas, but it is not neccessary.
+Previous examples shown the full rewrite of sagas, but it is not necessary.
 You can move parts of the logic from any saga step-by-step, without rewriting the whole thing.
 
 Here is a first "Data fetching" example, but in a state of partial rewrite.
@@ -717,6 +717,6 @@ function* watchFetch() {
 To perform a gradual, non-blocking code migration from Redux to Effector you will need to:
 
 1. Install `@withease/redux` helpers package.
-2. Convert a single feature to Effector, so you and your collegaues are able to evaluate if it fits you.
+2. Convert a single feature to Effector, so you and your colleagues are able to evaluate if it fits you.
 3. Rewrite Redux code to Effector, by converting entities of the former to their counterparts of the latter. You can do it gradually over the course of months and years, without stopping feature development of your product.
 4. Remove `@withease/redux`, once there is no more Redux code left.

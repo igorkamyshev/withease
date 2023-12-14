@@ -5,7 +5,7 @@ outline: [2, 3]
 # @withease/redux
 
 Minimalistic package to allow simpler migration from Redux to Effector.
-Also can handle any other usecase, where one needs to communicate with Redux Store from Effector's code.
+Also, can handle any other use case, where one needs to communicate with Redux Store from Effector's code.
 
 :::info
 This is an API reference article, for the Redux -> Effector migration guide [see the "Migrating from Redux to Effector" article](/magazine/migration_from_redux).
@@ -48,7 +48,7 @@ const reduxInterop = createReduxIntegration({
 });
 ```
 
-Explicit `setup` event is required to initilize the interoperability. Usually it would be an `appStarted` event or any other "app's lifecycle" event.
+Explicit `setup` event is required to initialize the interoperability. Usually it would be an `appStarted` event or any other "app's lifecycle" event.
 
 You can read more about this practice [in the "Explicit start of the app" article](/magazine/explicit_start).
 
@@ -58,7 +58,7 @@ Redux Interoperability object provides few useful APIs.
 
 #### `reduxInterop.fromState`
 
-This method takes an selector and returns Effector's store.
+This method takes a selector and returns Effector's store.
 
 ```ts
 const $user = reduxInterop.fromState((x) => x.user);
@@ -91,7 +91,7 @@ sample({
 });
 ```
 
-It is also possible to convert an Redux Thunk to `Effect` by using Effector's [`attach` operator](https://effector.dev/en/api/effector/attach/).
+It is also possible to convert a Redux Thunk to `Effect` by using Effector's [`attach` operator](https://effector.dev/en/api/effector/attach/).
 
 ```ts
 import { createAsyncThunk } from '@reduxjs/toolkit';
