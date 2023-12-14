@@ -680,11 +680,21 @@ sample({
 #### Partial Saga migration
 
 Previous examples shown the full rewrite of sagas, but it is not necessary.
-You can move parts of the logic from any saga step-by-step, without rewriting the whole thing.
+You can move parts of the logic from any saga step-by-step, without rewriting the whole thing:
 
-Here is a first "Data fetching" example, but in a state of partial rewrite.
+1. To call an Effector's Event or Effect from Saga you can use a `call` operator, like `yield call(effectorEvent, argument)`.
+2. To read state of the Effector's Store in the Saga you can also use `call` + `getState()` method of a store, like this: `yield call(() => $someStore.getState())`.
+
+:::warning
+Note that it is generally **not recommended** to call the `getState` method of Effector Stores, because it is imperative and non-reactive. This method is an escape-hatch for cases where there is no other way.
+
+But you can sometimes use it in Sagas, since they themselves are imperative and non-reactive, and you won't always have the option to write the state to the effector right away.
+:::
+
+Here is a earlier "Data fetching" example, but in a state of partial rewrite.
 
 ```ts
+// effector model
 const $page = combine(reduxInterop.$state, (state) => state.currentPage);
 
 const postsRequested = reduxInterop.dispatch.prepend(actions.requestPosts);
@@ -696,13 +706,19 @@ export const fetchPosts = reduxInterop.dispatch.prepend(() => ({
 
 const fetchProductsByPageFx = attach({
   source: $page,
-  effect(page) {
-    return fetchApi('/products', page);
+  effect(page, filter) {
+    return fetchApi('/products', page, filter);
   },
 });
 
+// saga
+import { $filters } from 'root/features/filters';
+
+import { postsRequested, postsReceived, fetchProductsByPageFx } from './model';
+
 function* fetchPosts() {
   yield call(postsRequested);
+  const filters = yield call(() => $filters.getState());
   const products = yield call(fetchProductsByPageFx);
   yield call(postsReceived, products);
 }
