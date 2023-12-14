@@ -15,6 +15,7 @@
     "paths": {
       "@withease/factories": ["packages/factories/index.ts"],
       "@withease/i18next": ["packages/i18next/index.ts"],
+      "@withease/redux": ["packages/redux/src/index.ts"],
       "@withease/web-api": ["packages/web-api/index.ts"]
     }
   },
