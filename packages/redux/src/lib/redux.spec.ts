@@ -5,6 +5,8 @@ import {
   createSlice,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
+import { call, take, put } from 'redux-saga/effects';
+import createSagaMiddleware from 'redux-saga';
 import {
   createEvent,
   fork,
@@ -423,6 +425,112 @@ describe('@withease/redux', () => {
 
       expect(scope.getState($test)).toEqual('lol');
       expect($test.getState()).toEqual('kek'); // non-scope state should not have changed
+    });
+
+    describe('Redux Sagas', () => {
+      test('Should allow calling events from sagas', async () => {
+        const testEvent = createEvent<string>();
+        const $test = createStore('kek').on(testEvent, (_, p) => p);
+
+        const testSlice = createSlice({
+          name: 'test',
+          initialState: 'test',
+          reducers: {
+            test: () => 'test',
+          },
+        });
+
+        function* lolSaga() {
+          yield take(testSlice.actions.test.type);
+          yield call(testEvent, 'lol');
+        }
+
+        const sagaMiddleware = createSagaMiddleware();
+
+        const store = configureStore({
+          reducer: {
+            test: testSlice.reducer,
+          },
+          // @ts-expect-error - sagaMiddleware type is not compatible here for some reason :shrug:
+          middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(sagaMiddleware),
+        });
+
+        sagaMiddleware.run(lolSaga);
+
+        const setup = createEvent();
+        const interop = createReduxIntegration({
+          reduxStore: store,
+          setup,
+        });
+
+        const doTest = interop.dispatch.prepend(testSlice.actions.test);
+
+        const scope = fork();
+
+        await allSettled(setup, { scope });
+
+        expect(scope.getState($test)).toEqual('kek');
+
+        await allSettled(doTest, { scope });
+
+        expect(scope.getState($test)).toEqual('lol');
+      });
+
+      test('Should allow reading stores from sagas', async () => {
+        const $someStore = createStore('kek');
+
+        const testSlice = createSlice({
+          name: 'test',
+          initialState: 'kek',
+          reducers: {
+            test: () => 'test',
+            change: (_, a) => a.payload,
+          },
+        });
+
+        const sagaMiddleware = createSagaMiddleware();
+
+        const store = configureStore({
+          reducer: {
+            test: testSlice.reducer,
+          },
+          // @ts-expect-error - sagaMiddleware type is not compatible here for some reason :shrug:
+          middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(sagaMiddleware),
+        });
+
+        const setup = createEvent();
+        const interop = createReduxIntegration({
+          reduxStore: store,
+          setup,
+        });
+
+        const $test = combine(interop.$state, (x) => x.test);
+
+        function* lolSaga() {
+          yield take(testSlice.actions.test.type);
+          // @ts-expect-error - typescript having a hard time with generators
+          const result = yield call(() => $someStore.getState());
+          yield put(testSlice.actions.change(result));
+        }
+
+        sagaMiddleware.run(lolSaga);
+
+        const doTest = interop.dispatch.prepend(testSlice.actions.test);
+
+        const scope = fork({
+          values: [[$someStore, 'lol']],
+        });
+
+        await allSettled(setup, { scope });
+
+        expect(scope.getState($test)).toEqual('kek');
+
+        await allSettled(doTest, { scope });
+
+        expect(scope.getState($test)).toEqual('lol');
+      });
     });
   });
 });
