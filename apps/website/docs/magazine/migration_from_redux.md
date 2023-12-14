@@ -9,7 +9,7 @@ This guide explains how to perform a gradual, non-blocking code migration from R
 First, you need to install the `effector` package. See [the official documentation for instructions](https://effector.dev/en/introduction/installation/).
 
 :::tip
-It is also highly recommended setting up the official [Effector ESlint Plugin](https://eslint.effector.dev/), so it would be easier for you to follow Effector's best practices.
+It is also highly recommended setting up the official [Effector ESLint Plugin](https://eslint.effector.dev/), so it would be easier for you to follow Effector's best practices.
 :::
 
 Also, it is recommended to read at least some of the Effector's docs, so it is easier to follow the guide.
@@ -686,12 +686,12 @@ You can move parts of the logic from any saga step-by-step, without rewriting th
 2. To read state of the Effector's Store in the Saga you can also use `call` + `getState()` method of a store, like this: `yield call(() => $someStore.getState())`.
 
 :::warning
-Note that it is generally **not recommended** to call the `getState` method of Effector Stores, because it is imperative and non-reactive. This method is an escape-hatch for cases where there is no other way.
+Note that it is generally **not recommended** calling the `getState` method of Effector Stores, because it is imperative and non-reactive. This method is an escape-hatch for cases where there is no other way.
 
 But you can sometimes use it in Sagas, since they themselves are imperative and non-reactive, and you won't always have the option to write the state to the effector right away.
 :::
 
-Here is a earlier "Data fetching" example, but in a state of partial rewrite.
+Here is an earlier "Data fetching" example, but in a state of partial rewrite.
 
 ```ts
 // effector model
