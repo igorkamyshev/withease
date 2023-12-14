@@ -12,6 +12,7 @@ import {
   createStore,
   sample,
   attach,
+  combine,
 } from 'effector';
 
 describe('@withease/redux', () => {
@@ -116,7 +117,7 @@ describe('@withease/redux', () => {
       const interop = createReduxIntegration({ reduxStore, setup });
       setup();
 
-      const $state = interop.fromState((x) => x.value);
+      const $state = combine(interop.$state, (x) => x.value);
 
       expect($state.getState()).toEqual('kek');
 
@@ -133,7 +134,7 @@ describe('@withease/redux', () => {
       const setup = createEvent();
       const interop = createReduxIntegration({ reduxStore, setup });
 
-      const $state = interop.fromState((x) => x.value);
+      const $state = combine(interop.$state, (x) => x.value);
 
       const mockStore = legacy_createStore<
         { value: string },
@@ -179,7 +180,7 @@ describe('@withease/redux', () => {
       const updateCount = createEvent<number>();
       const $count = createStore(0).on(updateCount, (s, a) => s + a);
 
-      const $reduxCount = interop.fromState((x) => x.c);
+      const $reduxCount = combine(interop.$state, (x) => x.c);
 
       // effector updates redux
       const updateReduxCount = interop.dispatch.prepend((x: number) => ({
@@ -244,7 +245,7 @@ describe('@withease/redux', () => {
       });
       const setup = createEvent();
       const interop = createReduxIntegration({ reduxStore, setup });
-      const $test = interop.fromState((x) => x.test);
+      const $test = combine(interop.$state, (x) => x.test);
       setup();
 
       expect(interop.$reduxStore.getState()).toBe(reduxStore);
@@ -276,7 +277,7 @@ describe('@withease/redux', () => {
       });
       const setup = createEvent();
       const interop = createReduxIntegration({ reduxStore, setup });
-      const $test = interop.fromState((x) => x.test);
+      const $test = combine(interop.$state, (x) => x.test);
 
       const scope = fork({
         values: [[interop.$reduxStore, mockStore]],
@@ -313,7 +314,7 @@ describe('@withease/redux', () => {
       });
       const setup = createEvent();
       const interop = createReduxIntegration({ reduxStore, setup });
-      const $test = interop.fromState((x) => x.test);
+      const $test = combine(interop.$state, (x) => x.test);
 
       const lolThunk = (p: number) => async (dispatch: any) => {
         await new Promise((resolve) => setTimeout(resolve, p));
@@ -374,7 +375,7 @@ describe('@withease/redux', () => {
       });
       const setup = createEvent();
       const interop = createReduxIntegration({ reduxStore, setup });
-      const $test = interop.fromState((x) => x.test);
+      const $test = combine(interop.$state, (x) => x.test);
 
       const lolThunk = createAsyncThunk(
         'test/lol',

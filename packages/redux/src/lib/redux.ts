@@ -61,14 +61,15 @@ export function createReduxIntegration<
    */
   dispatch: Effect<Act | AnyThunkLikeThing, unknown, Error>;
   /**
-   * Function to get Effector store containing selected part of the Redux store
+   * Effector store containing the state of the Redux store
    *
+   * You can use it to subscribe to the Redux store state changes in Effector
    * @example
    * ```
-   * const $user = reduxInterop.fromState(state => state.user);
+   * const $userName = combine(reduxInterop.$state, state => state.user.name)
    * ```
    */
-  fromState: <R>(selector: (state: State & Ext) => R) => Store<R>;
+  $state: Store<State & Ext>;
 } {
   const { reduxStore, setup } = config;
   if (!is.unit(setup)) {
@@ -90,15 +91,11 @@ export function createReduxIntegration<
 
   const stateUpdated = createEvent<State & Ext>();
 
-  const $state = createStore<State & Ext>(reduxStore.getState(), {
+  const $state = createStore<State & Ext>(reduxStore.getState() ?? null, {
     serialize: 'ignore',
     name: 'redux/$state',
     skipVoid: false,
   }).on(stateUpdated, (_, state) => state);
-
-  function fromState<R>(selector: (state: State & Ext) => R) {
-    return $state.map(selector);
-  }
 
   const dispatchFx = attach({
     source: $reduxStore,
@@ -135,6 +132,6 @@ export function createReduxIntegration<
   return {
     $reduxStore,
     dispatch: dispatchFx,
-    fromState,
+    $state,
   };
 }
