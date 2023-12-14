@@ -19,9 +19,9 @@
       "executor": "@nrwl/rollup:rollup",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/i18next",
-        "entryFile": "packages/redux/index.ts",
-        "tsConfig": "packages/redux/tsconfig.build.json",
+        "outputPath": "dist/packages/redux",
+        "entryFile": "packages/redux/src/index.ts",
+        "tsConfig": "packages/redux/tsconfig.lib.json",
         "project": "packages/redux/package.json",
         "format": ["esm", "cjs"],
         "generateExportsField": true,
@@ -53,7 +53,7 @@
     "size": {
       "executor": "./tools/executors/size-limit:size-limit",
       "options": {
-        "limit": "2 kB",
+        "limit": "1 kB",
         "outputPath": "dist/packages/redux"
       },
       "dependsOn": [
