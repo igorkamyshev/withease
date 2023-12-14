@@ -121,7 +121,7 @@ const promise = someThunkFx(42);
 // `someThunkFx` will return an Promise, which will be resolved once someThunk is resolved
 ```
 
-#### `reduxInterop.$store`
+#### `reduxInterop.$reduxStore`
 
 This is an Effector's Store, which contains provided instance of Redux Store.
 
@@ -165,7 +165,7 @@ test('username updated after save button click', async () => {
   const scope = fork({
     values: [
       // Providing mock version of the redux store
-      [reduxInterop.$store, mockStore],
+      [reduxInterop.$reduxStore, mockStore],
       // Mocking anything else, if needed
       [$nextName, 'updated'],
     ],

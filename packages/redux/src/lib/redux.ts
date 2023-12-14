@@ -45,12 +45,12 @@ export function createReduxIntegration<
    * ```
    * const scope = fork({
    *  values: [
-   *   [reduxInterop.$store, reduxStoreMock]
+   *   [reduxInterop.$reduxStore, reduxStoreMock]
    *  ]
    * })
    * ```
    */
-  $store: Store<ReduxStore>;
+  $reduxStore: Store<ReduxStore>;
   /**
    * Effector's event, which will trigger Redux store dispatch
    *
@@ -83,9 +83,9 @@ export function createReduxIntegration<
     throw new Error('reduxStore must be provided and should be a Redux store');
   }
 
-  const $store = createStore(reduxStore, {
+  const $reduxStore = createStore(reduxStore, {
     serialize: 'ignore',
-    name: 'redux/$store',
+    name: 'redux/$reduxStore',
   });
 
   const stateUpdated = createEvent<State & Ext>();
@@ -101,14 +101,14 @@ export function createReduxIntegration<
   }
 
   const dispatchFx = attach({
-    source: $store,
+    source: $reduxStore,
     effect(store, action: Act | AnyThunkLikeThing) {
       return store.dispatch(action as Act) as unknown;
     },
   });
 
   const reduxInteropSetupFx = attach({
-    source: $store,
+    source: $reduxStore,
     effect(store) {
       const sendUpdate = scopeBind(stateUpdated, { safe: true });
 
@@ -133,7 +133,7 @@ export function createReduxIntegration<
   }).watch(console.error);
 
   return {
-    $store,
+    $reduxStore,
     dispatch: dispatchFx,
     fromState,
   };

@@ -161,7 +161,7 @@ test('username is updated', async () => {
   const scope = fork({
     values: [
       // Providing mock version of the redux store
-      [reduxInterop.$store, mockStore],
+      [reduxInterop.$reduxStore, mockStore],
     ],
   });
 

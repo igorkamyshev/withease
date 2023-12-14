@@ -90,7 +90,7 @@ describe('@withease/redux', () => {
       const interop = createReduxIntegration({ reduxStore, setup });
       setup();
 
-      expect(interop.$store.getState()).toBe(reduxStore);
+      expect(interop.$reduxStore.getState()).toBe(reduxStore);
     });
 
     test('Should allow dispatching actions', () => {
@@ -143,7 +143,7 @@ describe('@withease/redux', () => {
       }));
 
       const scope = fork({
-        values: [[interop.$store, mockStore]],
+        values: [[interop.$reduxStore, mockStore]],
       });
 
       await allSettled(setup, { scope });
@@ -247,7 +247,7 @@ describe('@withease/redux', () => {
       const $test = interop.fromState((x) => x.test);
       setup();
 
-      expect(interop.$store.getState()).toBe(reduxStore);
+      expect(interop.$reduxStore.getState()).toBe(reduxStore);
 
       expect($test.getState()).toEqual('kek');
 
@@ -279,12 +279,12 @@ describe('@withease/redux', () => {
       const $test = interop.fromState((x) => x.test);
 
       const scope = fork({
-        values: [[interop.$store, mockStore]],
+        values: [[interop.$reduxStore, mockStore]],
       });
 
       await allSettled(setup, { scope });
 
-      expect(scope.getState(interop.$store)).toBe(mockStore);
+      expect(scope.getState(interop.$reduxStore)).toBe(mockStore);
 
       expect(scope.getState($test)).toEqual('kek');
       expect($test.getState()).toEqual('');
@@ -334,7 +334,7 @@ describe('@withease/redux', () => {
       const scope = fork({
         values: [
           [
-            interop.$store,
+            interop.$reduxStore,
             // Independent copy of original store
             configureStore({
               reducer: {
@@ -399,7 +399,7 @@ describe('@withease/redux', () => {
       const scope = fork({
         values: [
           [
-            interop.$store,
+            interop.$reduxStore,
             // Independent copy of original store
             configureStore({
               reducer: {
