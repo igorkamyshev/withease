@@ -7,7 +7,7 @@
     "pack": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node tools/scripts/typepack.mjs --package redux --filename src/index.d.ts"
+        "command": "node tools/scripts/typepack.mjs --package redux"
       },
       "dependsOn": [
         {
@@ -20,7 +20,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/redux",
-        "entryFile": "packages/redux/src/index.ts",
+        "entryFile": "packages/redux/index.ts",
         "tsConfig": "packages/redux/tsconfig.lib.json",
         "project": "packages/redux/package.json",
         "format": ["esm", "cjs"],
