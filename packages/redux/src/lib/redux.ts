@@ -1,4 +1,4 @@
-import type { Unit, Store, Effect } from 'effector';
+import type { Unit, StoreWritable, Store, Effect } from 'effector';
 import type { Store as ReduxStore, Action } from 'redux';
 import {
   createStore,
@@ -50,7 +50,7 @@ export function createReduxIntegration<
    * })
    * ```
    */
-  $reduxStore: Store<ReduxStore>;
+  $reduxStore: StoreWritable<ReduxStore<State, Act, Ext>>;
   /**
    * Effector's event, which will trigger Redux store dispatch
    *
