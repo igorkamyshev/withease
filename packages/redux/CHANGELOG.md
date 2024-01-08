@@ -1,5 +1,11 @@
 # @withease/redux
 
+## 1.0.1
+
+### Patch Changes
+
+- 6fa3703: Fixed public types generation
+
 ## 1.0.0
 
 ### Major Changes
