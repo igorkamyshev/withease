@@ -1,5 +1,11 @@
 # @withease/redux
 
+## 1.0.2
+
+### Patch Changes
+
+- 72b097b: Fix \$reduxStore public type
+
 ## 1.0.1
 
 ### Patch Changes
