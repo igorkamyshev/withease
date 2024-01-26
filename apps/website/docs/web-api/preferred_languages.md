@@ -4,7 +4,7 @@ title: Preferred languages
 
 # Preferred languages
 
-Allows tracking user's preferred languages with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).
+Allows tracking user's preferred languages with [_Events_](https://effector.dev/en/api/effector/event/) and [_Stores_](https://effector.dev/docs/api/effector/store).
 
 ::: info
 
@@ -16,8 +16,8 @@ Uses [Navigator.languages](https://developer.mozilla.org/en-US/docs/Web/API/Navi
 
 All you need to do is to create an integration by calling `trackPreferredLanguages` with an integration options:
 
-- `setup`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
-- `teardown?`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be removed, and the integration will be ready to be destroyed.
+- `setup`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
+- `teardown?`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be removed, and the integration will be ready to be destroyed.
 
 ```ts
 import { trackPreferredLanguages } from '@withease/web-api';
@@ -31,10 +31,10 @@ Returns an object with:
 
 - `$language`: [_Store_](https://effector.dev/docs/api/effector/store) with user's preferred language
 - `$languages`: [_Store_](https://effector.dev/docs/api/effector/store) with array of user's preferred languages sorted by priority
-- `languageChanged`: [_Event_](https://effector.dev/docs/api/effector/event) that fires on preferred language change
+- `languageChanged`: [_Event_](https://effector.dev/en/api/effector/event/) that fires on preferred language change
 
 ::: tip
-It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackPreferredLanguages` triggers `languageChanged` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
+It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/en/api/effector/event/) `trackPreferredLanguages` triggers `languageChanged` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
 
 ```ts
 import { trackPreferredLanguages } from '@withease/web-api';

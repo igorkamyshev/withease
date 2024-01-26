@@ -19,19 +19,19 @@ Protocol that allows start watching some external trigger and react on it with u
 
 Trigger is an any object with the field `@@trigger` that a function that returns an object with fields:
 
-- `fired`: [_Event_](https://effector.dev/docs/api/effector/event), external consumers will listen it to determine when trigger was activated
-- `setup`: [_Event_](https://effector.dev/docs/api/effector/event), external consumers will call it to set up trigger
-- `teardown`: [_Event_](https://effector.dev/docs/api/effector/event), external consumers will call it to stop trigger
+- `fired`: [_Event_](https://effector.dev/en/api/effector/event/), external consumers will listen it to determine when trigger was activated
+- `setup`: [_Event_](https://effector.dev/en/api/effector/event/), external consumers will call it to set up trigger
+- `teardown`: [_Event_](https://effector.dev/en/api/effector/event/), external consumers will call it to stop trigger
 
 ::: tip
-[_Events_](https://effector.dev/docs/api/effector/event) `setup` and `teardown` are presented in protocol, because it is better to provide [explicit start of the application](/magazine/explicit_start).
+[_Events_](https://effector.dev/en/api/effector/event/) `setup` and `teardown` are presented in protocol, because it is better to provide [explicit start of the application](/magazine/explicit_start).
 :::
 
 ## Single `fired`
 
-Since `@@trigger` supports only one `fired` [_Event_](https://effector.dev/docs/api/effector/event), any operator that supports `@@trigger` protocol has to choose reasonable [_Event_](https://effector.dev/docs/api/effector/event) to use it as `fired`.
+Since `@@trigger` supports only one `fired` [_Event_](https://effector.dev/en/api/effector/event/), any operator that supports `@@trigger` protocol has to choose reasonable [_Event_](https://effector.dev/en/api/effector/event/) to use it as `fired`.
 
-E.g., [`trackPageVisibility`](/web-api/page_visibility) returns [_Events_](https://effector.dev/docs/api/effector/event) `visible` and `hidden`, but `visible` seems more reasonable `fired` [_Event_](https://effector.dev/docs/api/effector/event).
+E.g., [`trackPageVisibility`](/web-api/page_visibility) returns [_Events_](https://effector.dev/en/api/effector/event/) `visible` and `hidden`, but `visible` seems more reasonable `fired` [_Event_](https://effector.dev/en/api/effector/event/).
 
 ## Example
 

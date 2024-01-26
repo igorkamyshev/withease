@@ -4,7 +4,7 @@ title: Screen orientation
 
 # Screen orientation
 
-Allows tracking device screen orientation with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).
+Allows tracking device screen orientation with [_Events_](https://effector.dev/en/api/effector/event/) and [_Stores_](https://effector.dev/docs/api/effector/store).
 
 ::: info
 
@@ -16,8 +16,8 @@ Uses [Screen Orientation API](https://developer.mozilla.org/en-US/docs/Web/API/S
 
 All you need to do is to create an integration by calling `trackScreenOrientation` with an integration options:
 
-- `setup`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
-- `teardown?`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be removed, and the integration will be ready to be destroyed.
+- `setup`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
+- `teardown?`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be removed, and the integration will be ready to be destroyed.
 
 ```ts
 import { trackScreenOrientation } from '@withease/web-api';
@@ -33,7 +33,7 @@ Returns an object with:
 - `$angle`: [_Store_](https://effector.dev/docs/api/effector/store) with a `number` which represents the current orientation angle in degrees
 
 ::: tip
-It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackScreenOrientation` triggers any updates of `$type` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
+It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/en/api/effector/event/) `trackScreenOrientation` triggers any updates of `$type` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
 
 ```ts
 import { trackScreenOrientation } from '@withease/web-api';

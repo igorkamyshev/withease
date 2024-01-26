@@ -5,7 +5,7 @@ title: Handle Effector's Events in UI-frameworks
 
 # Handle Effector's _Events_ in UI-frameworks
 
-Sometimes you need to do something on UI-framework layer when an [_Event_](https://effector.dev/docs/api/effector/event) is fired on Effector layer. For example, you may want to show a notification when a request for data is failed. In this article, we will look into a way to do it.
+Sometimes you need to do something on UI-framework layer when an [_Event_](https://effector.dev/en/api/effector/event/) is fired on Effector layer. For example, you may want to show a notification when a request for data is failed. In this article, we will look into a way to do it.
 
 ## The problem
 
@@ -37,9 +37,9 @@ function App() {
 }
 ```
 
-But what if we want to show a notification when a request for data is failed? The whole data-flow of the application should not be exposed to the UI-layer. So, we need to find a way to handle [_Events_](https://effector.dev/docs/api/effector/event) on UI-layer without exposing the whole data-flow.
+But what if we want to show a notification when a request for data is failed? The whole data-flow of the application should not be exposed to the UI-layer. So, we need to find a way to handle [_Events_](https://effector.dev/en/api/effector/event/) on UI-layer without exposing the whole data-flow.
 
-Let us say that we have an [_Event_](https://effector.dev/docs/api/effector/event) responsible for data loading failure:
+Let us say that we have an [_Event_](https://effector.dev/en/api/effector/event/) responsible for data loading failure:
 
 ```ts
 // model.ts
@@ -84,9 +84,9 @@ In this solution it is not possible to use any Ant's settings from React Context
 
 So, this is not a solution.
 
-### 🔴 Just `.watch` an [_Event_](https://effector.dev/docs/api/effector/event) in a component
+### 🔴 Just `.watch` an [_Event_](https://effector.dev/en/api/effector/event/) in a component
 
-It is possible to call `.watch`-method of an [_Event_](https://effector.dev/docs/api/effector/event) in a component.
+It is possible to call `.watch`-method of an [_Event_](https://effector.dev/en/api/effector/event/) in a component.
 
 ```tsx{9-17}
 import { useEffect } from 'react';

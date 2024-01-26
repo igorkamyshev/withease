@@ -33,8 +33,8 @@ npm install @withease/i18next i18next
 All you need to do is to create an integration by calling `createI18nextIntegration` with an integration options:
 
 - `instance`: an instance of i18next or [_Store_](https://effector.dev/docs/api/effector/store) with i18next instance; it is better to pass a [_Store_](https://effector.dev/docs/api/effector/store) because it will be possible to use isolated i18next instance and [avoid using global state](/magazine/global_variables).
-- `setup`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
-- `teardown?`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be removed, and the integration will be ready to be destroyed.
+- `setup`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
+- `teardown?`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be removed, and the integration will be ready to be destroyed.
 
 ```ts
 import i18next from 'i18next';
@@ -151,7 +151,7 @@ const { $isReady } = createI18nextIntegration({
 
 An object with the following fields:
 
-- `missingKey`, [_Event_](https://effector.dev/docs/api/effector/event) will be triggered when a key is missing in the translation resources, requires [adding `saveMissing` option to the i18next instance](https://www.i18next.com/overview/api#onmissingkey).
+- `missingKey`, [_Event_](https://effector.dev/en/api/effector/event/) will be triggered when a key is missing in the translation resources, requires [adding `saveMissing` option to the i18next instance](https://www.i18next.com/overview/api#onmissingkey).
 
 ```ts
 const { reporting } = createI18nextIntegration({

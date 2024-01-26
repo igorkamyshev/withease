@@ -4,15 +4,15 @@ title: Explicit start of the app
 
 # Explicit start of the app
 
-In Effector [_Events_](https://effector.dev/docs/api/effector/event) can not be triggered implicitly. It gives you more control over the app's lifecycle and helps to avoid unexpected behavior.
+In Effector [_Events_](https://effector.dev/en/api/effector/event/) can not be triggered implicitly. It gives you more control over the app's lifecycle and helps to avoid unexpected behavior.
 
 ## The code
 
-In the simplest case, you can just create something like `appStarted` [_Event_](https://effector.dev/docs/api/effector/event) and trigger it right after the app initialization. Let us pass through the code line by line and explain what's going on here.
+In the simplest case, you can just create something like `appStarted` [_Event_](https://effector.dev/en/api/effector/event/) and trigger it right after the app initialization. Let us pass through the code line by line and explain what's going on here.
 
-1. Create start [_Event_](https://effector.dev/docs/api/effector/event)
+1. Create start [_Event_](https://effector.dev/en/api/effector/event/)
 
-This [_Event_](https://effector.dev/docs/api/effector/event) will be used to trigger the start of the app. For example, you can attach some global listeners after this it.
+This [_Event_](https://effector.dev/en/api/effector/event/) will be used to trigger the start of the app. For example, you can attach some global listeners after this it.
 
 ```ts{3}
 import { createEvent, fork, allSettled } from "effector";
@@ -38,9 +38,9 @@ const scope = fork();
 await allSettled(appStarted, { scope });
 ```
 
-3. Trigger start [_Event_](https://effector.dev/docs/api/effector/event) on the patricular [_Scope_](https://effector.dev/docs/api/effector/scope)
+3. Trigger start [_Event_](https://effector.dev/en/api/effector/event/) on the patricular [_Scope_](https://effector.dev/docs/api/effector/scope)
 
-[`allSettled`](https://effector.dev/docs/api/effector/allSettled) function allows you to start an [_Event_](https://effector.dev/docs/api/effector/event) on particular [_Scope_](https://effector.dev/docs/api/effector/scope) and wait until all computations will be finished.
+[`allSettled`](https://effector.dev/docs/api/effector/allSettled) function allows you to start an [_Event_](https://effector.dev/en/api/effector/event/) on particular [_Scope_](https://effector.dev/docs/api/effector/scope) and wait until all computations will be finished.
 
 ```ts{7}
 import { createEvent, fork, allSettled } from "effector";
@@ -86,7 +86,7 @@ startIncrementationIntervalFx();
 We believe that any serious application has to be testable, so we have to isolate application lifecycle inside particular test-case. In case of implicit start (start of model logic by module execution), it will be impossible to test the app's behavior in different states.
 
 ::: tip
-[`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) function allows you to bind an [_Event_](https://effector.dev/docs/api/effector/event) to particular [_Scope_](https://effector.dev/docs/api/effector/scope), more details you can find in the article [about Fork API rules](/magazine/fork_api_rules).
+[`scopeBind`](https://effector.dev/docs/api/effector/scopeBind) function allows you to bind an [_Event_](https://effector.dev/en/api/effector/event/) to particular [_Scope_](https://effector.dev/docs/api/effector/scope), more details you can find in the article [about Fork API rules](/magazine/fork_api_rules).
 :::
 
 Now, to test the app's behavior, we have to mock `setInterval` function and check that `$counter` value is correct after particular time.
@@ -160,9 +160,9 @@ In real-world applications, it is better to add not only explicit start of the a
 
 ## One more thing
 
-In this recipe, we used application-wide `appStarted` [_Event_](https://effector.dev/docs/api/effector/event) to trigger the start of the app. However, in real-world applications, it is better to use more granular [_Events_](https://effector.dev/docs/api/effector/event) to trigger the start of the particular part of the app.
+In this recipe, we used application-wide `appStarted` [_Event_](https://effector.dev/en/api/effector/event/) to trigger the start of the app. However, in real-world applications, it is better to use more granular [_Events_](https://effector.dev/en/api/effector/event/) to trigger the start of the particular part of the app.
 
 ## Recap
 
 - Do not execute any logic just on module execution
-- Use explicit start [_Event_](https://effector.dev/docs/api/effector/event) of the application
+- Use explicit start [_Event_](https://effector.dev/en/api/effector/event/) of the application

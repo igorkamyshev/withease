@@ -4,7 +4,7 @@ title: You Don't Need Domains
 
 # You Don't Need Domains
 
-[_Domain_](https://effector.dev/docs/api/effector/domain) in Effector is a namespace for [_Events_](https://effector.dev/docs/api/effector/event), [_Effects_](https://effector.dev/docs/api/effector/effect) and [_Stores_](https://effector.dev/docs/api/effector/store). It could be used for two purposes:
+[_Domain_](https://effector.dev/docs/api/effector/domain) in Effector is a namespace for [_Events_](https://effector.dev/en/api/effector/event/), [_Effects_](https://effector.dev/docs/api/effector/effect) and [_Stores_](https://effector.dev/docs/api/effector/store). It could be used for two purposes:
 
 1. Semantic grouping of units
 2. Bulk operations on units

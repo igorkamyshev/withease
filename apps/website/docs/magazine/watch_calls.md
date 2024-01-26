@@ -143,7 +143,7 @@ const scope = fork({
 
 :::
 
-That is it! Furthermore, you can use `debug` method not only to debug value of [_Store_](https://effector.dev/docs/api/effector/store) but also for track execution of other units like [_Event_](https://effector.dev/docs/api/effector/event) or [_Effect_](https://effector.dev/docs/api/effector/effect), for trace chain of calls and so on. For more details, please, check [patronum/debug](https://patronum.effector.dev/methods/debug/) documentation.
+That is it! Furthermore, you can use `debug` method not only to debug value of [_Store_](https://effector.dev/docs/api/effector/store) but also for track execution of other units like [_Event_](https://effector.dev/en/api/effector/event/) or [_Effect_](https://effector.dev/docs/api/effector/effect), for trace chain of calls and so on. For more details, please, check [patronum/debug](https://patronum.effector.dev/methods/debug/) documentation.
 
 ::: tip
 Do not forget to remove `debug` calls from the production code. To ensure that, you can use [`effector/no-patronum-debug` rule for ESLint](https://eslint.effector.dev/rules/no-patronum-debug.html).
@@ -151,7 +151,7 @@ Do not forget to remove `debug` calls from the production code. To ensure that, 
 
 ### React on changes
 
-If you need to react on changes in [_Store_](https://effector.dev/docs/api/effector/store), you can use `.updates` property. It is an [_Event_](https://effector.dev/docs/api/effector/event) that emits new values of the [_Store_](https://effector.dev/docs/api/effector/store) on each update. With a combination of [`sample`](https://effector.dev/docs/api/effector/sample) and [_Effect_](https://effector.dev/docs/api/effector/effect) it allows you to create side effects on changes in [_Store_](https://effector.dev/docs/api/effector/store) in a declarative and robust way.
+If you need to react on changes in [_Store_](https://effector.dev/docs/api/effector/store), you can use `.updates` property. It is an [_Event_](https://effector.dev/en/api/effector/event/) that emits new values of the [_Store_](https://effector.dev/docs/api/effector/store) on each update. With a combination of [`sample`](https://effector.dev/docs/api/effector/sample) and [_Effect_](https://effector.dev/docs/api/effector/effect) it allows you to create side effects on changes in [_Store_](https://effector.dev/docs/api/effector/store) in a declarative and robust way.
 
 ::: code-group
 
@@ -208,7 +208,7 @@ const scope = fork({
 Since, Effector is based on idea of explicit triggers, in this example we use [explicit start of the app](/magazine/explicit_start).
 :::
 
-This approach not only solve problems that mentioned above but also increases code readability and maintainability. For example, real-world side effects can sometimes fail, and you need to handle errors. With `.watch` approach, you need to handle errors in each callback. With [_Effect_](https://effector.dev/docs/api/effector/effect) approach, you can handle errors in seamless declarative way, because [_Effect_](https://effector.dev/docs/api/effector/effect) has a built-in property `.fail` which is an [_Event_](https://effector.dev/docs/api/effector/event) that emits on each failure.
+This approach not only solve problems that mentioned above but also increases code readability and maintainability. For example, real-world side effects can sometimes fail, and you need to handle errors. With `.watch` approach, you need to handle errors in each callback. With [_Effect_](https://effector.dev/docs/api/effector/effect) approach, you can handle errors in seamless declarative way, because [_Effect_](https://effector.dev/docs/api/effector/effect) has a built-in property `.fail` which is an [_Event_](https://effector.dev/en/api/effector/event/) that emits on each failure.
 
 ## Summary
 

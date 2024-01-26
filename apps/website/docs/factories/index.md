@@ -4,7 +4,7 @@ outline: [2, 3]
 
 # factories
 
-In Effector's world any factory is a function that returns a set of [_Stores_](https://effector.dev/docs/api/effector/store), [_Events_](https://effector.dev/docs/api/effector/event) or [_Effects_](https://effector.dev/docs/api/effector/effect). It's a way to encapsulate some logic and reuse it in different places.
+In Effector's world any factory is a function that returns a set of [_Stores_](https://effector.dev/docs/api/effector/store), [_Events_](https://effector.dev/en/api/effector/event/) or [_Effects_](https://effector.dev/docs/api/effector/effect). It's a way to encapsulate some logic and reuse it in different places.
 
 If your application has any unit-tests or meant to be rendered on the server (SSR) factories have to be added to `factories` field in config of [`effector/babel-plugin`](https://effector.dev/docs/api/effector/babel-plugin/) or [`@effector/swc-plugin`](https://github.com/effector/swc-plugin). The reasons of this limitation are described in [this article](https://farfetched.pages.dev/recipes/sids.html).
 

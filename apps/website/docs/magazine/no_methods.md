@@ -58,7 +58,7 @@ const $discountPercentage = combine(
 
 ## `sample`
 
-It is even more noticeable when you need to filter an [_Event_](https://effector.dev/docs/api/effector/event) by a payload. Let us say you have an [_Event_](https://effector.dev/docs/api/effector/event) representing form submission and derived [_Event_](https://effector.dev/docs/api/effector/event) representing valid form submission:
+It is even more noticeable when you need to filter an [_Event_](https://effector.dev/en/api/effector/event/) by a payload. Let us say you have an [_Event_](https://effector.dev/en/api/effector/event/) representing form submission and derived [_Event_](https://effector.dev/en/api/effector/event/) representing valid form submission:
 
 ```ts
 const formSubmitted = createEvent();

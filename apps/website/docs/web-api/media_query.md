@@ -4,7 +4,7 @@ title: Media query
 
 # Media query
 
-Allows tracking any media query matching state with [_Events_](https://effector.dev/docs/api/effector/event) and [_Stores_](https://effector.dev/docs/api/effector/store).
+Allows tracking any media query matching state with [_Events_](https://effector.dev/en/api/effector/event/) and [_Stores_](https://effector.dev/docs/api/effector/store).
 
 ::: info
 
@@ -18,8 +18,8 @@ Uses [Window.matchMedia](https://developer.mozilla.org/en-US/docs/Web/API/Window
 
 All you need to do is to create an integration by calling `trackMediaQuery` with query to track an integration options:
 
-- `setup`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
-- `teardown?`: after this [_Event_](https://effector.dev/docs/api/effector/event) all listeners will be removed, and the integration will be ready to be destroyed.
+- `setup`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
+- `teardown?`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be removed, and the integration will be ready to be destroyed.
 
 ```ts
 import { trackMediaQuery } from '@withease/web-api';
@@ -32,10 +32,10 @@ const { $matches, matched } = trackMediaQuery('(max-width: 600px)', {
 Returns an object with:
 
 - `$matches`: [_Store_](https://effector.dev/docs/api/effector/store) with `true` if query is matches current state and `false` if it is not
-- `matched`: [_Event_](https://effector.dev/docs/api/effector/event) fired when query starts to match current state
+- `matched`: [_Event_](https://effector.dev/en/api/effector/event/) fired when query starts to match current state
 
 ::: tip
-It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/docs/api/effector/event) `trackMediaQuery` triggers `matched` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
+It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/en/api/effector/event/) `trackMediaQuery` triggers `matched` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
 
 ```ts
 import { trackMediaQuery } from '@withease/web-api';
