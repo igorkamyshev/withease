@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 1.1.1
+
+### Patch Changes
+
+- 3e21bda: Fix incorrect types of `@@trigger` protocol in case of Effector 23
+
 ## 1.1.0
 
 ### Minor Changes
