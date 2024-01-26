@@ -20,8 +20,8 @@ Protocol that allows start watching some external trigger and react on it with u
 Trigger is an any object with the field `@@trigger` that a function that returns an object with fields:
 
 - `fired`: [_Event_](https://effector.dev/en/api/effector/event/), external consumers will listen it to determine when trigger was activated
-- `setup`: [_Event_](https://effector.dev/en/api/effector/event/), external consumers will call it to set up trigger
-- `teardown`: [_Event_](https://effector.dev/en/api/effector/event/), external consumers will call it to stop trigger
+- `setup`: [_EventCallable_](https://effector.dev/en/api/effector/event/), external consumers will call it to set up trigger
+- `teardown`: [_EventCallable_](https://effector.dev/en/api/effector/event/), external consumers will call it to stop trigger
 
 ::: tip
 [_Events_](https://effector.dev/en/api/effector/event/) `setup` and `teardown` are presented in protocol, because it is better to provide [explicit start of the application](/magazine/explicit_start).
