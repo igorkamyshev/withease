@@ -22,6 +22,20 @@ const trackScreenOrientation: ScreenOrientation & TriggerProtocol = (
     { serialize: 'ignore' }
   );
 
+  /**
+   * States if device is in landscape orientation
+   */
+  const $landscape = $type.map((type) => {
+    return type === 'landscape-primary' || type === 'landscape-secondary';
+  });
+
+  /**
+   * States if device is in portrait orientation
+   */
+  const $portrait = $type.map((type) => {
+    return type === 'portrait-primary' || type === 'portrait-secondary';
+  });
+
   const orientationChanged = setupListener(
     {
       add: (listener) =>
@@ -45,7 +59,7 @@ const trackScreenOrientation: ScreenOrientation & TriggerProtocol = (
     target: $angle,
   });
 
-  return { $type, $angle };
+  return { $type, $angle, $portrait, $landscape };
 };
 
 trackScreenOrientation['@@trigger'] = () => {
