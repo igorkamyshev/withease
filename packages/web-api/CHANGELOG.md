@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 1.2.0
+
+### Minor Changes
+
+- 1a83c99: Add `$landscape` and `$portrait` stores to `trackScreenOrientation` integration
+
 ## 1.1.1
 
 ### Patch Changes
