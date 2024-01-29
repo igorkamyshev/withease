@@ -6,6 +6,8 @@ import { type TriggerProtocol } from './trigger_protocol';
 type ScreenOrientation = ({ setup, teardown }: Setupable) => {
   $type: Store<null | OrientationType>;
   $angle: Store<null | number>;
+  $portrait: Store<boolean>;
+  $landscape: Store<boolean>;
 };
 
 const trackScreenOrientation: ScreenOrientation & TriggerProtocol = (
