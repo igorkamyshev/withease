@@ -1,5 +1,5 @@
 ---
-'@withease/web-api': patch
+'@withease/web-api': minor
 ---
 
-Add `$isLandscapeOrientation` and `$isPortraitOrientation` stores to `trackScreenOrientation` integration
+Add `$landscape` and `$portrait` stores to `trackScreenOrientation` integration
