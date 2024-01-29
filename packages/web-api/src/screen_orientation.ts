@@ -25,14 +25,14 @@ const trackScreenOrientation: ScreenOrientation & TriggerProtocol = (
   /**
    * States if device is in landscape orientation
    */
-  const $isLandscapeOrientation = $type.map((type) => {
+  const $landscape = $type.map((type) => {
     return type === 'landscape-primary' || type === 'landscape-secondary';
   });
 
   /**
    * States if device is in portrait orientation
    */
-  const $isPortraitOrientation = $type.map((type) => {
+  const $portrait = $type.map((type) => {
     return type === 'portrait-primary' || type === 'portrait-secondary';
   });
 
@@ -59,7 +59,7 @@ const trackScreenOrientation: ScreenOrientation & TriggerProtocol = (
     target: $angle,
   });
 
-  return { $type, $angle, $isPortraitOrientation, $isLandscapeOrientation };
+  return { $type, $angle, $portrait, $landscape };
 };
 
 trackScreenOrientation['@@trigger'] = () => {
