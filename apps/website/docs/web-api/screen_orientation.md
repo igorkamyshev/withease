@@ -22,7 +22,7 @@ All you need to do is to create an integration by calling `trackScreenOrientatio
 ```ts
 import { trackScreenOrientation } from '@withease/web-api';
 
-const { $type, $angle } = trackScreenOrientation({
+const { $type, $angle, $portrait, $landscape } = trackScreenOrientation({
   setup: appStarted,
 });
 ```
@@ -31,6 +31,8 @@ Returns an object with:
 
 - `$type`: [_Store_](https://effector.dev/docs/api/effector/store) with current orientation type, one of "portrait-primary", "portrait-secondary", "landscape-primary", or "landscape-secondary"
 - `$angle`: [_Store_](https://effector.dev/docs/api/effector/store) with a `number` which represents the current orientation angle in degrees
+- `$portrait`: [_Store_](https://effector.dev/docs/api/effector/store) with a `boolean` which states if device is in portrait orientation
+- `$landscape`: [_Store_](https://effector.dev/docs/api/effector/store) with a `boolean` which states if device is in landscape orientation
 
 ::: tip
 It supports [`@@trigger` protocol](/protocols/trigger). Since it allows firing only one [_Event_](https://effector.dev/en/api/effector/event/) `trackScreenOrientation` triggers any updates of `$type` as a `fired` in case of [`@@trigger` protocol](/protocols/trigger).
@@ -45,7 +47,7 @@ somethingExpectsTrigger(trackScreenOrientation);
 
 ## Live demo
 
-Let us show you a live demo of how it works. The following demo displays `$type` and `$angle` values of the current screen orientation. _Rotate your device to see how it works._
+Let us show you a live demo of how it works. The following demo displays `$type`, `$angle`, `$portrait` and `$landscape` values of the current screen orientation. _Rotate your device to see how it works._
 
 <script setup lang="ts">
 import demoFile from './screen_orientation.live.vue?raw';
