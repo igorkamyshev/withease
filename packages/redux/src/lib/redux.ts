@@ -152,9 +152,22 @@ export function createReduxIntegration<
     name: 'redux/$reduxStore',
   });
 
+  if (!reduxStore) {
+    /**
+     * If no `reduxStore` was provided in the initial config,
+     * then this is an async setup case
+     *
+     * So `reduxStore` will be provided by the `setup` event
+     */
+    sample({
+      clock: setup,
+      target: $reduxStore,
+    });
+  }
+
   const stateUpdated = createEvent<State & Ext>();
 
-  const $state = createStore<State & Ext>(reduxStore.getState() ?? null, {
+  const $state = createStore<State & Ext>(reduxStore?.getState() ?? null, {
     serialize: 'ignore',
     name: 'redux/$state',
     skipVoid: false,
