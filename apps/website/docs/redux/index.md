@@ -62,8 +62,8 @@ The `createReduxIntegration` overload without explicit `reduxStore` allows you t
 // src/shared/redux-interop
 export const startReduxInterop = createEvent<ReduxStore>();
 export const reduxInterop = createReduxIntegration({
- setup: startReduxInterop,
-})
+  setup: startReduxInterop,
+});
 
 // src/entrypoint.ts
 import { startReduxInterop } from 'shared/redux-interop';
@@ -72,13 +72,14 @@ const myReduxStore = configureStore({
   // ...
 });
 
-startReduxInterop(myReduxStore)
+startReduxInterop(myReduxStore);
 // or, if you use the Fork API
 allSettled(startReduxInterop, {
   scope: clientScope,
   params: myReduxStore,
-})
+});
 ```
+
 In that case the type support for `reduxInterop.$state` will be slightly worse and `reduxInterop.dispatch` will be no-op (and will show warnings in console) until interop object is provided with Redux Store.
 
 ☝️ This is useful, if your project has cyclic dependencies.
