@@ -301,6 +301,15 @@ describe('@withease/redux', () => {
       expect($test.getState()).toEqual('');
     });
 
+    describe('Async Interop API object initialization', () => {
+      test('Should allow not to pass reduxStore', () => {
+        const setup = createEvent<any>();
+        const interop = createReduxIntegration({ setup });
+
+        expect(interop.$reduxStore.getState()).toBeUndefined();
+      });
+    });
+
     test('Should support redux-thunks', async () => {
       const testSlice = createSlice({
         name: 'test',
