@@ -52,6 +52,37 @@ Explicit `setup` event is required to initialize the interoperability. Usually i
 
 You can read more about this practice [in the "Explicit start of the app" article](/magazine/explicit_start).
 
+#### Async initialization
+
+You can also defer interop object initialization and Redux Store creation in time.
+
+The `createReduxIntegration` overload without explicit `reduxStore` allows you to pass the Store via `setup` event later.
+
+```ts
+// src/shared/redux-interop
+export const startReduxInterop = createEvent<ReduxStore>();
+export const reduxInterop = createReduxIntegration({
+ setup: startReduxInterop,
+})
+
+// src/entrypoint.ts
+import { startReduxInterop } from 'shared/redux-interop';
+
+const myReduxStore = configureStore({
+  // ...
+});
+
+startReduxInterop(myReduxStore)
+// or, if you use the Fork API
+allSettled(startReduxInterop, {
+  scope: clientScope,
+  params: myReduxStore,
+})
+```
+In that case the type support for `reduxInterop.$state` will be slightly worse and `reduxInterop.dispatch` will be no-op (and will show warnings in console) until interop object is provided with Redux Store.
+
+☝️ This is useful, if your project has cyclic dependencies.
+
 ### Interoperability object
 
 Redux Interoperability object provides few useful APIs.
