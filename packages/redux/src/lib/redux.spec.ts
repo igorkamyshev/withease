@@ -315,24 +315,27 @@ describe('@withease/redux', () => {
         expect(scope.getState(interop.$state)).toBe(null);
       });
 
-      test('Should complain, if dispatch is called before store setup', () => {
-        const setup = createEvent<any>();
-        const interop = createReduxIntegration({ setup });
-
+      test('Should complain, if dispatch is called before store setup', async () => {
         const spy = vi.spyOn(console, 'error').mockImplementation(() => {
           // ok
         });
 
-        interop.dispatch({ type: 'test' });
+        const setup = createEvent<any>();
+        const interop = createReduxIntegration({ setup });
 
-        expect(spy).toHaveBeenCalled();
-        expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot();
+        interop.dispatch({ type: 'test' });
 
         const scope = fork();
 
-        allSettled(interop.dispatch, { scope, params: { type: 'test' } });
+        await allSettled(interop.dispatch, { scope, params: { type: 'test' } });
 
-        expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot();
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot(`
+          [
+            [Error: reduxStore must be provided and should be a Redux store],
+            [Error: reduxStore must be provided and should be a Redux store],
+          ]
+        `);
 
         spy.mockRestore();
       });
