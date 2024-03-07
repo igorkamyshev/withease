@@ -302,11 +302,60 @@ describe('@withease/redux', () => {
     });
 
     describe('Async Interop API object initialization', () => {
-      test('Should allow not to pass reduxStore', () => {
+      test('Should allow not to pass reduxStore and use `null` as initial values', () => {
         const setup = createEvent<any>();
         const interop = createReduxIntegration({ setup });
 
-        expect(interop.$reduxStore.getState()).toBeUndefined();
+        expect(interop.$reduxStore.getState()).toBe(null);
+        expect(interop.$state.getState()).toBe(null);
+
+        const scope = fork();
+
+        expect(scope.getState(interop.$reduxStore)).toBe(null);
+        expect(scope.getState(interop.$state)).toBe(null);
+      });
+
+      test('Should complain, if dispatch is called before store setup', () => {
+        const setup = createEvent<any>();
+        const interop = createReduxIntegration({ setup });
+
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {
+          // ok
+        });
+
+        interop.dispatch({ type: 'test' });
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot();
+
+        const scope = fork();
+
+        allSettled(interop.dispatch, { scope, params: { type: 'test' } });
+
+        expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot();
+
+        spy.mockRestore();
+      });
+
+      test('Should allow to setup redux store from setup event', async () => {
+        const reduxStore = legacy_createStore<
+          { value: string },
+          { type: string; value: string }
+        >((_, x) => ({
+          value: x.value || 'kek',
+        }));
+        const setup = createEvent<typeof reduxStore>();
+        const interop = createReduxIntegration({ setup });
+
+        const scope = fork();
+
+        expect(scope.getState(interop.$reduxStore)).toBe(null);
+        expect(scope.getState(interop.$state)).toBe(null);
+
+        await allSettled(setup, { scope, params: reduxStore });
+
+        expect(scope.getState(interop.$reduxStore)).toBe(reduxStore);
+        expect(scope.getState(interop.$state)).toEqual({ value: 'kek' });
       });
     });
 
