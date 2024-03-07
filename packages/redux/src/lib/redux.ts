@@ -21,8 +21,11 @@ type AnyThunkLikeThing = (...args: any[]) => any;
  * Utility function to create an Effector API to interact with Redux store,
  * useful for cases like soft migration from Redux to Effector.
  *
+ * If `reduxStore` is not provided in initial config, then it must be provided via `setup` event call.
+ * If Redux Store is not provided, then it will be set to `null` initially and `reduxInterop.dispatch` will complain about it.
+ *
  * @param config - interop config
- * @param config.reduxStore - a redux store
+ * @param config.reduxStore - (optional) initial redux store instance
  * @param config.setup - effector unit which will setup subscription to the store
  * @returns Interop API object
  */
@@ -136,14 +139,6 @@ export function createReduxIntegration<
   if (!is.unit(setup)) {
     throw new Error('setup must be an effector unit');
   }
-  if (
-    !reduxStore ||
-    !reduxStore.dispatch ||
-    !reduxStore.getState ||
-    !reduxStore.subscribe
-  ) {
-    throw new Error('reduxStore must be provided and should be a Redux store');
-  }
 
   const $reduxStore = createStore(reduxStore ?? null, {
     serialize: 'ignore',
@@ -161,6 +156,8 @@ export function createReduxIntegration<
   const dispatchFx = attach({
     source: $reduxStore,
     effect(store, action: Act | AnyThunkLikeThing) {
+      assertReduxStore(store);
+
       return store.dispatch(action as Act) as unknown;
     },
   });
@@ -168,6 +165,8 @@ export function createReduxIntegration<
   const reduxInteropSetupFx = attach({
     source: $reduxStore,
     effect(store) {
+      assertReduxStore(store);
+
       const sendUpdate = scopeBind(stateUpdated, { safe: true });
 
       sendUpdate(store.getState());
@@ -195,4 +194,15 @@ export function createReduxIntegration<
     dispatch: dispatchFx,
     $state,
   };
+}
+
+function assertReduxStore(reduxStore: any): asserts reduxStore is ReduxStore {
+  if (
+    !reduxStore ||
+    !reduxStore.dispatch ||
+    !reduxStore.getState ||
+    !reduxStore.subscribe
+  ) {
+    throw new Error('reduxStore must be provided and should be a Redux store');
+  }
 }
