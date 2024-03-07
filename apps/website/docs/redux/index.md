@@ -52,9 +52,9 @@ Explicit `setup` event is required to initialize the interoperability. Usually i
 
 You can read more about this practice [in the "Explicit start of the app" article](/magazine/explicit_start).
 
-#### Async initialization
+#### Async setup
 
-You can also defer interop object initialization and Redux Store creation in time.
+You can also defer interop object initialization and Redux Store creation.
 
 The `createReduxIntegration` overload without explicit `reduxStore` allows you to pass the Store via `setup` event later.
 
