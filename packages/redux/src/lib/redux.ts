@@ -140,6 +140,13 @@ export function createReduxIntegration<
     throw new Error('setup must be an effector unit');
   }
 
+  if (reduxStore) {
+    /**
+     * Only assert `reduxStore`, if it was provided explicitly
+     */
+    assertReduxStore(reduxStore);
+  }
+
   const $reduxStore = createStore(reduxStore ?? null, {
     serialize: 'ignore',
     name: 'redux/$reduxStore',
