@@ -50,7 +50,7 @@ export const reduxInterop = createReduxIntegration({
 
 Note, that overload of the `createReduxIntegration` with explicit `reduxStore` allows for better Typescript type inference, but also might result in cyclic dependencies.
 
-In case if you encountered this issue, you can use "async" setup of the `reduxInterop` object, but will lead to `null`-checks later, because in that case there is a possibility, that Redux Store is not initialized yet, while `reduxInterop` object is already in use.
+In case if you encountered this issue, you can use "async" setup of the `reduxInterop` object, but it will lead to `null`-checks later, because in that case there is a possibility, that Redux Store is not initialized yet, while `reduxInterop` object is already in use.
 
 See [the package documentation](/redux/) for more details.
 
