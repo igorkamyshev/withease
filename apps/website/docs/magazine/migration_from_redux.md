@@ -46,7 +46,36 @@ export const reduxInterop = createReduxIntegration({
 });
 ```
 
-☝️ Notice, how explicit `setup` event is required to initialize the interoperability. Usually it would be an `appStarted` event or any other "app's lifecycle" event.
+#### Avoiding dependency cycles
+
+Note, that overload of the `createReduxIntegration` with explicit `reduxStore` allows for better Typescript type inference, but also might result in cyclic dependencies.
+
+In case if you encountered this issue, you can use "async" setup of the `reduxInterop` object, but it will lead to `null`-checks later, because in that case there is a possibility, that Redux Store is not initialized yet, while `reduxInterop` object is already in use.
+
+See [the package documentation](/redux/) for more details.
+
+```ts
+// src/shared/redux-interop
+export const startReduxInterop = createEvent<ReduxStore>();
+export const reduxInterop = createReduxIntegration({
+  setup: startReduxInterop,
+});
+
+// src/entrypoint.ts
+import { startReduxInterop } from 'shared/redux-interop';
+
+const myReduxStore = configureStore({
+  // ...
+});
+
+startReduxInterop(myReduxStore);
+```
+
+☝️ This would allow you to access `reduxInterop` object and avoid possible dependency cycles, if `reduxInterop` is being imported somewhere along with some reducers or middlewares.
+
+#### Explicit `setup`
+
+Notice, how explicit `setup` event is required to initialize the interoperability. Usually it would be an `appStarted` event or any other "app's lifecycle" event.
 
 You can read more about this best-practice [in the "Explicit start of the app" article](/magazine/explicit_start).
 
@@ -62,6 +91,7 @@ export const appStarted = createEvent();
 And then call this event in the point, which corresponds to "start of the app" - usually this is somewhere near the render.
 
 ```tsx
+// src/entrypoint.ts
 import { appStarted } from 'root/shared/app-lifecycle';
 
 appStarted();

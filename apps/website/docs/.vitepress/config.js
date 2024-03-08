@@ -58,7 +58,13 @@ export default defineConfig({
         { text: 'Get Started', link: '/i18next/' },
         { text: 'Release policy', link: '/i18next/releases' },
       ]),
-      ...createSidebar('redux', [{ text: 'Get Started', link: '/redux/' }]),
+      ...createSidebar('redux', [
+        { text: 'Get Started', link: '/redux/' },
+        {
+          text: 'Migrating from Redux to Effector',
+          link: '/magazine/migration_from_redux',
+        },
+      ]),
       ...createSidebar('web-api', [
         { text: 'Get Started', link: '/web-api/' },
         {

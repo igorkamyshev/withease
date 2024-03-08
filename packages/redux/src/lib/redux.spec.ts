@@ -301,6 +301,67 @@ describe('@withease/redux', () => {
       expect($test.getState()).toEqual('');
     });
 
+    describe('Async Interop API object initialization', () => {
+      test('Should allow not to pass reduxStore and use `null` as initial values', () => {
+        const setup = createEvent<any>();
+        const interop = createReduxIntegration({ setup });
+
+        expect(interop.$reduxStore.getState()).toBe(null);
+        expect(interop.$state.getState()).toBe(null);
+
+        const scope = fork();
+
+        expect(scope.getState(interop.$reduxStore)).toBe(null);
+        expect(scope.getState(interop.$state)).toBe(null);
+      });
+
+      test('Should complain, if dispatch is called before store setup', async () => {
+        const spy = vi.spyOn(console, 'error').mockImplementation(() => {
+          // ok
+        });
+
+        const setup = createEvent<any>();
+        const interop = createReduxIntegration({ setup });
+
+        interop.dispatch({ type: 'test' });
+
+        const scope = fork();
+
+        await allSettled(interop.dispatch, { scope, params: { type: 'test' } });
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy.mock.calls.map((x) => x[0])).toMatchInlineSnapshot(`
+          [
+            [Error: reduxStore must be provided and should be a Redux store],
+            [Error: reduxStore must be provided and should be a Redux store],
+          ]
+        `);
+
+        spy.mockRestore();
+      });
+
+      test('Should allow to setup redux store from setup event', async () => {
+        const reduxStore = legacy_createStore<
+          { value: string },
+          { type: string; value: string }
+        >((_, x) => ({
+          value: x.value || 'kek',
+        }));
+        const setup = createEvent<typeof reduxStore>();
+        const interop = createReduxIntegration({ setup });
+
+        const scope = fork();
+
+        expect(scope.getState(interop.$reduxStore)).toBe(null);
+        expect(scope.getState(interop.$state)).toBe(null);
+
+        await allSettled(setup, { scope, params: reduxStore });
+
+        expect(scope.getState(interop.$reduxStore)).toBe(reduxStore);
+        expect(scope.getState(interop.$state)).toEqual({ value: 'kek' });
+      });
+    });
+
     test('Should support redux-thunks', async () => {
       const testSlice = createSlice({
         name: 'test',
