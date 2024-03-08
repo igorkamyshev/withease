@@ -46,7 +46,7 @@ export const reduxInterop = createReduxIntegration({
 });
 ```
 
-#### Avoiding ependency cycles
+#### Avoiding dependency cycles
 
 Note, that overload of the `createReduxIntegration` with explicit `reduxStore` allows for better Typescript type inference, but also might result in cyclic dependencies.
 
