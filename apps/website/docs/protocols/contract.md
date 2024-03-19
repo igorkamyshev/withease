@@ -16,6 +16,7 @@ A rule to statically validate received data. Any object following the strict API
 - [`@farfetched/io-ts`](https://farfetched.pages.dev/api/contracts/io-ts.html)
 - [`@farfetched/superstruct`](https://farfetched.pages.dev/api/contracts/superstruct.html)
 - [`@farfetched/typed-contracts`](https://farfetched.pages.dev/api/contracts/typed-contracts.html)
+- [`@farfetched/valibot`](https://farfetched.pages.dev/api/contracts/valibot.html)
 
 :::
 
