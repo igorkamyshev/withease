@@ -130,3 +130,4 @@ Returned from `createI18nextIntegration` integration contains the following fiel
 - [`reporting`](/i18next/reporting) is an object with the fields that allow you to track different events of the integration
 - <Badge text="since v23.2.0" /> [`$language`](/i18next/language) is a [_Store_](https://effector.dev/docs/api/effector/store) containing the current language
 - <Badge text="since v23.2.0" /> [`changeLanguageFx`](/i18next/change_language) is an [_Effect_](https://effector.dev/docs/api/effector/effect) that changes the current language
+- <Badge text="since v23.2.0" /> [`$instance`](/i18next/instance) is a [_Store_](https://effector.dev/docs/api/effector/store) containing the instance of i18next that is used by the integration

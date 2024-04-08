@@ -65,6 +65,7 @@ export default defineConfig({
             { text: 'reporting', link: '/i18next/reporting' },
             { text: '$language', link: '/i18next/language' },
             { text: 'changeLanguageFx', link: '/i18next/change_language_fx' },
+            { text: '$instance', link: '/i18next/instance' },
           ],
         },
         { text: 'Release policy', link: '/i18next/releases' },
