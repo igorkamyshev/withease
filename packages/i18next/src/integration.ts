@@ -1,6 +1,7 @@
 import {
   type Event,
   type Store,
+  type EventCallable,
   attach,
   combine,
   createEffect,
@@ -28,6 +29,8 @@ type I18nextIntegration = {
   $t: Store<TFunction>;
   translated: Translated;
   $isReady: Store<boolean>;
+  $language: Store<string | null>;
+  changeLanguage: EventCallable<string>;
   reporting: {
     missingKey: Event<MissinKeyReport>;
   };
@@ -80,6 +83,12 @@ export function createI18nextIntegration({
     missingKey: createEvent<MissinKeyReport>(),
   };
 
+  const $language = createStore<string | null>(null, { serialize: 'ignore' });
+
+  const changeLanguage = createEvent<string>();
+
+  // -- End of public API
+
   sample({
     clock: [
       instanceInitialized,
@@ -88,6 +97,28 @@ export function createI18nextIntegration({
     fn: (i18next) => i18next.t.bind(i18next),
     target: $stanaloneT,
   });
+
+  sample({
+    clock: [
+      instanceInitialized,
+      sample({ clock: contextChanged, source: $instance, filter: Boolean }),
+    ],
+    fn: (i18next) => i18next.language,
+    target: $language,
+  });
+
+  const changeLanguageFx = attach({
+    source: $instance,
+    async effect(instance, nextLangauge: string) {
+      if (!instance) {
+        return;
+      }
+
+      await instance.changeLanguage(nextLangauge);
+    },
+  });
+
+  sample({ clock: changeLanguage, target: changeLanguageFx });
 
   sample({
     clock: instanceInitialized,
@@ -223,12 +254,14 @@ export function createI18nextIntegration({
   sample({ clock: destroy, target: destroyListenersFx });
   sample({
     clock: destroyListenersFx.done,
-    target: [$contextChangeListener.reinit!, $missingKeyListener.reinit!],
+    target: [$contextChangeListener.reinit, $missingKeyListener.reinit],
   });
 
   return {
     $isReady,
     $t,
+    $language,
+    changeLanguage,
     translated: (firstArg, ...args: any[]) => {
       if (typeof firstArg === 'string') {
         return translatedWithVariables(firstArg, args[0]);
