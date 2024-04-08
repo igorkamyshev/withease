@@ -1,7 +1,8 @@
 import {
   type Event,
-  type Store,
   type EventCallable,
+  type Store,
+  type Effect,
   attach,
   combine,
   createEffect,
@@ -26,6 +27,7 @@ type MissinKeyReport = {
 };
 
 type I18nextIntegration = {
+  $instance: Store<i18n | null>;
   $t: Store<TFunction>;
   translated: Translated;
   $isReady: Store<boolean>;
@@ -43,7 +45,11 @@ export function createI18nextIntegration({
   setup,
   teardown,
 }: {
-  instance: i18n | Store<i18n | null>;
+  instance:
+    | i18n
+    | Store<i18n | null>
+    | Effect<void, i18n, unknown>
+    | (() => Promise<i18n>);
   setup: Event<void>;
   teardown?: Event<void>;
 }): I18nextIntegration {
@@ -52,12 +58,31 @@ export function createI18nextIntegration({
   const contextChanged = createEvent();
 
   // -- Parse options
-  const $instance: Store<i18n | null> = is.store(instance)
-    ? instance
-    : createStore(instance as i18n | null, {
-        serialize: 'ignore',
-        name: '$instance',
-      });
+  let $instance: Store<i18n | null>;
+
+  if (typeof instance === 'function' || is.effect(instance)) {
+    const $instanceFromFx = createStore<i18n | null>(null, {
+      serialize: 'ignore',
+      name: '$instanceFx',
+    });
+
+    const instanceFx = (
+      is.effect(instance) ? instance : createEffect(instance)
+    ) as Effect<void, i18n, unknown>;
+
+    sample({ clock: setup, target: instanceFx });
+
+    sample({ clock: instanceFx.doneData, target: $instanceFromFx });
+
+    $instance = $instanceFromFx;
+  } else if (is.store(instance)) {
+    $instance = instance;
+  } else {
+    $instance = createStore(instance, {
+      serialize: 'ignore',
+      name: '$instance',
+    });
+  }
 
   const destroy = teardown ?? createEvent();
 
@@ -103,7 +128,7 @@ export function createI18nextIntegration({
       instanceInitialized,
       sample({ clock: contextChanged, source: $instance, filter: Boolean }),
     ],
-    fn: (i18next) => i18next.language,
+    fn: (i18next) => i18next.language ?? null,
     target: $language,
   });
 
@@ -258,6 +283,7 @@ export function createI18nextIntegration({
   });
 
   return {
+    $instance,
     $isReady,
     $t,
     $language,
