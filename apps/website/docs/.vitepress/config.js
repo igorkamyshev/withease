@@ -56,6 +56,17 @@ export default defineConfig({
     sidebar: {
       ...createSidebar('i18next', [
         { text: 'Get Started', link: '/i18next/' },
+        {
+          text: 'API',
+          items: [
+            { text: '$t', link: '/i18next/t' },
+            { text: 'translated', link: '/i18next/translated' },
+            { text: '$isReady', link: '/i18next/is_ready' },
+            { text: 'reporting', link: '/i18next/reporting' },
+            { text: '$language', link: '/i18next/language' },
+            { text: 'changeLanguageFx', link: '/i18next/change_language_fx' },
+          ],
+        },
         { text: 'Release policy', link: '/i18next/releases' },
       ]),
       ...createSidebar('redux', [
