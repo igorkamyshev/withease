@@ -1,5 +1,12 @@
 # @withease/i18next
 
+## 23.2.0
+
+### Minor Changes
+
+- 6989158: Allow to pass async `instance` to integration
+- 60af5db: Add _Store_ `$language` and _Effect_ `changeLanguageFx` to integration
+
 ## 23.1.0
 
 ### Minor Changes
