@@ -4,7 +4,7 @@ import { createInstance } from 'i18next';
 
 import { createI18nextIntegration } from './integration';
 
-describe('integration.$language/changeLanguage', () => {
+describe('integration.$language/changeLanguageFx', () => {
   test('change language', async () => {
     const setup = createEvent();
 
@@ -16,10 +16,11 @@ describe('integration.$language/changeLanguage', () => {
       lng: 'th',
     });
 
-    const { $language, changeLanguage, translated } = createI18nextIntegration({
-      instance,
-      setup,
-    });
+    const { $language, changeLanguageFx, translated } =
+      createI18nextIntegration({
+        instance,
+        setup,
+      });
 
     const $val = translated('common:key');
 
@@ -34,7 +35,7 @@ describe('integration.$language/changeLanguage', () => {
     expect(scope.getState($language)).toBe('th');
     expect(scope.getState($val)).toBe('th value');
 
-    await allSettled(changeLanguage, { scope, params: 'en' });
+    await allSettled(changeLanguageFx, { scope, params: 'en' });
 
     // After change
     expect(scope.getState($language)).toBe('en');

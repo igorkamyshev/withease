@@ -118,7 +118,7 @@ describe('integration.$t', () => {
 
     const setup = createEvent();
 
-    const { $t } = createI18nextIntegration({
+    const { $t, changeLanguageFx } = createI18nextIntegration({
       instance,
       setup,
     });
@@ -131,7 +131,7 @@ describe('integration.$t', () => {
 
     expect(scope.getState($result)).toBe('Sawa dee');
 
-    instance.changeLanguage('en');
+    await allSettled(changeLanguageFx, { params: 'en', scope });
 
     await allSettled(scope);
     expect(scope.getState($result)).toBe('Hello');
@@ -240,7 +240,7 @@ describe('integration.$t', () => {
 
     await allSettled(teardown, { scope });
 
-    instance.changeLanguage('en');
+    await allSettled(changeLanguageFx, { params: 'en', scope });
 
     await allSettled(scope);
     expect(scope.getState($result)).toBe('Sawa dee');

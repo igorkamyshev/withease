@@ -1,7 +1,7 @@
 import {
   type Event,
   type Store,
-  type EventCallable,
+  type Effect,
   attach,
   combine,
   createEffect,
@@ -30,7 +30,7 @@ type I18nextIntegration = {
   translated: Translated;
   $isReady: Store<boolean>;
   $language: Store<string | null>;
-  changeLanguage: EventCallable<string>;
+  changeLanguageFx: Effect<string, void, unknown>;
   reporting: {
     missingKey: Event<MissinKeyReport>;
   };
@@ -85,7 +85,16 @@ export function createI18nextIntegration({
 
   const $language = createStore<string | null>(null, { serialize: 'ignore' });
 
-  const changeLanguage = createEvent<string>();
+  const changeLanguageFx = attach({
+    source: $instance,
+    async effect(instance, nextLangauge: string) {
+      if (!instance) {
+        return;
+      }
+
+      await instance.changeLanguage(nextLangauge);
+    },
+  });
 
   // -- End of public API
 
@@ -106,19 +115,6 @@ export function createI18nextIntegration({
     fn: (i18next) => i18next.language,
     target: $language,
   });
-
-  const changeLanguageFx = attach({
-    source: $instance,
-    async effect(instance, nextLangauge: string) {
-      if (!instance) {
-        return;
-      }
-
-      await instance.changeLanguage(nextLangauge);
-    },
-  });
-
-  sample({ clock: changeLanguage, target: changeLanguageFx });
 
   sample({
     clock: instanceInitialized,
@@ -261,7 +257,7 @@ export function createI18nextIntegration({
     $isReady,
     $t,
     $language,
-    changeLanguage,
+    changeLanguageFx,
     translated: (firstArg, ...args: any[]) => {
       if (typeof firstArg === 'string') {
         return translatedWithVariables(firstArg, args[0]);
