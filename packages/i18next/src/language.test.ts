@@ -14,7 +14,6 @@ describe('integration.$language/changeLanguage', () => {
         en: { common: { key: 'en value' } },
       },
       lng: 'th',
-      saveMissing: true,
     });
 
     const { $language, changeLanguage, translated } = createI18nextIntegration({
