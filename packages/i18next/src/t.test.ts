@@ -224,7 +224,7 @@ describe('integration.$t', () => {
     const setup = createEvent();
     const teardown = createEvent();
 
-    const { $t } = createI18nextIntegration({
+    const { $t, changeLanguageFx } = createI18nextIntegration({
       instance,
       setup,
       teardown,
