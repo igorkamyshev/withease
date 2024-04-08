@@ -147,6 +147,32 @@ const { $isReady } = createI18nextIntegration({
 });
 ```
 
+#### `$language` <Badge text="since v23.2.0" />
+
+A [_Store_](https://effector.dev/docs/api/effector/store) containing the current language.
+
+```ts
+const { $language } = createI18nextIntegration({
+  /* ... */
+});
+```
+
+#### `changeLanguage` <Badge text="since v23.2.0" />
+
+An [_EventCallable_](https://effector.dev/en/api/effector/event/) that can be called with a language code to change the current language.
+
+```ts
+const { changeLanguage } = createI18nextIntegration({
+  /* ... */
+});
+
+sample({
+  clock: someButtonClicked,
+  fn: () => 'en',
+  target: changeLanguage,
+});
+```
+
 #### `reporting`
 
 An object with the following fields:
