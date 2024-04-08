@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 
 import { createI18nextIntegration } from './integration';
 
-describe('integration.$t', () => {
+describe('integration.translated', () => {
   describe('overload: key', () => {
     test('supports simple key', async () => {
       const instance = createInstance({

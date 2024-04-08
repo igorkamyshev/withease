@@ -1,5 +1,5 @@
 import { allSettled, createEvent, createStore, fork } from 'effector';
-import { createInstance, type i18n } from 'i18next';
+import { createInstance } from 'i18next';
 import { describe, expect, test, vi } from 'vitest';
 
 import { createI18nextIntegration } from './integration';

@@ -4,7 +4,7 @@ import { describe, expect, test } from 'vitest';
 
 import { createI18nextIntegration } from './integration';
 
-describe('integration.$t', () => {
+describe('integration.$isReady', () => {
   test('not ready if not initialized', async () => {
     const setup = createEvent();
 
