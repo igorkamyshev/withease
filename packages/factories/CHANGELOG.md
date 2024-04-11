@@ -1,5 +1,11 @@
 # @withease/factories
 
+## 1.0.4
+
+### Patch Changes
+
+- a6ac670: Add missed license field to package.json
+
 ## 1.0.3
 
 ### Patch Changes
