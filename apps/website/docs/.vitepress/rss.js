@@ -28,7 +28,6 @@ export const rss = {
     );
 
     for (const { url, excerpt, frontmatter, html } of posts) {
-      console.log(rest);
       feed.addItem({
         title: frontmatter.title,
         id: `${hostname}${url}`,
