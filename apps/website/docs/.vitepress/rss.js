@@ -2,6 +2,7 @@ import path from 'node:path';
 import { writeFile } from 'node:fs/promises';
 import { Feed } from 'feed';
 import { createContentLoader } from 'vitepress';
+import { compareAsc } from 'date-fns';
 
 export const rss = {
   async onBuildEnd(config) {
@@ -25,9 +26,7 @@ export const rss = {
 
     const posts = pages.filter((page) => page.frontmatter.rss ?? true);
 
-    posts.sort(
-      (a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)
-    );
+    posts.sort((a, b) => compareAsc(b.frontmatter.date, a.frontmatter.date));
 
     for (const { url, excerpt, frontmatter, html } of posts) {
       feed.addItem({

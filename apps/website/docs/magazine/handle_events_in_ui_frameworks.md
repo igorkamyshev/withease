@@ -1,6 +1,7 @@
 ---
 outline: [2, 3]
 title: Handle Effector's Events in UI-frameworks
+date: 2024-01-26
 ---
 
 # Handle Effector's _Events_ in UI-frameworks

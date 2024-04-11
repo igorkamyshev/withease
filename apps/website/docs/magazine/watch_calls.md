@@ -1,5 +1,6 @@
 ---
 title: .watch calls are (not) weird
+date: 2024-01-26
 ---
 
 # `.watch` calls are (not) weird

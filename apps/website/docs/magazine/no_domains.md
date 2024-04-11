@@ -1,5 +1,6 @@
 ---
 title: You Don't Need Domains
+date: 2024-01-26
 ---
 
 # You Don't Need Domains

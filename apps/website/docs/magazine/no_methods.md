@@ -1,5 +1,6 @@
 ---
 title: Prefer Operators to Methods
+date: 2024-01-26
 ---
 
 # Prefer Operators to Methods

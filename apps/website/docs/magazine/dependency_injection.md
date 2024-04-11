@@ -1,5 +1,6 @@
 ---
 title: Dependency injection
+date: 2023-06-19
 ---
 
 # Dependency injection

@@ -1,3 +1,8 @@
+---
+title: Migrating from Redux to Effector
+date: 2024-03-08
+---
+
 # Migrating from Redux to Effector
 
 This guide explains how to perform a gradual, non-blocking code migration from Redux to Effector.
