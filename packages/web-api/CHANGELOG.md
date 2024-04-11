@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 1.2.2
+
+### Patch Changes
+
+- a6ac670: Add missed license field to package.json
+
 ## 1.2.1
 
 ### Patch Changes
