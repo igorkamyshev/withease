@@ -1,5 +1,6 @@
 ---
 title: Global variables
+date: 2023-01-02
 ---
 
 # Global variables

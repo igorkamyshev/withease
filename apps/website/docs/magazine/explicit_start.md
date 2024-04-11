@@ -1,5 +1,6 @@
 ---
 title: Explicit start of the app
+date: 2024-01-26
 ---
 
 # Explicit start of the app

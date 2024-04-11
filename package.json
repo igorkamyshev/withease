@@ -44,6 +44,7 @@
     "effector": "23.0.0",
     "effector-vue": "23.0.0",
     "eslint": "8.46.0",
+    "feed": "^4.2.2",
     "glob": "^8.0.3",
     "i18next": "23.0.0",
     "nx": "16.5.x",
@@ -65,6 +66,7 @@
   },
   "dependencies": {
     "@algolia/client-search": "^4.14.3",
+    "date-fns": "^3.6.0",
     "sandpack-vue3": "^3.1.7"
   }
 }
