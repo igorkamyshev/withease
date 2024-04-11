@@ -1,8 +1,12 @@
 import { defineConfig } from 'vitepress';
 import { createSidebar } from './sidebar_creator';
+import { rss } from './rss';
 
 export default defineConfig({
-  lang: 'en-US',
+  async buildEnd(config) {
+    await rss.onBuildEnd(config);
+  },
+  lang: 'en',
   title: 'With Ease',
   description:
     'A set of libraries and recipes to make frontend development easier thanks to Effector',
@@ -19,7 +23,7 @@ export default defineConfig({
     logo: '/logo.svg',
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2023-present Igor Kamyşev',
+      copyright: 'Copyright © 2023-present, Igor Kamyşev',
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/igorkamyshev/withease' },
