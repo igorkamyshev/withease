@@ -1,6 +1,7 @@
 {
   "name": "@withease/i18next",
   "version": "23.2.0",
+  "license": "MIT",
   "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.5.0 || ^23.0.0",

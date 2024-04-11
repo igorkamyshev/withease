@@ -1,5 +1,6 @@
 {
   "name": "@withease/factories",
   "version": "1.0.3",
+  "license": "MIT",
   "type": "commonjs"
 }
