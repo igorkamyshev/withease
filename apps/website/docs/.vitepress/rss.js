@@ -18,10 +18,12 @@ export const rss = {
       copyright: 'Copyright (c) 2023-present, Igor Kamyşev',
     });
 
-    const posts = await createContentLoader('/magazine/*.md', {
+    const pages = await createContentLoader('/magazine/*.md', {
       excerpt: true,
       render: true,
     }).load();
+
+    const posts = pages.filter((page) => page.frontmatter.rss ?? true);
 
     posts.sort(
       (a, b) => +new Date(b.frontmatter.date) - +new Date(a.frontmatter.date)

@@ -1,5 +1,6 @@
 ---
 sidebar: false
+rss: false
 ---
 
 # Magazine
