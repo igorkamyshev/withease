@@ -1,5 +1,11 @@
 # @withease/i18next
 
+## 23.2.1
+
+### Patch Changes
+
+- a6ac670: Add missed license field to package.json
+
 ## 23.2.0
 
 ### Minor Changes
