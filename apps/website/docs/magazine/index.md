@@ -7,6 +7,10 @@ rss: false
 
 The collection of articles about Effector and related topics. It is not a replacement for the [official documentation](https://effector.dev), but it can help you to understand some concepts better.
 
+::: tip
+You can read With Ease Magazine in the [RSS format](/feed.rss).
+:::
+
 <script setup>
     import { data as categories } from './articles.data'
 </script>
