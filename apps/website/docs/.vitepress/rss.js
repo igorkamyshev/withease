@@ -5,9 +5,7 @@ import { createContentLoader } from 'vitepress';
 import { compareAsc } from 'date-fns';
 
 export const rss = {
-  async onBuildEnd(config) {
-    const hostname = 'https://withease.pages.dev';
-
+  async onBuildEnd(config, { hostname }) {
     const feed = new Feed({
       title: 'With Ease Magazine',
       description:

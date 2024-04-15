@@ -2,9 +2,14 @@ import { defineConfig } from 'vitepress';
 import { createSidebar } from './sidebar_creator';
 import { rss } from './rss';
 
+const HOSTNAME = 'https://withease.pages.dev';
+
 export default defineConfig({
   async buildEnd(config) {
-    await rss.onBuildEnd(config);
+    await rss.onBuildEnd(config, { hostname: HOSTNAME });
+  },
+  sitemap: {
+    hostname: HOSTNAME,
   },
   lang: 'en',
   title: 'With Ease',
