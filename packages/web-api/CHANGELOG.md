@@ -1,5 +1,11 @@
 # @withease/web-api
 
+## 1.2.3
+
+### Patch Changes
+
+- c3a3bb4: Update toolchain
+
 ## 1.2.2
 
 ### Patch Changes

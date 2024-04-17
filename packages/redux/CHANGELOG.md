@@ -1,5 +1,11 @@
 # @withease/redux
 
+## 1.1.2
+
+### Patch Changes
+
+- c3a3bb4: Update toolchain
+
 ## 1.1.1
 
 ### Patch Changes

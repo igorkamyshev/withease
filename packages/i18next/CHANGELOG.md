@@ -1,5 +1,11 @@
 # @withease/i18next
 
+## 23.2.2
+
+### Patch Changes
+
+- c3a3bb4: Update toolchain
+
 ## 23.2.1
 
 ### Patch Changes
