@@ -30,6 +30,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm playwright install
+      - run: pnpm -r build
       - run: pnpm test:e2e
 
   checks_old_versions:
@@ -51,6 +52,7 @@ jobs:
       - run: node ./tools/other-majors/prepare.mjs ${{ matrix.version }}
       - run: pnpm install --no-frozen-lockfile
 
+      - run: pnpm -r build
       - run: pnpm -r test:run
   e2e_old_versions:
     runs-on: ubuntu-latest
