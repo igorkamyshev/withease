@@ -6,8 +6,8 @@
   "scripts": {
     "test:e2e": "nx run-many --target=e2e --all",
     "lint": "nx run-many --target=lint --all",
-    "lint:format": "nx format:check --all",
-    "lint:workspace": "nx workspace-lint",
+    "format:check": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --check --no-error-on-unmatched-pattern",
+    "format:apply": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --write --no-error-on-unmatched-pattern",
     "lint:changes": "changeset status",
     "build": "nx run-many --target=build --all",
     "format": "nx format:write",
