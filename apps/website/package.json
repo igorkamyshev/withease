@@ -4,8 +4,7 @@
   "scripts": {
     "prepare": "node changelog/cli.mjs",
     "dev": "pnpm prepare && vitepress dev docs",
-    "build": "pnpm prepare && vitepress build docs",
-    "test:run": "vitest run"
+    "build": "pnpm prepare && vitepress build docs"
   },
   "dependencies": {
     "@withease/web-api": "workspace:*"
