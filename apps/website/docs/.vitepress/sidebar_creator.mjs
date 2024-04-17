@@ -5,7 +5,7 @@ export function createSidebar(packageName, sidebar) {
         text: packageName,
         items: [
           ...sidebar,
-          { text: 'Changelog', link: `/${packageName}/CHANGELOG.md` },
+          { text: 'Changelog', link: `/${packageName}/CHANGELOG` },
         ],
       },
     ],
