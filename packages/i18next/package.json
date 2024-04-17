@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test:run": "vitest run --typecheck",
-    "build": "vite build"
+    "build": "vite build",
+    "size": "size-limit"
   },
   "type": "module",
   "files": [
@@ -28,5 +29,11 @@
         "default": "./dist/i18next.cjs"
       }
     }
-  }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/i18next.js",
+      "limit": "1.26 kB"
+    }
+  ]
 }

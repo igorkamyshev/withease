@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "test:run": "vitest run --typecheck",
-    "build": "vite build"
+    "build": "vite build",
+    "size": "size-limit"
   },
   "type": "module",
   "files": [
@@ -24,5 +25,11 @@
         "default": "./dist/factories.cjs"
       }
     }
-  }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/factories.js",
+      "limit": "356 B"
+    }
+  ]
 }

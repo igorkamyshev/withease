@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test:run": "vitest run --typecheck",
-    "build": "vite build"
+    "build": "vite build",
+    "size": "size-limit"
   },
   "type": "module",
   "files": [
@@ -28,5 +29,11 @@
         "default": "./dist/redux.cjs"
       }
     }
-  }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/redux.js",
+      "limit": "569 B"
+    }
+  ]
 }

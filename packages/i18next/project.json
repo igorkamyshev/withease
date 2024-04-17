@@ -14,18 +14,6 @@
           "target": "pack"
         }
       ]
-    },
-    "size": {
-      "executor": "./tools/executors/size-limit:size-limit",
-      "options": {
-        "limit": "16.6 kB",
-        "outputPath": "dist/packages/i18next"
-      },
-      "dependsOn": [
-        {
-          "target": "build"
-        }
-      ]
     }
   },
   "tags": []
