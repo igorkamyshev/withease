@@ -46,17 +46,6 @@
         "lintFilePatterns": ["packages/i18next/**/*.ts"]
       }
     },
-    "test": {
-      "executor": "@nx/vite:test",
-      "options": {
-        "config": "packages/i18next/vite.config.ts"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
-        }
-      }
-    },
     "size": {
       "executor": "./tools/executors/size-limit:size-limit",
       "options": {

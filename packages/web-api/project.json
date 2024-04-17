@@ -46,17 +46,6 @@
         "lintFilePatterns": ["packages/web-api/**/*.ts"]
       }
     },
-    "test": {
-      "executor": "@nx/vite:test",
-      "options": {
-        "config": "packages/web-api/vite.config.ts"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
-        }
-      }
-    },
     "size": {
       "executor": "./tools/executors/size-limit:size-limit",
       "options": {

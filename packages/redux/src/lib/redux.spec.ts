@@ -27,7 +27,7 @@ describe('@withease/redux', () => {
     expect(() =>
       // @ts-expect-error - setup is not an effector unit
       createReduxIntegration({ reduxStore, setup })
-    ).toThrowErrorMatchingInlineSnapshot('"setup must be an effector unit"');
+    ).toThrowErrorMatchingInlineSnapshot(`[Error: setup must be an effector unit]`);
   });
 
   test('Should throw if reduxStore is not a Redux store', () => {
@@ -38,7 +38,7 @@ describe('@withease/redux', () => {
       // @ts-expect-error - reduxStore is not a Redux store
       createReduxIntegration({ reduxStore, setup })
     ).toThrowErrorMatchingInlineSnapshot(
-      '"reduxStore must be provided and should be a Redux store"'
+      `[Error: reduxStore must be provided and should be a Redux store]`
     );
   });
 

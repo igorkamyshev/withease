@@ -6,5 +6,8 @@
   "peerDependencies": {
     "effector": "^22.8.8 || ^23.0.0",
     "redux": "^4.0.0 || ^5.0.0"
+  },
+  "scripts": {
+    "test:run": "vitest run --typecheck"
   }
 }

@@ -15,9 +15,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint:format
-      - run: pnpm lint:workspace
-      - run: pnpm test
-      - run: pnpm test:types
+      - run: pnpm -r test:run
       - run: pnpm lint
       - run: pnpm build
       - run: pnpm size
@@ -54,8 +52,7 @@ jobs:
       - run: node ./tools/other-majors/prepare.mjs ${{ matrix.version }}
       - run: pnpm install --no-frozen-lockfile
 
-      - run: pnpm test
-      - run: pnpm test:types
+      - run: pnpm -r test:run
   e2e_old_versions:
     runs-on: ubuntu-latest
 
