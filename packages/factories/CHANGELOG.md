@@ -1,5 +1,11 @@
 # @withease/factories
 
+## 1.0.5
+
+### Patch Changes
+
+- c3a3bb4: Update toolchain
+
 ## 1.0.4
 
 ### Patch Changes
