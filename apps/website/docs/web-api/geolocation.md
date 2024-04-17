@@ -45,6 +45,8 @@ Returns an object with:
   - `start` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to start watching the current location
   - `stop` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to stop watching the current location
   - `$active` - [_Store_](https://effector.dev/docs/api/effector/store) with `true` if watching is started and `false` if watching is stopped
+- `reporting` - an object with the following properties:
+  - `failed` - [_Event_](https://effector.dev/en/api/effector/event) that fires when the location request fails
 
 ### Regional restrictions
 
