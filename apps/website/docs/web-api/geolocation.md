@@ -14,24 +14,18 @@ Uses [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocat
 
 All you need to do is to create an integration by calling `trackGeolocation` with an integration options:
 
-- `setup`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be installed, and the integration will be ready to use; it is required because it is better to use [explicit initialization _Event_ in the application](/magazine/explicit_start).
-- `teardown?`: after this [_Event_](https://effector.dev/en/api/effector/event/) all listeners will be removed, and the integration will be ready to be destroyed.
-- `options?`: an object with the following properties:
-  - `maximumAge?`: a positive `number` representing the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to `0`, it means that the device cannot use a cached position and must attempt to retrieve the real current position. If set to `Infinity` the device must return a cached position regardless of its age.
-  - `timeout?`: a positive `number` representing the maximum length of time (in milliseconds) the device is allowed to take in order to return a position. The maximum value for this attribute is `Infinity`.
-  - `enableHighAccuracy?`: a `boolean` that indicates the application would like to receive the best possible results.
+- `maximumAge?`: a positive `number` representing the maximum age in milliseconds of a possible cached position that is acceptable to return. If set to `0`, it means that the device cannot use a cached position and must attempt to retrieve the real current position. If set to `Infinity` the device must return a cached position regardless of its age.
+- `timeout?`: a positive `number` representing the maximum length of time (in milliseconds) the device is allowed to take in order to return a position. The maximum value for this attribute is `Infinity`.
+- `enableHighAccuracy?`: a `boolean` that indicates the application would like to receive the best possible results.
 
 ```ts
 import { trackGeolocation } from '@withease/web-api';
 
 const { $location, $latitude, $longitude, request, watching, reporting } =
   trackGeolocation({
-    setup: appStarted,
-    options: {
-      maximumAge,
-      timeout,
-      enableHighAccuracy,
-    },
+    maximumAge,
+    timeout,
+    enableHighAccuracy,
   });
 ```
 
