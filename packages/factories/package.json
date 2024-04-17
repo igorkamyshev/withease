@@ -12,10 +12,17 @@
   ],
   "main": "./dist/factories.cjs",
   "module": "./dist/factories.js",
+  "types": "./dist/factories.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/factories.js",
-      "require": "./dist/factories.cjs"
+      "import": {
+        "types": "./dist/factories.d.ts",
+        "default": "./dist/factories.js"
+      },
+      "require": {
+        "types": "./dist/factories.d.cts",
+        "default": "./dist/factories.cjs"
+      }
     }
   }
 }

@@ -2,12 +2,31 @@
   "name": "@withease/i18next",
   "version": "23.2.1",
   "license": "MIT",
-  "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.5.0 || ^23.0.0",
     "i18next": "^22.4.10 || ^23.0.0"
   },
   "scripts": {
-    "test:run": "vitest run --typecheck"
+    "test:run": "vitest run --typecheck",
+    "build": "vite build"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/i18next.cjs",
+  "module": "./dist/i18next.js",
+  "types": "./dist/i18next.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/i18next.d.ts",
+        "default": "./dist/i18next.js"
+      },
+      "require": {
+        "types": "./dist/i18next.d.cts",
+        "default": "./dist/i18next.cjs"
+      }
+    }
   }
 }
