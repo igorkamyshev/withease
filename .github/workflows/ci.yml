@@ -15,8 +15,8 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm run format:check
+      - run: pnpm -r build
       - run: pnpm -r test:run
-      - run: pnpm build
       - run: pnpm size
   e2e:
     runs-on: ubuntu-latest

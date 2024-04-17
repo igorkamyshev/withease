@@ -2,8 +2,20 @@
   "name": "@withease/factories",
   "version": "1.0.4",
   "license": "MIT",
-  "type": "commonjs",
   "scripts": {
-    "test:run": "vitest run --typecheck"
+    "test:run": "vitest run --typecheck",
+    "build": "vite build"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/factories.cjs",
+  "module": "./dist/factories.js",
+  "exports": {
+    ".": {
+      "import": "./dist/factories.js",
+      "require": "./dist/factories.cjs"
+    }
   }
 }

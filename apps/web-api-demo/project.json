@@ -15,7 +15,7 @@
       "options": {
         "buildTarget": "web-api-demo:build"
       }
-    },x
+    },
     "preview": {
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",

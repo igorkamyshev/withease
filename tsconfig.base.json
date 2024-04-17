@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
+    "composite": true,
     "sourceMap": true,
     "declaration": true,
     "moduleResolution": "node",
@@ -9,15 +9,15 @@
     "experimentalDecorators": true,
     "importHelpers": false,
     "target": "es2018",
+    "strict": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "paths": {
-      "@withease/factories": ["packages/factories/index.ts"],
-      "@withease/i18next": ["packages/i18next/index.ts"],
+      "@withease/factories": ["packages/factories/src/index.ts"],
+      "@withease/i18next": ["packages/i18next/src/index.ts"],
       "@withease/redux": ["packages/redux/src/index.ts"],
-      "@withease/web-api": ["packages/web-api/index.ts"]
+      "@withease/web-api": ["packages/web-api/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules"]
 }
