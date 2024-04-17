@@ -67,7 +67,10 @@ Any provider should conform to the following contract:
 
 ```ts
 type CustomProvider = {
-  getCurrentPosition: () => Promise<{ latitude; longitude }>;
+  getCurrentPosition: (
+    /* All options would be passed from trackGeolocation call */
+    { maximumAge, timeout, enableHighAccuracy }
+  ) => Promise<{ latitude; longitude }>;
 };
 ```
 
@@ -79,7 +82,7 @@ For example, in case of Baidu, you can write something like this:
 const geolocation = new BMap.Geolocation();
 
 const baiduProvider = {
-  async getCurrentPosition() {
+  async getCurrentPosition({ maximumAge, timeout, enableHighAccuracy }) {
     // getCurrentPosition function should return a Promise
     return new Promise((resolve, reject) => {
       geolocation.getCurrentPosition(function (r) {
