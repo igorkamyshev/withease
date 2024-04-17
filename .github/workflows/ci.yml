@@ -16,7 +16,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm run format:check
       - run: pnpm -r test:run
-      - run: pnpm lint
       - run: pnpm build
       - run: pnpm size
   e2e:

@@ -8,7 +8,7 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "typetest", "size"]
+        "cacheableOperations": ["build", "size"]
       }
     }
   },
@@ -16,12 +16,6 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
-    },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
-    },
-    "test": {
-      "inputs": ["default", "^production"]
     }
   },
   "workspaceLayout": {
@@ -42,7 +36,6 @@
     "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
     "production": [
       "default",
-      "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json"
     ]

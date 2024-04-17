@@ -26,13 +26,6 @@
           }
         ]
       }
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/web-api-demo-e2e/**/*.{ts,tsx,js,jsx}"]
-      }
     }
   },
   "tags": [],

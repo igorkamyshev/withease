@@ -12,7 +12,6 @@ A set of libraries and recipes to make frontend development easier thanks to Eff
 - make sure that your changes is passing checks:
   - run tests via `pnpm test`
   - run type tests via `pnpm test:types`
-  - run linter via `pnpm lint`
   - try to build it via `pnpm build`
   - format code via `pnpm format`
 - fill in changes via `pnpm changes`

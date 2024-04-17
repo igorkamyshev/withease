@@ -32,7 +32,6 @@ type AnyThunkLikeThing = (...args: any[]) => any;
 export function createReduxIntegration<
   State = unknown,
   Act extends Action = { type: string; [k: string]: unknown },
-  // eslint-disable-next-line @typescript-eslint/ban-types
   Ext extends {} = {}
 >(config: {
   setup: Unit<ReduxStore<State, Act, Ext>>;
@@ -84,12 +83,9 @@ export function createReduxIntegration<
 export function createReduxIntegration<
   State = unknown,
   Act extends Action = { type: string; [k: string]: unknown },
-  // eslint-disable-next-line @typescript-eslint/ban-types
   Ext extends {} = {}
 >(config: {
   reduxStore: ReduxStore<State, Act, Ext>;
-  // We don't care about the type of the setup unit here
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setup: Unit<any>;
 }): {
   /**
@@ -129,7 +125,6 @@ export function createReduxIntegration<
 export function createReduxIntegration<
   State = unknown,
   Act extends Action = { type: string; [k: string]: unknown },
-  // eslint-disable-next-line @typescript-eslint/ban-types
   Ext extends {} = {}
   // Implementation type is `(any) => any`, so TS doesn't complain about overloads being "incompatible"
   // We do that, because they are incompatible, but that is for a reason - those are intended for different use-cases

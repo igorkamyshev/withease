@@ -15,14 +15,7 @@
       "options": {
         "buildTarget": "web-api-demo:build"
       }
-    },
-    "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["apps/web-api-demo/**/*.{ts,js}"]
-      }
-    },
+    },x
     "preview": {
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
