@@ -1,5 +1,5 @@
 <script setup>
-import webApiRaw from '../../../../../dist/packages/web-api?raw';
+import webApiRaw from '../../../../../packages/web-api/dist/web-api.js?raw';
 import { Sandpack } from 'sandpack-vue3';
 
 const props = defineProps(['demoFile']);

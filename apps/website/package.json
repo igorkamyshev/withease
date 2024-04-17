@@ -1,5 +1,13 @@
 {
   "name": "website",
   "private": true,
-  "type": "module"
+  "scripts": {
+    "prepare": "node changelog/cli.mjs",
+    "dev": "pnpm prepare && vitepress dev docs",
+    "build": "pnpm prepare && vitepress build docs",
+    "test:run": "vitest run"
+  },
+  "dependencies": {
+    "@withease/web-api": "workspace:*"
+  }
 }

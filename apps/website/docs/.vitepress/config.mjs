@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress';
-import { createSidebar } from './sidebar_creator';
-import { rss } from './rss';
+import { createSidebar } from './sidebar_creator.mjs';
+import { rss } from './rss.mjs';
 
 const HOSTNAME = 'https://withease.pages.dev';
 
