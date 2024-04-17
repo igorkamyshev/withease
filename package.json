@@ -4,10 +4,8 @@
   "license": "MIT",
   "packageManager": "pnpm@7.28.0",
   "scripts": {
-    "test:e2e": "nx run-many --target=e2e --all",
     "format:check": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --check --no-error-on-unmatched-pattern",
-    "format:apply": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --write --no-error-on-unmatched-pattern",
-    "changes": "changeset"
+    "format:apply": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --write --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
     "@changesets/cli": "^2.24.1",
@@ -15,7 +13,6 @@
     "@playwright/test": "^1.32.2",
     "@reduxjs/toolkit": "^2.0.1",
     "@size-limit/file": "^7.0.8",
-    "@types/node": "18.7.14",
     "effector": "23.0.0",
     "effector-vue": "23.0.0",
     "feed": "^4.2.2",
