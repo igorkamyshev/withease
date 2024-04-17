@@ -16,7 +16,6 @@ export default defineConfig({
   description:
     'A set of libraries and recipes to make frontend development easier thanks to Effector',
   lastUpdated: true,
-  outDir: '../../../dist/apps/website',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico', sizes: 'any' }],
     ['link', { rel: 'icon', href: '/icon.svg', type: 'image/svg+xml' }],
