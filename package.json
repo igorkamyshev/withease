@@ -8,6 +8,7 @@
     "format:apply": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --write --no-error-on-unmatched-pattern"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.15.3",
     "@changesets/cli": "^2.24.1",
     "@farfetched/core": "^0.8.13",
     "@playwright/test": "^1.32.2",

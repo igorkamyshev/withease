@@ -8,7 +8,8 @@
   "scripts": {
     "test:run": "vitest run --typecheck",
     "build": "vite build",
-    "size": "size-limit"
+    "size": "size-limit",
+    "typelint": "attw --pack"
   },
   "type": "module",
   "files": [

@@ -18,6 +18,7 @@ jobs:
       - run: pnpm -r build
       - run: pnpm -r test:run
       - run: pnpm -r size
+      - run: pnpm run -r typelint
   e2e:
     runs-on: ubuntu-latest
 
