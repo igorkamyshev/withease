@@ -1,4 +1,4 @@
-import { createReduxIntegration } from './redux';
+import { describe, test, expect, vi } from 'vitest';
 import { legacy_createStore } from 'redux';
 import {
   configureStore,
@@ -17,6 +17,8 @@ import {
   combine,
 } from 'effector';
 
+import { createReduxIntegration } from './integration';
+
 describe('@withease/redux', () => {
   test('Should throw if setup is not an effector unit', () => {
     const reduxStore = legacy_createStore(() => ({}), {});
@@ -27,7 +29,9 @@ describe('@withease/redux', () => {
     expect(() =>
       // @ts-expect-error - setup is not an effector unit
       createReduxIntegration({ reduxStore, setup })
-    ).toThrowErrorMatchingInlineSnapshot(`[Error: setup must be an effector unit]`);
+    ).toThrowErrorMatchingInlineSnapshot(
+      `[Error: setup must be an effector unit]`
+    );
   });
 
   test('Should throw if reduxStore is not a Redux store', () => {

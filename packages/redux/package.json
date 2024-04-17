@@ -2,12 +2,31 @@
   "name": "@withease/redux",
   "version": "1.1.1",
   "license": "MIT",
-  "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.8.8 || ^23.0.0",
     "redux": "^4.0.0 || ^5.0.0"
   },
   "scripts": {
-    "test:run": "vitest run --typecheck"
+    "test:run": "vitest run --typecheck",
+    "build": "vite build"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/redux.cjs",
+  "module": "./dist/redux.js",
+  "types": "./dist/redux.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/redux.d.ts",
+        "default": "./dist/redux.js"
+      },
+      "require": {
+        "types": "./dist/redux.d.cts",
+        "default": "./dist/redux.cjs"
+      }
+    }
   }
 }

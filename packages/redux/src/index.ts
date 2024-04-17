@@ -1,1 +1,1 @@
-export * from './lib/redux';
+export * from './integration';
