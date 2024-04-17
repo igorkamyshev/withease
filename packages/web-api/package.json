@@ -9,6 +9,7 @@
     "test:run": "vitest run --typecheck",
     "build": "vite build",
     "size": "size-limit",
+    "publint": "node ../../tools/publint.mjs",
     "typelint": "attw --pack"
   },
   "type": "module",
