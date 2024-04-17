@@ -4,6 +4,8 @@ title: Geolocation
 
 # Geolocation <Badge text="since v1.3.0" />
 
+Allows tracking geolocation with [_Events_](https://effector.dev/en/api/effector/event/) and [_Stores_](https://effector.dev/docs/api/effector/store).
+
 ::: info
 
 Uses [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) under the hood
