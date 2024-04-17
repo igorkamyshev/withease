@@ -2,5 +2,36 @@
   "name": "@withease/factories",
   "version": "1.0.4",
   "license": "MIT",
-  "type": "commonjs"
+  "scripts": {
+    "test:run": "vitest run --typecheck",
+    "build": "vite build",
+    "size": "size-limit",
+    "publint": "node ../../tools/publint.mjs",
+    "typelint": "attw --pack"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/factories.cjs",
+  "module": "./dist/factories.js",
+  "types": "./dist/factories.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/factories.d.ts",
+        "default": "./dist/factories.js"
+      },
+      "require": {
+        "types": "./dist/factories.d.cts",
+        "default": "./dist/factories.cjs"
+      }
+    }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/factories.js",
+      "limit": "356 B"
+    }
+  ]
 }

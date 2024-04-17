@@ -1,0 +1,12 @@
+{
+  "name": "web-api-demo",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "e2e": "playwright test"
+  },
+  "dependencies": {
+    "@withease/web-api": "workspace:*"
+  }
+}

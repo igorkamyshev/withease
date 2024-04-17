@@ -25,7 +25,7 @@ describe('factories', () => {
     const myFactory = createFactory((params: number[]) => params.at(0));
 
     expect(() => myFactory([1, 2, 3])).toThrowErrorMatchingInlineSnapshot(
-      '"Do not call factory directly, pass it to invoke function instead"'
+      `[Error: Do not call factory directly, pass it to invoke function instead]`
     );
   });
 
@@ -36,7 +36,7 @@ describe('factories', () => {
         return 1;
       })
     ).toThrowErrorMatchingInlineSnapshot(
-      '"createFactory does not support functions with more than 1 argument"'
+      `[Error: createFactory does not support functions with more than 1 argument]`
     );
   });
 
@@ -44,7 +44,7 @@ describe('factories', () => {
     expect(() =>
       invoke((params: number[]) => params.at(0), [1, 2, 3])
     ).toThrowErrorMatchingInlineSnapshot(
-      '"Function passed to invoke is not created by createFactory"'
+      `[Error: Function passed to invoke is not created by createFactory]`
     );
   });
 });
@@ -61,7 +61,7 @@ describe('nested factories', () => {
     });
 
     expect(() => invoke(externalFactory)).toThrowErrorMatchingInlineSnapshot(
-      '"Do not call factory directly, pass it to invoke function instead"'
+      `[Error: Do not call factory directly, pass it to invoke function instead]`
     );
   });
 
@@ -104,7 +104,7 @@ describe('nested factories', () => {
     });
 
     expect(() => invoke(externalFactory)).toThrowErrorMatchingInlineSnapshot(
-      '"Do not call factory directly, pass it to invoke function instead"'
+      `[Error: Do not call factory directly, pass it to invoke function instead]`
     );
   });
 
@@ -142,7 +142,7 @@ describe('nested factories', () => {
     });
 
     expect(() => invoke(externalFactory)).toThrowErrorMatchingInlineSnapshot(
-      '"Do not call factory directly, pass it to invoke function instead"'
+      `[Error: Do not call factory directly, pass it to invoke function instead]`
     );
   });
 });

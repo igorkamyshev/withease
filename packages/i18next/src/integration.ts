@@ -11,7 +11,7 @@ import {
   sample,
   scopeBind,
 } from 'effector';
-import { type TFunction, i18n } from 'i18next';
+import { type TFunction, type i18n } from 'i18next';
 
 interface Translated {
   (key: string, variables?: Record<string, Store<string>>): Store<string>;

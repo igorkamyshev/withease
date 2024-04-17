@@ -1,9 +1,9 @@
 name: CI
 
-on: push
+on: [pull_request, push]
 
 jobs:
-  checks:
+  code:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,13 +14,24 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm lint:format
-      - run: pnpm lint:workspace
-      - run: pnpm test
-      - run: pnpm test:types
-      - run: pnpm lint
-      - run: pnpm build
-      - run: pnpm size
+      - run: pnpm run format:check
+      - run: pnpm run -r build
+      - run: pnpm run -r test:run
+  pkg:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run -r build
+      - run: pnpm run -r size
+      - run: pnpm run -r publint
+      - run: pnpm run -r typelint
   e2e:
     runs-on: ubuntu-latest
 
@@ -33,9 +44,10 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - run: pnpm playwright install
-      - run: pnpm test:e2e
+      - run: pnpm run -r build
+      - run: pnpm run -r e2e
 
-  checks_old_versions:
+  code_old_versions:
     runs-on: ubuntu-latest
 
     strategy:
@@ -49,13 +61,13 @@ jobs:
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
 
       - run: node ./tools/other-majors/prepare.mjs ${{ matrix.version }}
       - run: pnpm install --no-frozen-lockfile
 
-      - run: pnpm test
-      - run: pnpm test:types
+      - run: pnpm run -r build
+      - run: pnpm run -r test:run
+
   e2e_old_versions:
     runs-on: ubuntu-latest
 
@@ -76,4 +88,5 @@ jobs:
       - run: pnpm install --no-frozen-lockfile
 
       - run: pnpm playwright install
-      - run: pnpm test:e2e
+      - run: pnpm run -r build
+      - run: pnpm run -r e2e

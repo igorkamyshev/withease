@@ -1,14 +1,12 @@
-import { createRequire } from 'node:module';
+import { readFile, writeFile } from 'node:fs/promises';
 
 import manifest from './manifest.json' assert { type: 'json' };
 
-const require = createRequire(import.meta.url);
-
-const { readJsonFile, writeJsonFile } = require('@nx/devkit');
-
 const [, , versoin] = process.argv;
 
-const oldPackageJson = readJsonFile('package.json');
+const oldPackageJson = await readFile('package.json').then((file) =>
+  JSON.parse(file.toString())
+);
 
 const newVersions = manifest[versoin];
 
@@ -16,14 +14,21 @@ if (!newVersions) {
   throw new Error(`No versions found for ${versoin}`);
 }
 
-writeJsonFile('package.json', {
-  ...oldPackageJson,
-  devDependencies: applyNewVersions(
-    oldPackageJson.devDependencies,
-    newVersions
-  ),
-  dependencies: applyNewVersions(oldPackageJson.dependencies, newVersions),
-});
+await writeFile(
+  'package.json',
+  JSON.stringify(
+    {
+      ...oldPackageJson,
+      devDependencies: applyNewVersions(
+        oldPackageJson.devDependencies,
+        newVersions
+      ),
+      dependencies: applyNewVersions(oldPackageJson.dependencies, newVersions),
+    },
+    null,
+    2
+  )
+);
 
 function applyNewVersions(deps, newVersions) {
   return Object.entries(deps).reduce((acc, [key, value]) => {

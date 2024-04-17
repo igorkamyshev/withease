@@ -2,8 +2,39 @@
   "name": "@withease/web-api",
   "version": "1.2.2",
   "license": "MIT",
-  "type": "commonjs",
   "peerDependencies": {
     "effector": "^22.5.0 || ^23.0.0"
-  }
+  },
+  "scripts": {
+    "test:run": "vitest run --typecheck",
+    "build": "vite build",
+    "size": "size-limit",
+    "publint": "node ../../tools/publint.mjs",
+    "typelint": "attw --pack"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/web-api.cjs",
+  "module": "./dist/web-api.js",
+  "types": "./dist/web-api.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/web-api.d.ts",
+        "default": "./dist/web-api.js"
+      },
+      "require": {
+        "types": "./dist/web-api.d.cts",
+        "default": "./dist/web-api.cjs"
+      }
+    }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/web-api.js",
+      "limit": "1.58 kB"
+    }
+  ]
 }
