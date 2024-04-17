@@ -7,8 +7,6 @@
     "test:e2e": "nx run-many --target=e2e --all",
     "format:check": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --check --no-error-on-unmatched-pattern",
     "format:apply": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --write --no-error-on-unmatched-pattern",
-    "format": "nx format:write",
-    "size": "nx run-many --target=size --all",
     "changes": "changeset"
   },
   "devDependencies": {

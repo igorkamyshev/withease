@@ -31,7 +31,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm playwright install
       - run: pnpm -r build
-      - run: pnpm test:e2e
+      - run: pnpm -r e2e
 
   checks_old_versions:
     runs-on: ubuntu-latest
@@ -74,4 +74,5 @@ jobs:
       - run: pnpm install --no-frozen-lockfile
 
       - run: pnpm playwright install
-      - run: pnpm test:e2e
+      - run: pnpm -r build
+      - run: pnpm -r e2e
