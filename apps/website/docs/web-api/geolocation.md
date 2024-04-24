@@ -50,6 +50,10 @@ In some countries and regions, the use of geolocation can be restricted. If you 
 
 Geolocation integration of `@withease/web-api` allows to use any provider additionally to the default one provided by the browser. To do so, you need to pass an `additionalProviders` option to the `trackGeolocation` function.
 
+::: tip
+`additionalProviders` will be used only if the browser Geolocation API is not available or fails. Otherwise, the browser Geolocation API will be used.
+:::
+
 ```ts
 import { trackGeolocation } from '@withease/web-api';
 
