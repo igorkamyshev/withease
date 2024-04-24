@@ -23,7 +23,7 @@ All you need to do is to create an integration by calling `trackGeolocation` wit
 ```ts
 import { trackGeolocation } from '@withease/web-api';
 
-const { $location, $latitude, $longitude, request, reporting } =
+const { $location, $latitude, $longitude, request, reporting, watching } =
   trackGeolocation({
     maximumAge,
     timeout,
@@ -37,6 +37,10 @@ Returns an object with:
 - `$latitude` - [_Store_](https://effector.dev/docs/api/effector/store) with the current latitude
 - `$longitude` - [_Store_](https://effector.dev/docs/api/effector/store) with the current longitude
 - `request` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to get the current location
+- `watching` - an object with the following properties:
+  - `start` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to start watching the current location
+  - `stop` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to stop watching the current location
+  - `$active` - [_Store_](https://effector.dev/docs/api/effector/store) with `true` if watching is started and `false` if watching is stopped
 - `reporting` - an object with the following properties:
   - `failed` - [_Event_](https://effector.dev/en/api/effector/event) that fires when the location request fails
 
@@ -60,6 +64,37 @@ const geo = trackGeolocation({
 Any provider should conform to the following contract:
 
 ```ts
+/* This type mimics https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPosition */
+type CustomGeolocationPosition = {
+  timestamp: number;
+  coords: {
+    latitude: number;
+    longitude: number;
+    accuracy?: number;
+    altitude?: number;
+    altitudeAccuracy?: number;
+    heading?: number;
+    speed?: number;
+  };
+};
+
+/* This type mimics https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError */
+type CustomGeolocationError = {
+  /*
+   * You have to map your error codes to the Geolocation API error codes
+   * In case of unknown error, you are free to skip this field
+   */
+  code?: 'PERMISSION_DENIED' | 'POSITION_UNAVAILABLE' | 'TIMEOUT';
+  /*
+   * You can provide a custom message for the error
+   */
+  message?: string;
+  /*
+   * You can provide a raw error object from your provider
+   */
+  raw?: unknown;
+};
+
 type CustomProvider = (
   /* All options would be passed from trackGeolocation call */ {
     maximumAge,
@@ -67,7 +102,16 @@ type CustomProvider = (
     enableHighAccuracy,
   }
 ) => {
-  getCurrentPosition: () => Promise<{ latitude; longitude }>;
+  /* This function can throw CustomGeolocationError in case of error */
+  getCurrentPosition: () => Promise<CustomGeolocationPosition>;
+  /*
+   * This function should call successCallback with the position or errorCallback with the error.
+   * Function should return an Unsubscribe function, which should stop watching the position.
+   */
+  watchPosition?: (
+    successCallback: (position: CustomGeolocationPosition) => void,
+    errorCallback: (error: CustomGeolocationError) => void
+  ) => Unsubscribe;
 };
 ```
 
@@ -79,21 +123,59 @@ function baiduProvider({ maximumAge, timeout, enableHighAccuracy }) {
   // to avoid creating a new instance every time the function is called
   const geolocation = new BMap.Geolocation();
 
-  return {
-    async getCurrentPosition({ maximumAge, timeout, enableHighAccuracy }) {
-      // getCurrentPosition function should return a Promise
-      return new Promise((resolve, reject) => {
-        geolocation.getCurrentPosition(function (r) {
-          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-            // in case of success, resolve with the coordinates
-            resolve({ latitude: r.point.lat, longitude: r.point.lng });
-          } else {
-            // otherwise, reject with an error
-            reject(new Error(this.getStatus()));
+  const getCurrentPosition = ({ maximumAge, timeout, enableHighAccuracy }) => {
+    // getCurrentPosition function should return a Promise
+    return new Promise((resolve, reject) => {
+      geolocation.getCurrentPosition(function (r) {
+        if (this.getStatus() === BMAP_STATUS_SUCCESS) {
+          // in case of success, resolve with the result
+          resolve({
+            timestamp: Date.now(),
+            coords: { latitude: r.point.lat, longitude: r.point.lng },
+          });
+        } else {
+          // map Baidu error codes to the Geolocation API error codes
+          let code;
+          switch (this.getStatus()) {
+            case BMAP_STATUS_PERMISSION_DENIED:
+              code = 'PERMISSION_DENIED';
+              break;
+            case BMAP_STATUS_SERVICE_UNAVAILABLE:
+              code = 'POSITION_UNAVAILABLE';
+              break;
+            case BMAP_STATUS_TIMEOUT:
+              code = 'TIMEOUT';
+              break;
           }
-        });
+
+          // reject with the error object
+          reject({ code, raw: this.getStatus() });
+        }
       });
-    },
+    });
+  };
+
+  /*
+   * Bailu does not support watching the position
+   * so, we have to write an imitation of the watchPosition function
+   */
+  const watchPosition = (successCallback, errorCallback) => {
+    const timerId = setInterval(async () => {
+      try {
+        const position = await getCurrentPosition();
+
+        successCallback(position);
+      } catch (error) {
+        errorCallback(error);
+      }
+    }, 1_000);
+
+    return () => clearInterval(timerId);
+  };
+
+  return {
+    getCurrentPosition,
+    watchPosition,
   };
 }
 

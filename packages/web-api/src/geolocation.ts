@@ -15,6 +15,11 @@ type Geolocation = {
   $latitude: Store<number | null>;
   $longitude: Store<{ latitude: number; longitude: number } | null>;
   request: EventCallable<void>;
+  watching: {
+    start: EventCallable<void>;
+    stop: EventCallable<void>;
+    $active: Store<boolean>;
+  };
   reporting: {
     failed: Event<unknown>;
   };
