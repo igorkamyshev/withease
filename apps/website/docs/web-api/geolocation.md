@@ -23,7 +23,7 @@ All you need to do is to create an integration by calling `trackGeolocation` wit
 ```ts
 import { trackGeolocation } from '@withease/web-api';
 
-const { $location, $latitude, $longitude, request, watching, reporting } =
+const { $location, $latitude, $longitude, request, reporting } =
   trackGeolocation({
     maximumAge,
     timeout,
