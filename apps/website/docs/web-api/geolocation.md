@@ -1,5 +1,7 @@
 ---
 title: Geolocation
+
+outline: [2, 3]
 ---
 
 # Geolocation <Badge text="since v1.3.0" />
@@ -48,18 +50,16 @@ Returns an object with:
 
 In some countries and regions, the use of geolocation can be restricted. If you are aiming to provide a service in such locations, you use some local providers to get the location of the user. For example, in China, you can use [Baidu](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), [Autonavi](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), or [Tencent](https://lbs.qq.com/webApi/component/componentGuide/componentGeolocation).
 
-Geolocation integration of `@withease/web-api` allows to use any provider additionally to the default one provided by the browser. To do so, you need to pass an `additionalProviders` option to the `trackGeolocation` function.
-
-::: tip
-`additionalProviders` will be used only if the browser Geolocation API is not available or fails. Otherwise, the browser Geolocation API will be used.
-:::
+Geolocation integration of `@withease/web-api` allows to use any provider additionally to the default one provided by the browser. To do so, you need to pass an `providers` option to the `trackGeolocation` function.
 
 ```ts
 import { trackGeolocation } from '@withease/web-api';
 
 const geo = trackGeolocation({
   /* ... */
-  additionalProviders: [
+  providers: [
+    /* default browser Geolocation API */
+    trackGeolocation.browserProvider,
     /* your custom providers */
   ],
 });
@@ -187,10 +187,31 @@ function baiduProvider({ maximumAge, timeout, enableHighAccuracy }) {
 
 const geo = trackGeolocation({
   /* ... */
-  additionalProviders: [baiduProvider],
+  providers: [
+    /* default browser Geolocation API */
+    trackGeolocation.browserProvider,
+    /* Baidu provider */
+    baiduProvider,
+  ],
 });
 ```
 
 :::
 
-Array of `additionalProviders` would be used in the order they are passed to the `trackGeolocation` function. The first provider that returns the coordinates would be used. It is used only if the browser [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) is not available or fails.
+Array of `providers` would be used in the order they are passed to the `trackGeolocation` function. The first provider that returns the coordinates would be used.
+
+### React Native
+
+In case of React Native, it is recommended to use the [`@react-native-community/geolocation`](https://github.com/michalchudziak/react-native-geolocation) package and do not use `navigator.geolocation` directly. You can easily achieve this by excluding `trackGeolocation.browserProvider` from the list of providers.
+
+```ts
+import ReactNativeGeolocation from '@react-native-community/geolocation';
+
+const geo = trackGeolocation({
+  /* ... */
+  providers: [
+    trackGeolocation.browserProvider, // [!code --]
+    ReactNativeGeolocation, // [!code ++]
+  ],
+});
+```
