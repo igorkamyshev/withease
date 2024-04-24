@@ -60,10 +60,14 @@ type Geolocation = {
   };
 };
 
-function trackGeolocation(
+const BrowserProvider = Symbol('BrowserProvider');
+
+export function trackGeolocation(
   params: GeolocationParams & {
     providers?: Array<CustomProvider>;
   }
 ): Geolocation {
   return {} as any;
 }
+
+trackGeolocation.browserProvider = BrowserProvider;
