@@ -5,6 +5,10 @@ import {
   combine,
   createEvent,
   createStore,
+  createEffect,
+  sample,
+  restore,
+  attach,
 } from 'effector';
 
 import { readonly } from './shared';
@@ -65,7 +69,7 @@ type Geolocation = {
     $active: Store<boolean>;
   };
   reporting: {
-    failed: Event<CustomGeolocationError>;
+    failed: Event<CustomGeolocationError | globalThis.GeolocationPositionError>;
   };
 };
 
@@ -78,6 +82,8 @@ export function trackGeolocation(
 ): Geolocation {
   // In case of no providers, we will use the default one only
   const providres = params.providers ?? [BrowserProvider];
+
+  // -- units
 
   const $location = createStore<{
     latitude: number;
@@ -100,7 +106,65 @@ export function trackGeolocation(
   const stopWatching = createEvent();
   const $watchingActive = createStore(false);
 
-  const failed = createEvent<CustomGeolocationError>();
+  const failed = createEvent<
+    CustomGeolocationError | globalThis.GeolocationPositionError
+  >();
+
+  // -- shared logic
+
+  const newPosition = createEvent<
+    CustomGeolocationPosition | globalThis.GeolocationPosition
+  >();
+
+  sample({
+    clock: newPosition,
+    fn: (r) => ({ latitude: r.coords.latitude, longitude: r.coords.longitude }),
+    target: $location,
+  });
+
+  // -- get current position
+
+  const getCurrentPositionFx = createEffect<
+    void,
+    CustomGeolocationPosition | globalThis.GeolocationPosition,
+    CustomGeolocationError | globalThis.GeolocationPositionError
+  >(() => {
+    // TODO: real code
+    throw { code: 'POSITION_UNAVAILABLE', message: 'Not implemented' };
+  });
+
+  sample({ clock: request, target: getCurrentPositionFx });
+  sample({
+    clock: getCurrentPositionFx.doneData,
+    target: newPosition,
+  });
+  sample({ clock: getCurrentPositionFx.failData, target: failed });
+
+  // -- watch position
+
+  const saveUnsubscribe = createEvent<Unsubscribe>();
+  const $unsubscribe = restore(saveUnsubscribe, null);
+
+  const watchPositionFx = createEffect(() => {
+    // TODO: real code
+    newPosition({} as any);
+    failed({} as any);
+    saveUnsubscribe(() => null);
+  });
+
+  const unwatchPositionFx = attach({
+    source: $unsubscribe,
+    effect(unwatch) {
+      unwatch?.();
+    },
+  });
+
+  sample({ clock: startWatching, target: watchPositionFx });
+  sample({ clock: stopWatching, target: unwatchPositionFx });
+
+  $watchingActive.on(startWatching, () => true).on(stopWatching, () => false);
+
+  // -- public API
 
   return {
     $location: readonly($location),
