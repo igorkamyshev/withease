@@ -1,4 +1,13 @@
-import { Event, EventCallable, Store } from 'effector';
+import {
+  type Event,
+  type EventCallable,
+  type Store,
+  combine,
+  createEvent,
+  createStore,
+} from 'effector';
+
+import { readonly } from './shared';
 
 type GeolocationParams = {
   maximumAge?: number;
@@ -46,9 +55,9 @@ type CustomProvider = (params: GeolocationParams) => {
 };
 
 type Geolocation = {
-  $location: Store<number | null>;
+  $location: Store<{ latitude: number; longitude: number } | null>;
   $latitude: Store<number | null>;
-  $longitude: Store<{ latitude: number; longitude: number } | null>;
+  $longitude: Store<number | null>;
   request: EventCallable<void>;
   watching: {
     start: EventCallable<void>;
@@ -56,7 +65,7 @@ type Geolocation = {
     $active: Store<boolean>;
   };
   reporting: {
-    failed: Event<unknown>;
+    failed: Event<CustomGeolocationError>;
   };
 };
 
@@ -64,10 +73,49 @@ const BrowserProvider = Symbol('BrowserProvider');
 
 export function trackGeolocation(
   params: GeolocationParams & {
-    providers?: Array<CustomProvider>;
+    providers?: Array<CustomProvider | globalThis.Geolocation>;
   }
 ): Geolocation {
-  return {} as any;
+  // In case of no providers, we will use the default one only
+  const providres = params.providers ?? [BrowserProvider];
+
+  const $location = createStore<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+
+  const $longitude = combine(
+    $location,
+    (location) => location?.longitude ?? null
+  );
+
+  const $latitude = combine(
+    $location,
+    (location) => location?.latitude ?? null
+  );
+
+  const request = createEvent();
+
+  const startWatching = createEvent();
+  const stopWatching = createEvent();
+  const $watchingActive = createStore(false);
+
+  const failed = createEvent<CustomGeolocationError>();
+
+  return {
+    $location: readonly($location),
+    $longitude,
+    $latitude,
+    request,
+    watching: {
+      start: startWatching,
+      stop: stopWatching,
+      $active: readonly($watchingActive),
+    },
+    reporting: {
+      failed: readonly(failed),
+    },
+  };
 }
 
 trackGeolocation.browserProvider = BrowserProvider;
