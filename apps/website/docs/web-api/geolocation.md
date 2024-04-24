@@ -37,10 +37,6 @@ Returns an object with:
 - `$latitude` - [_Store_](https://effector.dev/docs/api/effector/store) with the current latitude
 - `$longitude` - [_Store_](https://effector.dev/docs/api/effector/store) with the current longitude
 - `request` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to get the current location
-- `watching` - an object with the following properties:
-  - `start` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to start watching the current location
-  - `stop` - [_EventCallable_](https://effector.dev/en/api/effector/event/#eventCallable) that has to be called to stop watching the current location
-  - `$active` - [_Store_](https://effector.dev/docs/api/effector/store) with `true` if watching is started and `false` if watching is stopped
 - `reporting` - an object with the following properties:
   - `failed` - [_Event_](https://effector.dev/en/api/effector/event) that fires when the location request fails
 
@@ -64,11 +60,14 @@ const geo = trackGeolocation({
 Any provider should conform to the following contract:
 
 ```ts
-type CustomProvider = {
-  getCurrentPosition: (
-    /* All options would be passed from trackGeolocation call */
-    { maximumAge, timeout, enableHighAccuracy }
-  ) => Promise<{ latitude; longitude }>;
+type CustomProvider = (
+  /* All options would be passed from trackGeolocation call */ {
+    maximumAge,
+    timeout,
+    enableHighAccuracy,
+  }
+) => {
+  getCurrentPosition: () => Promise<{ latitude; longitude }>;
 };
 ```
 
@@ -77,24 +76,27 @@ For example, in case of Baidu, you can write something like this:
 ```ts
 // Create a Baidu geolocation instance outside of the getCurrentPosition function
 // to avoid creating a new instance every time the function is called
-const geolocation = new BMap.Geolocation();
 
-const baiduProvider = {
-  async getCurrentPosition({ maximumAge, timeout, enableHighAccuracy }) {
-    // getCurrentPosition function should return a Promise
-    return new Promise((resolve, reject) => {
-      geolocation.getCurrentPosition(function (r) {
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-          // in case of success, resolve with the coordinates
-          resolve({ latitude: r.point.lat, longitude: r.point.lng });
-        } else {
-          // otherwise, reject with an error
-          reject(new Error(this.getStatus()));
-        }
+function baiduProvider({ maximumAge, timeout, enableHighAccuracy }) {
+  const geolocation = new BMap.Geolocation();
+
+  return {
+    async getCurrentPosition({ maximumAge, timeout, enableHighAccuracy }) {
+      // getCurrentPosition function should return a Promise
+      return new Promise((resolve, reject) => {
+        geolocation.getCurrentPosition(function (r) {
+          if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+            // in case of success, resolve with the coordinates
+            resolve({ latitude: r.point.lat, longitude: r.point.lng });
+          } else {
+            // otherwise, reject with an error
+            reject(new Error(this.getStatus()));
+          }
+        });
       });
-    });
-  },
-};
+    },
+  };
+}
 
 const geo = trackGeolocation({
   /* ... */
