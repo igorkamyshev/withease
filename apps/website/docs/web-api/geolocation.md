@@ -119,6 +119,8 @@ type CustomProvider = (
 };
 ```
 
+::: details Baidu example
+
 For example, in case of Baidu, you can write something like this:
 
 ```ts
@@ -188,5 +190,7 @@ const geo = trackGeolocation({
   additionalProviders: [baiduProvider],
 });
 ```
+
+:::
 
 Array of `additionalProviders` would be used in the order they are passed to the `trackGeolocation` function. The first provider that returns the coordinates would be used. It is used only if the browser [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API) is not available or fails.
