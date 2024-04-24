@@ -112,7 +112,7 @@ type CustomProvider = (
    * This function should call successCallback with the position or errorCallback with the error.
    * Function should return an Unsubscribe function, which should stop watching the position.
    */
-  watchPosition?: (
+  watchPosition: (
     successCallback: (position: CustomGeolocationPosition) => void,
     errorCallback: (error: CustomGeolocationError) => void
   ) => Unsubscribe;

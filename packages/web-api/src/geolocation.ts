@@ -6,8 +6,43 @@ type GeolocationParams = {
   enableHighAccuracy?: boolean;
 };
 
+/**
+ * This type mimics GeolocationPostion
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPosition}
+ */
+type CustomGeolocationPosition = {
+  timestamp: number;
+  coords: {
+    latitude: number;
+    longitude: number;
+    accuracy?: number;
+    altitude?: number;
+    altitudeAccuracy?: number;
+    heading?: number;
+    speed?: number;
+  };
+};
+
+/**
+ * This type mimics GeolocationPositionError
+ *
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError}
+ */
+type CustomGeolocationError = {
+  code?: 'PERMISSION_DENIED' | 'POSITION_UNAVAILABLE' | 'TIMEOUT';
+  message?: string;
+  raw?: unknown;
+};
+
+type Unsubscribe = () => void;
+
 type CustomProvider = (params: GeolocationParams) => {
-  getCurrentPosition: () => Promise<{ latitude: number; longitude: number }>;
+  getCurrentPosition: () => Promise<CustomGeolocationPosition>;
+  watchPosition?: (
+    successCallback: (position: CustomGeolocationPosition) => void,
+    errorCallback: (error: CustomGeolocationError) => void
+  ) => Unsubscribe;
 };
 
 type Geolocation = {
@@ -27,7 +62,7 @@ type Geolocation = {
 
 function trackGeolocation(
   params: GeolocationParams & {
-    additionalProviders?: Array<CustomProvider>;
+    providers?: Array<CustomProvider>;
   }
 ): Geolocation {
   return {} as any;
