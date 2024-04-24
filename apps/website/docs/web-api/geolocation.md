@@ -74,10 +74,9 @@ type CustomProvider = (
 For example, in case of Baidu, you can write something like this:
 
 ```ts
-// Create a Baidu geolocation instance outside of the getCurrentPosition function
-// to avoid creating a new instance every time the function is called
-
 function baiduProvider({ maximumAge, timeout, enableHighAccuracy }) {
+  // Create a Baidu geolocation instance outside of the getCurrentPosition function
+  // to avoid creating a new instance every time the function is called
   const geolocation = new BMap.Geolocation();
 
   return {
