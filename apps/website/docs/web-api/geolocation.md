@@ -46,6 +46,18 @@ Returns an object with:
 - `reporting` - an object with the following properties:
   - `failed` - [_Event_](https://effector.dev/en/api/effector/event) that fires when the location request fails
 
+## Live demo
+
+Let us show you a live demo of how it works. The following demo displays `$latitude` and `$longitude` values. _Click "Request geolocation" button to retrieve it._
+
+<script setup lang="ts">
+import demoFile from './geolocation.live.vue?raw';
+</script>
+
+<LiveDemo :demoFile="demoFile" />
+
+## Additional capabilities
+
 ### Regional restrictions
 
 In some countries and regions, the use of geolocation can be restricted. If you are aiming to provide a service in such locations, you use some local providers to get the location of the user. For example, in China, you can use [Baidu](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), [Autonavi](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), or [Tencent](https://lbs.qq.com/webApi/component/componentGuide/componentGeolocation).

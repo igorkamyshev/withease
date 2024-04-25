@@ -76,12 +76,12 @@ type Geolocation = {
 const BrowserProvider = Symbol('BrowserProvider');
 
 export function trackGeolocation(
-  params: GeolocationParams & {
+  params?: GeolocationParams & {
     providers?: Array<CustomProvider | globalThis.Geolocation>;
   }
 ): Geolocation {
   const providres = (
-    params.providers ?? /* In case of no providers, we will use the default one only */ [
+    params?.providers ?? /* In case of no providers, we will use the default one only */ [
       BrowserProvider,
     ]
   ).map(
@@ -150,7 +150,7 @@ export function trackGeolocation(
             provider.getCurrentPosition(resolve, rejest, params)
         );
       } else {
-        geolocation = await provider(params).getCurrentPosition();
+        geolocation = await provider(params ?? {}).getCurrentPosition();
       }
     }
 
@@ -192,7 +192,7 @@ export function trackGeolocation(
 
         defaultUnwatchMap.set((id: number) => provider.clearWatch(id), watchId);
       } else {
-        const unwatch = provider(params).watchPosition(
+        const unwatch = provider(params ?? {}).watchPosition(
           boundNewPosition,
           boundFailed
         );
