@@ -7,7 +7,6 @@ import {
   createStore,
   createEffect,
   sample,
-  restore,
   attach,
   scopeBind,
 } from 'effector';
@@ -53,7 +52,7 @@ type Unsubscribe = () => void;
 
 type CustomProvider = (params: GeolocationParams) => {
   getCurrentPosition: () => Promise<CustomGeolocationPosition>;
-  watchPosition?: (
+  watchPosition: (
     successCallback: (position: CustomGeolocationPosition) => void,
     errorCallback: (error: CustomGeolocationError) => void
   ) => Unsubscribe;
@@ -139,7 +138,10 @@ export function trackGeolocation(
     CustomGeolocationPosition | globalThis.GeolocationPosition,
     CustomGeolocationError | globalThis.GeolocationPositionError
   >(async () => {
-    let geolocation: GeolocationPosition | null = null;
+    let geolocation:
+      | globalThis.GeolocationPosition
+      | CustomGeolocationPosition
+      | null = null;
 
     for (const provider of providres) {
       if (isDefaultProvider(provider)) {
@@ -147,6 +149,8 @@ export function trackGeolocation(
           (resolve, rejest) =>
             provider.getCurrentPosition(resolve, rejest, params)
         );
+      } else {
+        geolocation = await provider(params).getCurrentPosition();
       }
     }
 
@@ -175,7 +179,8 @@ export function trackGeolocation(
     const boundNewPosition = scopeBind(newPosition, { safe: true });
     const boundFailed = scopeBind(failed, { safe: true });
 
-    const unwatchMap = new Map<(id: number) => void, number>();
+    const defaultUnwatchMap = new Map<(id: number) => void, number>();
+    const customUnwatchSet = new Set<Unsubscribe>();
 
     for (const provider of providres) {
       if (isDefaultProvider(provider)) {
@@ -185,14 +190,26 @@ export function trackGeolocation(
           params
         );
 
-        unwatchMap.set((id: number) => provider.clearWatch(id), watchId);
+        defaultUnwatchMap.set((id: number) => provider.clearWatch(id), watchId);
+      } else {
+        const unwatch = provider(params).watchPosition(
+          boundNewPosition,
+          boundFailed
+        );
+
+        customUnwatchSet.add(unwatch);
       }
     }
 
     return () => {
-      for (const [unwatch, id] of unwatchMap) {
+      for (const [unwatch, id] of defaultUnwatchMap) {
         unwatch(id);
-        unwatchMap.delete(unwatch);
+        defaultUnwatchMap.delete(unwatch);
+      }
+
+      for (const unwatch of customUnwatchSet) {
+        unwatch();
+        customUnwatchSet.delete(unwatch);
       }
     };
   });
