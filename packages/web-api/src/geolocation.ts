@@ -80,8 +80,17 @@ export function trackGeolocation(
     providers?: Array<CustomProvider | globalThis.Geolocation>;
   }
 ): Geolocation {
-  // In case of no providers, we will use the default one only
-  const providres = params.providers ?? [BrowserProvider];
+  const providres = (
+    params.providers ?? /* In case of no providers, we will use the default one only */ [
+      BrowserProvider,
+    ]
+  ).map(
+    /* BrowserProvider symbol means usage of navigator.geolocation */
+    (provider) =>
+      (provider === BrowserProvider ? navigator.geolocation : provider) as
+        | CustomProvider
+        | globalThis.Geolocation
+  );
 
   // -- units
 
@@ -128,9 +137,26 @@ export function trackGeolocation(
     void,
     CustomGeolocationPosition | globalThis.GeolocationPosition,
     CustomGeolocationError | globalThis.GeolocationPositionError
-  >(() => {
-    // TODO: real code
-    throw { code: 'POSITION_UNAVAILABLE', message: 'Not implemented' };
+  >(async () => {
+    let geolocation: GeolocationPosition | null = null;
+
+    for (const provider of providres) {
+      if (isDefaultProvider(provider)) {
+        geolocation = await new Promise<GeolocationPosition>(
+          (resolve, rejest) =>
+            provider.getCurrentPosition(resolve, rejest, params)
+        );
+      }
+    }
+
+    if (!geolocation) {
+      throw {
+        code: 'POSITION_UNAVAILABLE',
+        message: 'No avaiable geolocation provider',
+      };
+    }
+
+    return geolocation;
   });
 
   sample({ clock: request, target: getCurrentPositionFx });
@@ -183,3 +209,11 @@ export function trackGeolocation(
 }
 
 trackGeolocation.browserProvider = BrowserProvider;
+
+function isDefaultProvider(provider: any): provider is globalThis.Geolocation {
+  return (
+    'getCurrentPosition' in provider &&
+    'watchPosition' in provider &&
+    'clearWatch' in provider
+  );
+}
