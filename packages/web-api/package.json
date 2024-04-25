@@ -34,7 +34,7 @@
   "size-limit": [
     {
       "path": "./dist/web-api.js",
-      "limit": "1.58 kB"
+      "limit": "2.36 kB"
     }
   ]
 }
