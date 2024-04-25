@@ -9,6 +9,7 @@ import {
   sample,
   restore,
   attach,
+  scopeBind,
 } from 'effector';
 
 import { readonly } from './shared';
@@ -172,10 +173,30 @@ export function trackGeolocation(
   const $unsubscribe = restore(saveUnsubscribe, null);
 
   const watchPositionFx = createEffect(() => {
-    // TODO: real code
-    newPosition({} as any);
-    failed({} as any);
-    saveUnsubscribe(() => null);
+    const boundNewPosition = scopeBind(newPosition, { safe: true });
+    const boundFailed = scopeBind(failed, { safe: true });
+    const boundSaveUnsubscribe = scopeBind(saveUnsubscribe, { safe: true });
+
+    const unwatchMap = new Map<(id: number) => void, number>();
+
+    for (const provider of providres) {
+      if (isDefaultProvider(provider)) {
+        const watchId = provider.watchPosition(
+          boundNewPosition,
+          boundFailed,
+          params
+        );
+
+        unwatchMap.set((id: number) => provider.clearWatch(id), watchId);
+      }
+    }
+
+    boundSaveUnsubscribe(() => {
+      for (const [unwatch, id] of unwatchMap) {
+        unwatch(id);
+        unwatchMap.delete(unwatch);
+      }
+    });
   });
 
   const unwatchPositionFx = attach({
