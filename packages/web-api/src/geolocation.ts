@@ -169,13 +169,11 @@ export function trackGeolocation(
 
   // -- watch position
 
-  const saveUnsubscribe = createEvent<Unsubscribe>();
-  const $unsubscribe = restore(saveUnsubscribe, null);
+  const $unsubscribe = createStore<Unsubscribe | null>(null);
 
   const watchPositionFx = createEffect(() => {
     const boundNewPosition = scopeBind(newPosition, { safe: true });
     const boundFailed = scopeBind(failed, { safe: true });
-    const boundSaveUnsubscribe = scopeBind(saveUnsubscribe, { safe: true });
 
     const unwatchMap = new Map<(id: number) => void, number>();
 
@@ -191,12 +189,12 @@ export function trackGeolocation(
       }
     }
 
-    boundSaveUnsubscribe(() => {
+    return () => {
       for (const [unwatch, id] of unwatchMap) {
         unwatch(id);
         unwatchMap.delete(unwatch);
       }
-    });
+    };
   });
 
   const unwatchPositionFx = attach({
@@ -207,7 +205,9 @@ export function trackGeolocation(
   });
 
   sample({ clock: startWatching, target: watchPositionFx });
+  sample({ clock: watchPositionFx.doneData, target: $unsubscribe });
   sample({ clock: stopWatching, target: unwatchPositionFx });
+  sample({ clock: unwatchPositionFx.finally, target: $unsubscribe.reinit });
 
   $watchingActive.on(startWatching, () => true).on(stopWatching, () => false);
 
