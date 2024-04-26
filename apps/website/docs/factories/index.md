@@ -38,9 +38,7 @@ Second, you need to add `@withease/factories` to the config of [`effector/babel-
 
 ```json [effector/babel-plugin]
 {
-  "plugins": [
-    ["effector/babel-plugin", { "factories": ["@withease/factories"] }]
-  ]
+  "plugins": [["effector/babel-plugin"]]
 }
 ```
 
@@ -49,14 +47,7 @@ Second, you need to add `@withease/factories` to the config of [`effector/babel-
   "$schema": "https://json.schemastore.org/swcrc",
   "jsc": {
     "experimental": {
-      "plugins": [
-        [
-          "@effector/swc-plugin",
-          {
-            "factories": ["@withease/factories"]
-          }
-        ]
-      ]
+      "plugins": [["@effector/swc-plugin"]]
     }
   }
 }
