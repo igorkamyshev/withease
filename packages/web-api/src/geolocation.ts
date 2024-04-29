@@ -77,7 +77,9 @@ const BrowserProvider = Symbol('BrowserProvider');
 
 export function trackGeolocation(
   params?: GeolocationParams & {
-    providers?: Array<CustomProvider | globalThis.Geolocation>;
+    providers?: Array<
+      typeof BrowserProvider | CustomProvider | globalThis.Geolocation
+    >;
   }
 ): Geolocation {
   const providres = (
@@ -97,7 +99,11 @@ export function trackGeolocation(
         return globalThis.navigator.geolocation;
       }
 
-      return (provider as CustomProvider)(params ?? {});
+      if (isDefaultProvider(provider)) {
+        return provider;
+      }
+
+      return provider(params ?? {});
     })
     .filter(Boolean) as Array<
     ReturnType<CustomProvider> | globalThis.Geolocation
