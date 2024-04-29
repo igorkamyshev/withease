@@ -84,13 +84,24 @@ export function trackGeolocation(
     params?.providers ?? /* In case of no providers, we will use the default one only */ [
       BrowserProvider,
     ]
-  ).map(
-    /* BrowserProvider symbol means usage of navigator.geolocation */
-    (provider) =>
-      (provider === BrowserProvider ? navigator.geolocation : provider) as
-        | CustomProvider
-        | globalThis.Geolocation
-  );
+  )
+    .map((provider) => {
+      /* BrowserProvider symbol means usage of navigator.geolocation */
+      if (provider === BrowserProvider) {
+        const browserGeolocationAvailable =
+          globalThis.navigator && 'geolocation' in globalThis.navigator;
+        if (!browserGeolocationAvailable) {
+          return null;
+        }
+
+        return globalThis.navigator.geolocation;
+      }
+
+      return (provider as CustomProvider)(params ?? {});
+    })
+    .filter(Boolean) as Array<
+    ReturnType<CustomProvider> | globalThis.Geolocation
+  >;
 
   // -- units
 
@@ -150,7 +161,7 @@ export function trackGeolocation(
             provider.getCurrentPosition(resolve, rejest, params)
         );
       } else {
-        geolocation = await provider(params ?? {}).getCurrentPosition();
+        geolocation = await provider.getCurrentPosition();
       }
     }
 
@@ -192,10 +203,7 @@ export function trackGeolocation(
 
         defaultUnwatchMap.set((id: number) => provider.clearWatch(id), watchId);
       } else {
-        const unwatch = provider(params ?? {}).watchPosition(
-          boundNewPosition,
-          boundFailed
-        );
+        const unwatch = provider.watchPosition(boundNewPosition, boundFailed);
 
         customUnwatchSet.add(unwatch);
       }

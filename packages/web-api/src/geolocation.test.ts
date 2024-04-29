@@ -3,15 +3,15 @@
  * e2e-tests for built-in browser navigator.geolocation in apps/web-api-demo/test/geolocation.spec.ts
  */
 
-import { allSettled, createStore, fork } from 'effector';
+import { allSettled, createStore, createWatch, fork } from 'effector';
 import { trackGeolocation } from 'geolocation';
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 
 describe('trackGeolocation', () => {
   test('request', async () => {
     let lat = 41.890221;
     let lon = 12.492348;
-    const myCustomProvider = () => ({
+    const myCustomProvider = vi.fn(() => ({
       async getCurrentPosition() {
         return {
           coords: { latitude: lat, longitude: lon },
@@ -21,7 +21,7 @@ describe('trackGeolocation', () => {
       watchPosition(success: any, error: any) {
         return () => {};
       },
-    });
+    }));
 
     const geo = trackGeolocation({ providers: [myCustomProvider] });
 
@@ -47,6 +47,8 @@ describe('trackGeolocation', () => {
         "longitude": 13.492348,
       }
     `);
+
+    expect(myCustomProvider).toBeCalledTimes(1);
   });
 
   test('watching', async () => {
@@ -55,7 +57,7 @@ describe('trackGeolocation', () => {
       longitude: 12.492348,
     });
 
-    const myCustomProvider = () => ({
+    const myCustomProvider = vi.fn(() => ({
       async getCurrentPosition() {
         return {
           coords: $externalLocation.getState(),
@@ -70,7 +72,7 @@ describe('trackGeolocation', () => {
           })
         );
       },
-    });
+    }));
 
     const geo = trackGeolocation({ providers: [myCustomProvider] });
 
@@ -102,5 +104,42 @@ describe('trackGeolocation', () => {
         "longitude": 13.492348,
       }
     `);
+
+    expect(myCustomProvider).toBeCalledTimes(1);
+  });
+
+  test('reporting', async () => {
+    const myCustomProvider = () => ({
+      async getCurrentPosition() {
+        throw {
+          code: 'PERMISSION_DENIED',
+          message: 'User denied the request for Geolocation.',
+          raw: '用户拒绝了地理位置请求。',
+        };
+      },
+      watchPosition(success: any, error: any) {
+        return () => {};
+      },
+    });
+
+    const failedListener = vi.fn();
+
+    const geo = trackGeolocation({ providers: [myCustomProvider] });
+
+    const scope = fork();
+
+    createWatch({ unit: geo.reporting.failed, fn: failedListener, scope });
+
+    await allSettled(geo.request, { scope });
+
+    expect(failedListener).toBeCalledWith({
+      code: 'PERMISSION_DENIED',
+      message: 'User denied the request for Geolocation.',
+      raw: '用户拒绝了地理位置请求。',
+    });
+  });
+
+  test('do not throw if default provider is not available', async () => {
+    expect(() => trackGeolocation()).not.toThrow();
   });
 });
