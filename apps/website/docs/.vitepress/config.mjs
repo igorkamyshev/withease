@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress';
 import { createSidebar } from './sidebar_creator.mjs';
 import { rss } from './rss.mjs';
 
-const HOSTNAME = 'https://withease.pages.dev';
+const HOSTNAME = 'https://withease.effector.dev';
 
 export default defineConfig({
   async buildEnd(config) {
