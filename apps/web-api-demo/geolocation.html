@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>web-api demo</title>
+    <base href="/" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  </head>
+  <body>
+    <section>
+      <h2>Geolocation</h2>
+
+      <p>latitude: <span id="latitude" /></p>
+      <p>longitude: <span id="longitude" /></p>
+
+      <button id="get-location">Get Location</button>
+
+      <button id="start-watching">Start Watching</button>
+      <button id="stop-watching">Stop Watching</button>
+    </section>
+    <script type="module" src="/src/geolocation.ts"></script>
+  </body>
+</html>

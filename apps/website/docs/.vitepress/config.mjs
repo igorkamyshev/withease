@@ -108,6 +108,10 @@ export default defineConfig({
               text: 'Preferred languages',
               link: '/web-api/preferred_languages',
             },
+            {
+              text: 'Geolocation',
+              link: '/web-api/geolocation',
+            },
           ],
         },
       ]),
