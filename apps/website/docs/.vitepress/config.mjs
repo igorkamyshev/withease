@@ -8,6 +8,7 @@ export default defineConfig({
   async buildEnd(config) {
     await rss.onBuildEnd(config, { hostname: HOSTNAME });
   },
+  ignoreDeadLinks: ['/feed.rss'],
   sitemap: {
     hostname: HOSTNAME,
   },
@@ -28,6 +29,9 @@ export default defineConfig({
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2023-present, Igor Kamyşev',
+    },
+    search: {
+      provider: 'local',
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/igorkamyshev/withease' },
