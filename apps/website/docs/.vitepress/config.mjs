@@ -1,13 +1,11 @@
 import { defineConfig } from 'vitepress';
+import { RssPlugin } from 'vitepress-plugin-rss';
+
 import { createSidebar } from './sidebar_creator.mjs';
-import { rss } from './rss.mjs';
 
 const HOSTNAME = 'https://withease.effector.dev';
 
 export default defineConfig({
-  async buildEnd(config) {
-    await rss.onBuildEnd(config, { hostname: HOSTNAME });
-  },
   ignoreDeadLinks: ['/feed.rss'],
   sitemap: {
     hostname: HOSTNAME,
@@ -206,5 +204,22 @@ export default defineConfig({
         },
       ],
     },
+  },
+  vite: {
+    plugins: [
+      RssPlugin({
+        title: 'With Ease Magazine',
+        description:
+          'The collection of articles about Effector and related topics. It is not a replacement for the official documentation, but it can help you to understand some concepts better.',
+        baseUrl: HOSTNAME,
+        link: HOSTNAME,
+        language: 'en',
+        favicon: `${HOSTNAME}/favicon.ico`,
+        copyright: 'Copyright (c) 2023-present, Igor Kamyşev',
+        filter: (page) =>
+          page.filepath.includes('/magazine/') &&
+          page.frontmatter.rss !== false,
+      }),
+    ],
   },
 });
