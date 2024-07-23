@@ -1,6 +1,13 @@
 <script setup>
-import webApiRaw from '../../../../../packages/web-api/dist/web-api.js?raw';
 import { Sandpack } from 'sandpack-vue3';
+
+import repositoryPackageJson from '../../../../../package.json';
+import webApiRaw from '../../../../../packages/web-api/dist/web-api.js?raw';
+
+const repositoryVersions = {
+  ...repositoryPackageJson.dependencies,
+  ...repositoryPackageJson.devDependencies,
+};
 
 const props = defineProps(['demoFile']);
 
@@ -11,8 +18,8 @@ const files = {
 
 const customSetup = {
   dependencies: {
-    effector: 'latest',
-    'effector-vue': 'latest',
+    effector: repositoryVersions['effector'],
+    'effector-vue': repositoryVersions['effector-vue'],
   },
 };
 
