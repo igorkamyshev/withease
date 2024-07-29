@@ -49,7 +49,7 @@ npm install @withease/contracts
 
 ### Farfetched
 
-[Farfetched](https://ff.effector.dev) is the advanced data fetching tool for web applications based of Effector. It suggests to ensure that data received from the server is conforms desired [_Contract_](/protocols/contracts).
+[Farfetched](https://ff.effector.dev) is the advanced data fetching tool for web applications based of Effector. It suggests to ensure that data received from the server is conforms desired [_Contract_](/protocols/contract).
 
 ```ts
 import { createJsonQuery } from '@farfetched/core';
