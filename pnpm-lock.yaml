@@ -8,6 +8,8 @@ importers:
       '@arethetypeswrong/cli': ^0.15.3
       '@changesets/cli': ^2.24.1
       '@farfetched/core': ^0.8.13
+      '@farfetched/runtypes': ^0.12.4
+      '@farfetched/superstruct': ^0.12.4
       '@playwright/test': ^1.32.2
       '@reduxjs/toolkit': ^2.0.1
       '@size-limit/file': ^7.0.8
@@ -25,6 +27,7 @@ importers:
       runtypes: ^6.7.0
       sandpack-vue3: ^3.1.7
       size-limit: ^7.0.8
+      superstruct: ^2.0.2
       typescript: 5.1.6
       vite: 4.4.9
       vite-plugin-dts: ^3.8.3
@@ -40,6 +43,8 @@ importers:
       '@arethetypeswrong/cli': 0.15.3
       '@changesets/cli': 2.24.1
       '@farfetched/core': 0.8.13_effector@23.0.0
+      '@farfetched/runtypes': 0.12.4_x3t3da54h2pudzi4xrass7othq
+      '@farfetched/superstruct': 0.12.4_geb4xrowurf3cfiqaitxl4xbju
       '@playwright/test': 1.32.2
       '@reduxjs/toolkit': 2.0.1
       '@size-limit/file': 7.0.8_size-limit@7.0.8
@@ -56,6 +61,7 @@ importers:
       redux-saga: 1.2.3
       runtypes: 6.7.0
       size-limit: 7.0.8
+      superstruct: 2.0.2
       typescript: 5.1.6
       vite: 4.4.9_@types+node@20.12.7
       vite-plugin-dts: 3.8.3_em34en7sabsx6ywz24kghffsne
@@ -1286,6 +1292,26 @@ packages:
       effector: ^22.5.0
     dependencies:
       effector: 23.0.0
+    dev: true
+
+  /@farfetched/runtypes/0.12.4_x3t3da54h2pudzi4xrass7othq:
+    resolution: {integrity: sha512-x7lCiDzX25aSY15TrFtUaUMwJUsClcWphEMoGuPGo0akclCFJw9x2tki/W4vXJomcg6HFjaMbv11w/F1XUMbUA==}
+    peerDependencies:
+      '@farfetched/core': 0.12.4
+      runtypes: ^6.6.0
+    dependencies:
+      '@farfetched/core': 0.8.13_effector@23.0.0
+      runtypes: 6.7.0
+    dev: true
+
+  /@farfetched/superstruct/0.12.4_geb4xrowurf3cfiqaitxl4xbju:
+    resolution: {integrity: sha512-2yBhvSdYFCbMa8h7x7+V0eYgwKV+5QfGz54ixdj8030ng4yEzrI2P7UJgm9xTjn1PxSl2EalsyzShRJ/drDBzw==}
+    peerDependencies:
+      '@farfetched/core': 0.12.4
+      superstruct: ^1.0.3
+    dependencies:
+      '@farfetched/core': 0.8.13_effector@23.0.0
+      superstruct: 2.0.2
     dev: true
 
   /@jest/schemas/29.6.3:
@@ -4584,6 +4610,11 @@ packages:
   /style-mod/4.1.0:
     resolution: {integrity: sha512-Ca5ib8HrFn+f+0n4N4ScTIA9iTOQ7MaGS1ylHcoVqW9J7w2w8PzN6g9gKmTYgGEBH8e120+RCmhpje6jC5uGWA==}
     dev: false
+
+  /superstruct/2.0.2:
+    resolution: {integrity: sha512-uV+TFRZdXsqXTL2pRvujROjdZQ4RAlBUS5BTh9IGm+jTqQntYThciG/qu57Gs69yjnVUSqdxF9YLmSnpupBW9A==}
+    engines: {node: '>=14.0.0'}
+    dev: true
 
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
