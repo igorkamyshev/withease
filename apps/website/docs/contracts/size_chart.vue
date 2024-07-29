@@ -20,7 +20,9 @@ const props = defineProps({
   },
 });
 const chartData = computed(() => {
-  const sortedSizes = props.sizes.toSorted((a, b) => a.size - b.size);
+  const sortedSizes = [...props.sizes]
+  sortedSizes.sort((a, b) => a.size - b.size);
+
   return {
     labels: sortedSizes.map((item) => item.name),
     datasets: [
