@@ -5,7 +5,7 @@ import { object, string } from 'superstruct';
 import { runtypeContract } from '@farfetched/runtypes';
 import { superstructContract } from '@farfetched/superstruct';
 
-import { rec, arr } from './contract';
+import { rec, arr } from './contracts';
 
 describe('runtypes', () => {
   it('supports Runtype inside', () => {

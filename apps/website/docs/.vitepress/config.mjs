@@ -48,6 +48,7 @@ export default defineConfig({
           { text: 'redux', link: '/redux/' },
           { text: 'web-api', link: '/web-api/' },
           { text: 'factories', link: '/factories/' },
+          { text: 'contracts', link: '/contracts/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
@@ -113,6 +114,9 @@ export default defineConfig({
         { text: 'Get Started', link: '/factories/' },
         { text: 'Motivation', link: '/factories/motivation' },
         { text: 'Important Caveats', link: '/factories/important_caveats' },
+      ]),
+      ...createSidebar('contracts', [
+        { text: 'Get Started', link: '/contracts/' },
       ]),
       '/magazine/': [
         {

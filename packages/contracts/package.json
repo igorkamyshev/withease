@@ -1,5 +1,5 @@
 {
-  "name": "@withease/contract",
+  "name": "@withease/contracts",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -13,24 +13,24 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/contract.cjs",
-  "module": "./dist/contract.js",
-  "types": "./dist/contract.d.ts",
+  "main": "./dist/contracts.cjs",
+  "module": "./dist/contracts.js",
+  "types": "./dist/contracts.d.ts",
   "exports": {
     ".": {
       "import": {
-        "types": "./dist/contract.d.ts",
-        "default": "./dist/contract.js"
+        "types": "./dist/contracts.d.ts",
+        "default": "./dist/contracts.js"
       },
       "require": {
-        "types": "./dist/contract.d.cts",
-        "default": "./dist/contract.cjs"
+        "types": "./dist/contracts.d.cts",
+        "default": "./dist/contracts.cjs"
       }
     }
   },
   "size-limit": [
     {
-      "path": "./dist/contract.js",
+      "path": "./dist/contracts.js",
       "limit": "603 B"
     }
   ]

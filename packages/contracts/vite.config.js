@@ -11,8 +11,8 @@ export default {
   build: {
     lib: {
       entry: 'src/index.ts',
-      name: '@withease/contract',
-      fileName: 'contract',
+      name: '@withease/contracts',
+      fileName: 'contracts',
       formats: ['es', 'cjs'],
     },
   },

@@ -1,6 +1,6 @@
 import { describe, it, test, expect } from 'vitest';
 
-import { bool, num, str, rec, or, val, arr } from './contract';
+import { bool, num, str, rec, or, val, arr } from './contracts';
 
 describe('bool', () => {
   it('valid', () => {
