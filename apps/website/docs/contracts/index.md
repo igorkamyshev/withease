@@ -43,6 +43,23 @@ npm install @withease/contracts
 
 <LiveDemo :demoFile="demoFile" />
 
+## Extracting types from a _Contract_
+
+`@withease/contracts` provides a special type `UnContract` that can be used to extract a type from a _Contract_.
+
+```ts
+import { type UnContract, rec, str, num } from '@withease/contracts';
+
+const UserContract = rec({
+  id: num,
+  name: str,
+  email: str,
+});
+
+// type User = { id: number, name: string, email: string }
+type User = UnContract<typeof UserContract>;
+```
+
 ## Usage of a _Contract_
 
 `@withease/contracts` is designed to be compatible with Effector's ecosystem without additional interop, so most of the time you can pass created [_Contract_](/protocols/contract) to other Effector's libraries as is.
@@ -133,6 +150,9 @@ The full list of libraries that support _Contract_ protocol can be found [here](
 <section v-if="sizes">
 It is extremely small and we mean it 👇
 
+<br />
+<br />
+
 <SizeChart :sizes="allSizes" />
 
 ::: tip
@@ -143,3 +163,15 @@ Data fetched directly from https://esm.run/ and updates on every commit.
 <section v-else>
 It is significantly smaller than other libraries for creating _Contracts_.
 </section>
+
+Of course smaller size is comes with some trade-offs, but we believe that in most cases it is worth it. `@withease/contracts` covers most of the common cases but does not try to be a silver bullet for all possible cases. It does not aim to have the following features from other libraries:
+
+- Branded types ([like in Runtypes](https://github.com/runtypes/runtypes?tab=readme-ov-file#branded-types))
+- Advanced string-validators ([like IP-validation in Zod](https://zod.dev/?id=ip-addresses))
+- Promise schemas ([like in Zod](https://zod.dev/?id=promise))
+- Error i18n ([like in Valibot](https://valibot.dev/guides/internationalization/))
+- ...and many other features that are not needed in _most_ of the cases
+
+::: tip Q: What if I started a project with `@withease/contracts` and then realized that I need some of the features that are not covered by it?
+A: No worries! You can easily integrate `@withease/contracts` with other libraries that have the features you need. Check out the [Integration with other libraries](#integration-with-other-libraries) section for more details.
+:::

@@ -32,6 +32,11 @@ features:
     details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
+  - icon: 📄
+    title: contracts
+    details: Extremely small library to validate data from external sources
+    link: /contracts/
+    linkText: Get Started
   - icon: 👩‍🏭
     title: factories
     details: Set of helpers to create factories in your application
