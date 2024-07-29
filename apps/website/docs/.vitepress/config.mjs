@@ -117,6 +117,7 @@ export default defineConfig({
       ]),
       ...createSidebar('contracts', [
         { text: 'Get Started', link: '/contracts/' },
+        { text: 'APIs', link: '/contracts/api' },
       ]),
       '/magazine/': [
         {

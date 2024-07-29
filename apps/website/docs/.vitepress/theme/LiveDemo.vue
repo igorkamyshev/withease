@@ -3,6 +3,7 @@ import { Sandpack } from 'sandpack-vue3';
 
 import repositoryPackageJson from '../../../../../package.json';
 import webApiRaw from '../../../../../packages/web-api/dist/web-api.js?raw';
+import contractsRaw from '../../../../../packages/contracts/dist/contracts.js?raw';
 
 const repositoryVersions = {
   ...repositoryPackageJson.dependencies,
@@ -14,6 +15,7 @@ const props = defineProps(['demoFile']);
 const files = {
   '/src/App.vue': props.demoFile,
   ...localPackage({ name: 'web-api', content: webApiRaw }),
+  ...localPackage({ name: 'contracts', content: contractsRaw })
 };
 
 const customSetup = {
@@ -41,10 +43,5 @@ function localPackage({ name, content }) {
 </script>
 
 <template>
-  <Sandpack
-    template="vue3"
-    theme="auto"
-    :files="files"
-    :customSetup="customSetup"
-  />
+  <Sandpack template="vue3" theme="auto" :files="files" :customSetup="customSetup" />
 </template>

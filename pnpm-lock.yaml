@@ -14,6 +14,8 @@ importers:
       '@reduxjs/toolkit': ^2.0.1
       '@size-limit/file': ^7.0.8
       '@types/node': ^20.12.7
+      bytes: ^3.1.2
+      chart.js: ^4.4.3
       effector: 23.0.0
       effector-vue: 23.0.0
       glob: ^8.0.3
@@ -21,6 +23,7 @@ importers:
       markdown: ^0.5.0
       playwright: ^1.32.2
       prettier: ^2.6.2
+      pretty-bytes: ^6.1.1
       publint: ^0.2.7
       redux: ^5.0.0
       redux-saga: ^1.2.3
@@ -36,8 +39,11 @@ importers:
       vitepress-plugin-rss: ^0.2.8
       vitest: ~1.5.0
       vue: 3.4.27
+      vue-chartjs: ^5.3.1
     dependencies:
       '@algolia/client-search': 4.14.3
+      bytes: 3.1.2
+      pretty-bytes: 6.1.1
       sandpack-vue3: 3.1.7_vue@3.4.27
     devDependencies:
       '@arethetypeswrong/cli': 0.15.3
@@ -49,6 +55,7 @@ importers:
       '@reduxjs/toolkit': 2.0.1
       '@size-limit/file': 7.0.8_size-limit@7.0.8
       '@types/node': 20.12.7
+      chart.js: 4.4.3
       effector: 23.0.0
       effector-vue: 23.0.0_effector@23.0.0+vue@3.4.27
       glob: 8.1.0
@@ -70,6 +77,7 @@ importers:
       vitepress-plugin-rss: 0.2.8_vitepress@1.2.3
       vitest: 1.5.0_@types+node@20.12.7
       vue: 3.4.27_typescript@5.1.6
+      vue-chartjs: 5.3.1_chart.js@4.4.3+vue@3.4.27
 
   apps/web-api-demo:
     specifiers:
@@ -1324,6 +1332,10 @@ packages:
   /@jridgewell/sourcemap-codec/1.4.15:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
 
+  /@kurkle/color/0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: true
+
   /@lezer/common/1.0.4:
     resolution: {integrity: sha512-lZHlk8p67x4aIDtJl6UQrXSOP6oi7dQR3W/geFVrENdA1JDaAJWldnVqVjPMJupbTKbzDfFcePfKttqVidS/dg==}
     dev: false
@@ -2358,6 +2370,11 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
+  /bytes/3.1.2:
+    resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
+    engines: {node: '>= 0.8'}
+    dev: false
+
   /cac/6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
@@ -2434,6 +2451,13 @@ packages:
 
   /chardet/0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
+    dev: true
+
+  /chart.js/4.4.3:
+    resolution: {integrity: sha512-qK1gkGSRYcJzqrrzdR6a+I0vQ4/R+SoODXyAjscQ/4mzuNzySaMCd+hyVxitSY1+L2fjPD1Gbn+ibNqRmwQeLw==}
+    engines: {pnpm: '>=8'}
+    dependencies:
+      '@kurkle/color': 0.3.2
     dev: true
 
   /check-error/1.0.3:
@@ -4045,6 +4069,11 @@ packages:
     hasBin: true
     dev: true
 
+  /pretty-bytes/6.1.1:
+    resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+    dev: false
+
   /pretty-format/29.7.0:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -5124,6 +5153,16 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
+
+  /vue-chartjs/5.3.1_chart.js@4.4.3+vue@3.4.27:
+    resolution: {integrity: sha512-rZjqcHBxKiHrBl0CIvcOlVEBwRhpWAVf6rDU3vUfa7HuSRmGtCslc0Oc8m16oAVuk0erzc1FCtH1VCriHsrz+A==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      vue: ^3.0.0-0 || ^2.7.0
+    dependencies:
+      chart.js: 4.4.3
+      vue: 3.4.27_typescript@5.1.6
     dev: true
 
   /vue-demi/0.14.8_vue@3.4.27:
