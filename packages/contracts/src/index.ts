@@ -358,7 +358,7 @@ export function tuple(...contracts: Array<Contract<unknown, any>>): any {
  *
  * @example
  *
- * const age = contract(num, (min, max) => ({
+ * const age = contract(num, ({ min, max }) => ({
  *   isData: (data) => data >= min && data <= max,
  *   getErrorMessages: (data) =>
  *     `Expected a number between ${min} and ${max}, but got ${data}`,
