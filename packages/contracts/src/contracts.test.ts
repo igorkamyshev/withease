@@ -10,6 +10,7 @@ import {
   arr,
   and,
   tuple,
+  contract,
   Contract,
 } from './index';
 
@@ -543,6 +544,84 @@ describe('tuple', () => {
     expect(cntrct.getErrorMessages(['a', 1, 'b'])).toMatchInlineSnapshot(`
       [
         "2: expected boolean, got string",
+      ]
+    `);
+  });
+});
+
+describe('contract, no base', () => {
+  const onlySome = contract((x: number) => ({
+    isData: (t): t is number => t === x,
+    getErrorMessages: (t) => ['expected ' + x + ', got ' + t],
+  }));
+
+  const onlyOne = onlySome(1);
+  const onlyTwo = onlySome(2);
+
+  it('valid', () => {
+    expect(onlyOne.isData(1)).toBeTruthy();
+    expect(onlyOne.getErrorMessages(1)).toEqual([]);
+
+    expect(onlyTwo.isData(2)).toBeTruthy();
+    expect(onlyTwo.getErrorMessages(2)).toEqual([]);
+  });
+
+  it('invalid', () => {
+    expect(onlyOne.isData(2)).toBeFalsy();
+    expect(onlyOne.getErrorMessages(2)).toMatchInlineSnapshot(`
+      [
+        "expected 1, got 2",
+      ]
+    `);
+
+    expect(onlyTwo.isData(1)).toBeFalsy();
+    expect(onlyTwo.getErrorMessages(1)).toMatchInlineSnapshot(`
+      [
+        "expected 2, got 1",
+      ]
+    `);
+  });
+});
+
+describe('contract, with base', () => {
+  const age = contract(num, ({ min, max }: { min: number; max: number }) => ({
+    isData: (t): t is number => t >= min && t <= max,
+    getErrorMessages: (t) => [
+      'expected ' + min + ' <= x <= ' + max + ', got ' + t,
+    ],
+  }));
+
+  it('valid', () => {
+    const cntrct = age({ min: 18, max: 100 });
+
+    expect(cntrct.isData(18)).toBeTruthy();
+    expect(cntrct.getErrorMessages(18)).toEqual([]);
+
+    expect(cntrct.isData(100)).toBeTruthy();
+    expect(cntrct.getErrorMessages(100)).toEqual([]);
+  });
+
+  it('invalid', () => {
+    const cntrct = age({ min: 18, max: 100 });
+
+    expect(cntrct.isData('KEK')).toBeFalsy();
+    expect(cntrct.getErrorMessages('KEK')).toMatchInlineSnapshot(`
+      [
+        "expected number, got string",
+      ]
+    `);
+
+    expect(cntrct.isData(17)).toBeFalsy();
+    expect(cntrct.getErrorMessages(17)).toMatchInlineSnapshot(`
+      [
+        "expected 18 <= x <= 100, got 17",
+      ]
+    `);
+
+    expect(cntrct.isData(101)).toBeFalsy();
+    expect(cntrct.getErrorMessages(101)).toMatchInlineSnapshot(`
+      [
+        "expected 18 <= x <= 100, got 101",
       ]
     `);
   });
