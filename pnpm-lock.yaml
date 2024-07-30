@@ -6,25 +6,35 @@ importers:
     specifiers:
       '@algolia/client-search': ^4.14.3
       '@arethetypeswrong/cli': ^0.15.3
+      '@babel/parser': ^7.25.0
       '@changesets/cli': ^2.24.1
       '@farfetched/core': ^0.8.13
+      '@farfetched/runtypes': ^0.12.4
+      '@farfetched/superstruct': ^0.12.4
       '@playwright/test': ^1.32.2
       '@reduxjs/toolkit': ^2.0.1
       '@size-limit/file': ^7.0.8
       '@types/node': ^20.12.7
+      bytes: ^3.1.2
+      chart.js: ^4.4.3
+      comment-parser: ^1.4.1
       effector: 23.0.0
       effector-vue: 23.0.0
+      estree-walker: ^3.0.3
       glob: ^8.0.3
       i18next: 23.0.0
+      lodash-es: ^4.17.21
       markdown: ^0.5.0
       playwright: ^1.32.2
       prettier: ^2.6.2
+      pretty-bytes: ^6.1.1
       publint: ^0.2.7
       redux: ^5.0.0
       redux-saga: ^1.2.3
       runtypes: ^6.7.0
       sandpack-vue3: ^3.1.7
       size-limit: ^7.0.8
+      superstruct: ^2.0.2
       typescript: 5.1.6
       vite: 4.4.9
       vite-plugin-dts: ^3.8.3
@@ -33,19 +43,29 @@ importers:
       vitepress-plugin-rss: ^0.2.8
       vitest: ~1.5.0
       vue: 3.4.27
+      vue-chartjs: ^5.3.1
     dependencies:
       '@algolia/client-search': 4.14.3
+      bytes: 3.1.2
+      lodash-es: 4.17.21
+      pretty-bytes: 6.1.1
       sandpack-vue3: 3.1.7_vue@3.4.27
     devDependencies:
       '@arethetypeswrong/cli': 0.15.3
+      '@babel/parser': 7.25.0
       '@changesets/cli': 2.24.1
       '@farfetched/core': 0.8.13_effector@23.0.0
+      '@farfetched/runtypes': 0.12.4_x3t3da54h2pudzi4xrass7othq
+      '@farfetched/superstruct': 0.12.4_geb4xrowurf3cfiqaitxl4xbju
       '@playwright/test': 1.32.2
       '@reduxjs/toolkit': 2.0.1
       '@size-limit/file': 7.0.8_size-limit@7.0.8
       '@types/node': 20.12.7
+      chart.js: 4.4.3
+      comment-parser: 1.4.1
       effector: 23.0.0
       effector-vue: 23.0.0_effector@23.0.0+vue@3.4.27
+      estree-walker: 3.0.3
       glob: 8.1.0
       i18next: 23.0.0
       markdown: 0.5.0
@@ -56,6 +76,7 @@ importers:
       redux-saga: 1.2.3
       runtypes: 6.7.0
       size-limit: 7.0.8
+      superstruct: 2.0.2
       typescript: 5.1.6
       vite: 4.4.9_@types+node@20.12.7
       vite-plugin-dts: 3.8.3_em34en7sabsx6ywz24kghffsne
@@ -64,6 +85,7 @@ importers:
       vitepress-plugin-rss: 0.2.8_vitepress@1.2.3
       vitest: 1.5.0_@types+node@20.12.7
       vue: 3.4.27_typescript@5.1.6
+      vue-chartjs: 5.3.1_chart.js@4.4.3+vue@3.4.27
 
   apps/web-api-demo:
     specifiers:
@@ -307,8 +329,8 @@ packages:
       js-tokens: 4.0.0
     dev: true
 
-  /@babel/parser/7.24.7:
-    resolution: {integrity: sha512-9uUYRm6OqQrCqQdG1iCBwBPZgN8ciDBro2nIOFaiRz1/BCxaI7CNvQbDHvsArAC7Tw9Hda/B3U+6ui9u4HWXPw==}
+  /@babel/parser/7.25.0:
+    resolution: {integrity: sha512-CzdIU9jdP0dg7HdyB+bHvDJGagUv+qtzZt5rYCWwW6tITNqV9odjp6Qu41gkG0ca5UfdDUWrKkiAnHHdGRnOrA==}
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
@@ -1288,6 +1310,26 @@ packages:
       effector: 23.0.0
     dev: true
 
+  /@farfetched/runtypes/0.12.4_x3t3da54h2pudzi4xrass7othq:
+    resolution: {integrity: sha512-x7lCiDzX25aSY15TrFtUaUMwJUsClcWphEMoGuPGo0akclCFJw9x2tki/W4vXJomcg6HFjaMbv11w/F1XUMbUA==}
+    peerDependencies:
+      '@farfetched/core': 0.12.4
+      runtypes: ^6.6.0
+    dependencies:
+      '@farfetched/core': 0.8.13_effector@23.0.0
+      runtypes: 6.7.0
+    dev: true
+
+  /@farfetched/superstruct/0.12.4_geb4xrowurf3cfiqaitxl4xbju:
+    resolution: {integrity: sha512-2yBhvSdYFCbMa8h7x7+V0eYgwKV+5QfGz54ixdj8030ng4yEzrI2P7UJgm9xTjn1PxSl2EalsyzShRJ/drDBzw==}
+    peerDependencies:
+      '@farfetched/core': 0.12.4
+      superstruct: ^1.0.3
+    dependencies:
+      '@farfetched/core': 0.8.13_effector@23.0.0
+      superstruct: 2.0.2
+    dev: true
+
   /@jest/schemas/29.6.3:
     resolution: {integrity: sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -1297,6 +1339,10 @@ packages:
 
   /@jridgewell/sourcemap-codec/1.4.15:
     resolution: {integrity: sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==}
+
+  /@kurkle/color/0.3.2:
+    resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: true
 
   /@lezer/common/1.0.4:
     resolution: {integrity: sha512-lZHlk8p67x4aIDtJl6UQrXSOP6oi7dQR3W/geFVrENdA1JDaAJWldnVqVjPMJupbTKbzDfFcePfKttqVidS/dg==}
@@ -1948,7 +1994,7 @@ packages:
   /@vue/compiler-core/3.4.27:
     resolution: {integrity: sha512-E+RyqY24KnyDXsCuQrI+mlcdW3ALND6U7Gqa/+bVwbcpcR3BRRIckFoz7Qyd4TTlnugtwuI7YgjbvsLmxb+yvg==}
     dependencies:
-      '@babel/parser': 7.24.7
+      '@babel/parser': 7.25.0
       '@vue/shared': 3.4.27
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -1963,7 +2009,7 @@ packages:
   /@vue/compiler-sfc/3.4.27:
     resolution: {integrity: sha512-nDwntUEADssW8e0rrmE0+OrONwmRlegDA1pD6QhVeXxjIytV03yDqTey9SBDiALsvAd5U4ZrEKbMyVXhX6mCGA==}
     dependencies:
-      '@babel/parser': 7.24.7
+      '@babel/parser': 7.25.0
       '@vue/compiler-core': 3.4.27
       '@vue/compiler-dom': 3.4.27
       '@vue/compiler-ssr': 3.4.27
@@ -2332,6 +2378,11 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
+  /bytes/3.1.2:
+    resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
+    engines: {node: '>= 0.8'}
+    dev: false
+
   /cac/6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
     engines: {node: '>=8'}
@@ -2408,6 +2459,13 @@ packages:
 
   /chardet/0.7.0:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
+    dev: true
+
+  /chart.js/4.4.3:
+    resolution: {integrity: sha512-qK1gkGSRYcJzqrrzdR6a+I0vQ4/R+SoODXyAjscQ/4mzuNzySaMCd+hyVxitSY1+L2fjPD1Gbn+ibNqRmwQeLw==}
+    engines: {pnpm: '>=8'}
+    dependencies:
+      '@kurkle/color': 0.3.2
     dev: true
 
   /check-error/1.0.3:
@@ -2505,6 +2563,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /comment-parser/1.4.1:
+    resolution: {integrity: sha512-buhp5kePrmda3vhc5B9t7pUQXAb2Tnd0qgpkIhPhkHXxJpiPJ11H0ZEU0oBpJ2QztSbzG/ZxMj/CHsYJqRHmyg==}
+    engines: {node: '>= 12.0.0'}
+    dev: true
 
   /computeds/0.0.1:
     resolution: {integrity: sha512-7CEBgcMjVmitjYo5q8JTJVra6X5mQ20uTThdK+0kR7UEaDrAWEQcRiBtWJzga4eRpP6afNwwLsX2SET2JhVB1Q==}
@@ -2841,7 +2904,7 @@ packages:
   /estree-walker/3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
     dependencies:
-      '@types/estree': 1.0.1
+      '@types/estree': 1.0.5
     dev: true
 
   /execa/8.0.1:
@@ -3471,6 +3534,10 @@ packages:
       p-locate: 5.0.0
     dev: true
 
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
+
   /lodash.get/4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     dev: true
@@ -4018,6 +4085,11 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
+
+  /pretty-bytes/6.1.1:
+    resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
+    engines: {node: ^14.13.1 || >=16.0.0}
+    dev: false
 
   /pretty-format/29.7.0:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
@@ -4585,6 +4657,11 @@ packages:
     resolution: {integrity: sha512-Ca5ib8HrFn+f+0n4N4ScTIA9iTOQ7MaGS1ylHcoVqW9J7w2w8PzN6g9gKmTYgGEBH8e120+RCmhpje6jC5uGWA==}
     dev: false
 
+  /superstruct/2.0.2:
+    resolution: {integrity: sha512-uV+TFRZdXsqXTL2pRvujROjdZQ4RAlBUS5BTh9IGm+jTqQntYThciG/qu57Gs69yjnVUSqdxF9YLmSnpupBW9A==}
+    engines: {node: '>=14.0.0'}
+    dev: true
+
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
     engines: {node: '>=4'}
@@ -5093,6 +5170,16 @@ packages:
       - sugarss
       - supports-color
       - terser
+    dev: true
+
+  /vue-chartjs/5.3.1_chart.js@4.4.3+vue@3.4.27:
+    resolution: {integrity: sha512-rZjqcHBxKiHrBl0CIvcOlVEBwRhpWAVf6rDU3vUfa7HuSRmGtCslc0Oc8m16oAVuk0erzc1FCtH1VCriHsrz+A==}
+    peerDependencies:
+      chart.js: ^4.1.1
+      vue: ^3.0.0-0 || ^2.7.0
+    dependencies:
+      chart.js: 4.4.3
+      vue: 3.4.27_typescript@5.1.6
     dev: true
 
   /vue-demi/0.14.8_vue@3.4.27:

@@ -9,6 +9,7 @@ let factoryCalledCount = 0;
 
 /**
  * Have to be called inside factory created by createFactory
+ * @private
  */
 export function markFactoryAsCalled() {
   factoryCalledCount += 1;

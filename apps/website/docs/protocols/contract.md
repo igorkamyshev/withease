@@ -11,6 +11,7 @@ A rule to statically validate received data. Any object following the strict API
 
 ::: tip Packages that provide integration for creating _Contract_
 
+- [`@withease/contracts`](/contracts/)
 - [`@farfetched/runtypes`](https://farfetched.pages.dev/api/contracts/runtypes.html)
 - [`@farfetched/zod`](https://farfetched.pages.dev/api/contracts/zod.html)
 - [`@farfetched/io-ts`](https://farfetched.pages.dev/api/contracts/io-ts.html)

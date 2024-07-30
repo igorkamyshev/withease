@@ -1,0 +1,38 @@
+{
+  "name": "@withease/contracts",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "test:run": "vitest run --typecheck",
+    "test:watch": "vitest --typecheck",
+    "build": "vite build",
+    "size": "size-limit",
+    "publint": "node ../../tools/publint.mjs",
+    "typelint": "attw --pack"
+  },
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/contracts.cjs",
+  "module": "./dist/contracts.js",
+  "types": "./dist/contracts.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/contracts.d.ts",
+        "default": "./dist/contracts.js"
+      },
+      "require": {
+        "types": "./dist/contracts.d.cts",
+        "default": "./dist/contracts.cjs"
+      }
+    }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/contracts.js",
+      "limit": "774 B"
+    }
+  ]
+}
