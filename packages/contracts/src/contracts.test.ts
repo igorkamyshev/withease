@@ -1,6 +1,6 @@
 import { describe, it, test, expect } from 'vitest';
 
-import { bool, num, str, rec, or, val, arr, and, Contract } from './index';
+import { bool, num, str, obj, or, val, arr, and, Contract } from './index';
 
 describe('bool', () => {
   it('valid', () => {
@@ -313,9 +313,9 @@ describe('str', () => {
     });
   });
 
-  describe('rec, overload with fields', () => {
+  describe('obj, overload with fields', () => {
     it('empty object', () => {
-      const cntrct = rec({});
+      const cntrct = obj({});
 
       expect(cntrct.isData({})).toBeTruthy();
       expect(cntrct.getErrorMessages({})).toEqual([]);
@@ -326,7 +326,7 @@ describe('str', () => {
     });
 
     it('object with bool', () => {
-      const cntrct = rec({ enabled: bool });
+      const cntrct = obj({ enabled: bool });
 
       expect(cntrct.isData({ enabled: true })).toBeTruthy();
       expect(cntrct.getErrorMessages({ enabled: true })).toEqual([]);
@@ -358,20 +358,20 @@ describe('str', () => {
     });
 
     it('optional field edge case', () => {
-      expect(rec({ name: or(str, val(undefined)) }).isData({})).toBeTruthy();
+      expect(obj({ name: or(str, val(undefined)) }).isData({})).toBeTruthy();
     });
   });
 
-  describe('rec, overload with types', () => {
+  describe('obj, overload with types', () => {
     it('empty object', () => {
-      const cntrct = rec(str, num);
+      const cntrct = obj(str, num);
 
       expect(cntrct.isData({})).toBeTruthy();
       expect(cntrct.getErrorMessages({})).toEqual([]);
     });
 
     it('invalid field type', () => {
-      const cntrct = rec(str, str);
+      const cntrct = obj(str, str);
 
       expect(cntrct.isData({ a: 'a' })).toBeTruthy();
       expect(cntrct.getErrorMessages({ a: 'a' })).toEqual([]);
@@ -451,8 +451,8 @@ describe('str', () => {
 
 describe('complex nested', () => {
   test('format errors for nested objects', () => {
-    const cntrct = rec({
-      user: rec({ name: str }),
+    const cntrct = obj({
+      user: obj({ name: str }),
     });
 
     expect(cntrct.isData({ user: { name: 'a' } })).toBeTruthy();
@@ -468,7 +468,7 @@ describe('complex nested', () => {
   });
 
   test('supports objects in arrays', () => {
-    const cntrct = arr(rec({ name: str }));
+    const cntrct = arr(obj({ name: str }));
 
     expect(cntrct.isData([])).toBeTruthy();
     expect(cntrct.getErrorMessages([])).toEqual([]);

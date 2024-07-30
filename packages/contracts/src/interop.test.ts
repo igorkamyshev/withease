@@ -5,11 +5,11 @@ import { object, string } from 'superstruct';
 import { runtypeContract } from '@farfetched/runtypes';
 import { superstructContract } from '@farfetched/superstruct';
 
-import { rec, arr } from './index';
+import { obj, arr } from './index';
 
 describe('runtypes', () => {
   it('supports Runtype inside', () => {
-    const cntrct = rec({ name: runtypeContract(Array(String)) });
+    const cntrct = obj({ name: runtypeContract(Array(String)) });
 
     expect(cntrct.isData({ name: ['foo'] })).toBe(true);
     expect(cntrct.getErrorMessages({ name: ['foo'] })).toEqual([]);

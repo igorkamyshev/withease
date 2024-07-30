@@ -19,9 +19,9 @@ function age(min, max): Contract<number, number> {
 Now you can use this matcher in your schema:
 
 ```ts
-import { rec, str, and, num } from '@withease/contracts';
+import { obj, str, and, num } from '@withease/contracts';
 
-const User = rec({
+const User = obj({
   name: str,
   age: and(num, age(18, 100)),
 });

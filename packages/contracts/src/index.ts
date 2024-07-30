@@ -1,10 +1,8 @@
-import { func } from 'superstruct';
-
 /**
  * A type that allows to extract the result type of a _Contract_.
  *
  * @example
- * const User = rec({
+ * const User = obj({
  *   name: str,
  *   age: num,
  * });
@@ -137,7 +135,7 @@ export function or<T extends Array<Contract<unknown, any>>>(
  *   };
  * }
  *
- * const User = rec({
+ * const User = obj({
  *   name: str,
  *   age: and(num, age(18, 100)),
  * });
@@ -164,15 +162,15 @@ export function and<T>(
 /**
  * Function that creates a _Contract_ that checks if a value is object and every property is conform to the given _Contract_.
  *
- * @overload "rec(str, contract)"
+ * @overload "obj(str, contract)"
  *
  * @example
- * const Ids = rec(str, num);
+ * const Ids = obj(str, num);
  *
  * Ids.isData({ id1: 1, id2: 2 }) === true;
  * Ids.isData({ id1: 1, id2: '2' }) === false;
  */
-export function rec<V>(
+export function obj<V>(
   keys: typeof str,
   values: Contract<unknown, V>
 ): Contract<unknown, Record<string, V>>;
@@ -180,10 +178,10 @@ export function rec<V>(
 /**
  * Function that creates a _Contract_ that checks if a value is conform to an object with the given _Contracts_ as properties.
  *
- * @overload "rec(shape)"
+ * @overload "obj(shape)"
  *
  * @example
- * const User = rec({
+ * const User = obj({
  *  name: str,
  *  age: num,
  * });
@@ -191,11 +189,11 @@ export function rec<V>(
  * User.isData({ name: 'Alice', age: 42 }) === true;
  * User.isData({ name: 'Alice' }) === false;
  */
-export function rec<C extends Record<string, Contract<unknown, any>>>(
+export function obj<C extends Record<string, Contract<unknown, any>>>(
   c: C
 ): Contract<unknown, { [key in keyof C]: UnContract<C[key]> }>;
 
-export function rec(shape: any, fieldContract?: any): any {
+export function obj(shape: any, fieldContract?: any): any {
   const check = (x: unknown) => {
     if (typeof x !== 'object' || x === null) return false;
 

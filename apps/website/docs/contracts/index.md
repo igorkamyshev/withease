@@ -48,9 +48,9 @@ npm install @withease/contracts
 `@withease/contracts` provides a special type `UnContract` that can be used to extract a type from a _Contract_.
 
 ```ts
-import { type UnContract, rec, str, num } from '@withease/contracts';
+import { type UnContract, obj, str, num } from '@withease/contracts';
 
-const UserContract = rec({
+const UserContract = obj({
   id: num,
   name: str,
   email: str,
@@ -70,7 +70,7 @@ type User = UnContract<typeof UserContract>;
 
 ```ts
 import { createJsonQuery } from '@farfetched/core';
-import { rec, str, arr, val, or } from '@withease/contracts';
+import { obj, str, arr, val, or } from '@withease/contracts';
 
 const characterQuery = createJsonQuery({
   params: declareParams<{ id: number }>(),
@@ -82,15 +82,15 @@ const characterQuery = createJsonQuery({
     // after receiving data from the server
     // check if it is conforms the Contract to ensure
     // API does not return something unexpected
-    contract: rec({
+    contract: obj({
       id: str,
       name: str,
       status: Status,
       species: str,
       type: str,
       gender: Gender,
-      origin: rec({ name: str, url: str }),
-      location: rec({ name: str, url: str }),
+      origin: obj({ name: str, url: str }),
+      location: obj({ name: str, url: str }),
       image: or(val('Female'), val('Male'), val('Genderless')),
       episode: arr(str),
     }),
@@ -128,7 +128,7 @@ For instance, you can define a part of a [_Contract_](/protocols/contract) with 
 
 ```ts
 import { z } from 'zod';
-import { arr, rec } from '@withease/contracts';
+import { arr, obj } from '@withease/contracts';
 import { zodContract } from '@farfetched/zod';
 
 const User = z.object({
@@ -136,7 +136,7 @@ const User = z.object({
 });
 
 const MyContract = arr(
-  rec({
+  obj({
     // 👇 easily integrate Zod via compatibility layer
     users: zodContract(User),
   })
