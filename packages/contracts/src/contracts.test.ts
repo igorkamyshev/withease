@@ -10,8 +10,7 @@ import {
   arr,
   and,
   tuple,
-  contract,
-  Contract,
+  type Contract,
 } from './index';
 
 describe('bool', () => {
@@ -544,50 +543,6 @@ describe('tuple', () => {
     expect(cntrct.getErrorMessages(['a', 1, 'b'])).toMatchInlineSnapshot(`
       [
         "2: expected boolean, got string",
-      ]
-    `);
-  });
-});
-
-describe('contract', () => {
-  const age = contract(num, ({ min, max }: { min: number; max: number }) => ({
-    isData: (t): t is number => t >= min && t <= max,
-    getErrorMessages: (t) => [
-      'expected ' + min + ' <= x <= ' + max + ', got ' + t,
-    ],
-  }));
-
-  it('valid', () => {
-    const cntrct = age({ min: 18, max: 100 });
-
-    expect(cntrct.isData(18)).toBeTruthy();
-    expect(cntrct.getErrorMessages(18)).toEqual([]);
-
-    expect(cntrct.isData(100)).toBeTruthy();
-    expect(cntrct.getErrorMessages(100)).toEqual([]);
-  });
-
-  it('invalid', () => {
-    const cntrct = age({ min: 18, max: 100 });
-
-    expect(cntrct.isData('KEK')).toBeFalsy();
-    expect(cntrct.getErrorMessages('KEK')).toMatchInlineSnapshot(`
-      [
-        "expected number, got string",
-      ]
-    `);
-
-    expect(cntrct.isData(17)).toBeFalsy();
-    expect(cntrct.getErrorMessages(17)).toMatchInlineSnapshot(`
-      [
-        "expected 18 <= x <= 100, got 17",
-      ]
-    `);
-
-    expect(cntrct.isData(101)).toBeFalsy();
-    expect(cntrct.getErrorMessages(101)).toMatchInlineSnapshot(`
-      [
-        "expected 18 <= x <= 100, got 101",
       ]
     `);
   });

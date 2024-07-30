@@ -5,13 +5,16 @@ Since `@withease/contracts` is built on top of [_Contract_](/protocols/contract)
 Let us write a custom matcher that checks if an age of a user is within a certain range:
 
 ```ts
-import { type Contract, contract, nul } from '@withease/contracts';
+import { type Contract, and, num } from '@withease/contracts';
 
-const age = contract(num, ({ min, max }: { min: number; max: number }) => ({
-  isData: (data) => data >= min && data <= max,
-  getErrorMessages: (data) =>
-    `Expected a number between ${min} and ${max}, but got ${data}`,
-}));
+function age({ min, max }: { min: number; max: number }) {
+  return and(num, {
+    isData: (data) => data >= min && data <= max,
+    getErrorMessages: (data) => [
+      `Expected a number between ${min} and ${max}, but got ${data}`,
+    ],
+  });
+}
 ```
 
 Now you can use this matcher in your schema:

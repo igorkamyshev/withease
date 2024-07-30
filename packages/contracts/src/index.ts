@@ -352,40 +352,6 @@ export function tuple(...contracts: Array<Contract<unknown, any>>): any {
   };
 }
 
-/**
- * Creates a _Contract_ based on a passed function and a base _Contract_.
- * Base _Contract_ is checked first, then the _Contract_ created by the function.
- *
- * @example
- *
- * const age = contract(num, ({ min, max }) => ({
- *   isData: (data) => data >= min && data <= max,
- *   getErrorMessages: (data) =>
- *     `Expected a number between ${min} and ${max}, but got ${data}`,
- * }));
- */
-export function contract<P, I, O extends I>(
-  base: Contract<unknown, I>,
-  fn: (config: P) => Contract<I, O>
-): (config: P) => Contract<unknown, O> {
-  return (params: P) => {
-    const next = fn(params);
-    const check = (data: unknown): data is O =>
-      base.isData(data) && next.isData(data);
-
-    return {
-      isData: check,
-      getErrorMessages: createGetErrorMessages(check, (data) => {
-        if (!base.isData(data)) {
-          return base.getErrorMessages(data);
-        }
-
-        return next.getErrorMessages(data);
-      }),
-    };
-  };
-}
-
 // -- utils
 
 function createSimpleContract<T>(
