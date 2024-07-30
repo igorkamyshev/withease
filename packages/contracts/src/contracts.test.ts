@@ -549,41 +549,7 @@ describe('tuple', () => {
   });
 });
 
-describe('contract, no base', () => {
-  const onlySome = contract((x: number) => ({
-    isData: (t): t is number => t === x,
-    getErrorMessages: (t) => ['expected ' + x + ', got ' + t],
-  }));
-
-  const onlyOne = onlySome(1);
-  const onlyTwo = onlySome(2);
-
-  it('valid', () => {
-    expect(onlyOne.isData(1)).toBeTruthy();
-    expect(onlyOne.getErrorMessages(1)).toEqual([]);
-
-    expect(onlyTwo.isData(2)).toBeTruthy();
-    expect(onlyTwo.getErrorMessages(2)).toEqual([]);
-  });
-
-  it('invalid', () => {
-    expect(onlyOne.isData(2)).toBeFalsy();
-    expect(onlyOne.getErrorMessages(2)).toMatchInlineSnapshot(`
-      [
-        "expected 1, got 2",
-      ]
-    `);
-
-    expect(onlyTwo.isData(1)).toBeFalsy();
-    expect(onlyTwo.getErrorMessages(1)).toMatchInlineSnapshot(`
-      [
-        "expected 2, got 1",
-      ]
-    `);
-  });
-});
-
-describe('contract, with base', () => {
+describe('contract', () => {
   const age = contract(num, ({ min, max }: { min: number; max: number }) => ({
     isData: (t): t is number => t >= min && t <= max,
     getErrorMessages: (t) => [

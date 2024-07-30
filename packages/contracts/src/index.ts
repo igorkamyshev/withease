@@ -353,27 +353,8 @@ export function tuple(...contracts: Array<Contract<unknown, any>>): any {
 }
 
 /**
- * Creates a _Contract_ based on a passed function.
- *
- * @overload "contract(fn)"
- *
- * @example
- *
- * const age = contract((min, max) => ({
- *   isData: (data) => typeof data === 'number' && data >= min && data <= max,
- *   getErrorMessages: (data) =>
- *     `Expected a number between ${min} and ${max}, but got ${data}`,
- * }));
- */
-export function contract<P, O>(
-  fn: (config: P) => Contract<unknown, O>
-): (config: P) => Contract<unknown, O>;
-
-/**
  * Creates a _Contract_ based on a passed function and a base _Contract_.
  * Base _Contract_ is checked first, then the _Contract_ created by the function.
- *
- * @overload "contract(base, fn)"
  *
  * @example
  *
@@ -386,30 +367,20 @@ export function contract<P, O>(
 export function contract<P, I, O extends I>(
   base: Contract<unknown, I>,
   fn: (config: P) => Contract<I, O>
-): (config: P) => Contract<unknown, O>;
-
-export function contract<P, I, O extends I>(
-  base: Contract<unknown, I> | ((config: P) => Contract<I, O>),
-  fn?: (config: P) => Contract<I, O>
-): (config: P) => Contract<I, O> {
-  const creator: any = fn ? fn : (base as (config: P) => Contract<I, O>);
-  const realBase = fn ? (base as Contract<unknown, I>) : null;
+): (config: P) => Contract<unknown, O> {
   return (params: P) => {
-    const check = (data: unknown): data is O => {
-      if (realBase) {
-        return realBase.isData(data) && creator(params).isData(data);
-      }
-      return creator(params).isData(data);
-    };
+    const next = fn(params);
+    const check = (data: unknown): data is O =>
+      base.isData(data) && next.isData(data);
 
     return {
       isData: check,
       getErrorMessages: createGetErrorMessages(check, (data) => {
-        if (realBase && !realBase.isData(data)) {
-          return realBase.getErrorMessages(data);
+        if (!base.isData(data)) {
+          return base.getErrorMessages(data);
         }
 
-        return creator(params).getErrorMessages(data);
+        return next.getErrorMessages(data);
       }),
     };
   };
