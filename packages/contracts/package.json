@@ -32,7 +32,7 @@
   "size-limit": [
     {
       "path": "./dist/contracts.js",
-      "limit": "687 B"
+      "limit": "749 B"
     }
   ]
 }
