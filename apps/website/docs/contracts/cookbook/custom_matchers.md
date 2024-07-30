@@ -7,9 +7,9 @@ Let us write a custom matcher that checks if an age of a user is within a certai
 ```ts
 import { type Contract } from '@withease/contracts';
 
-function age(min, max): Contract<unknown, number> {
+function age(min, max): Contract<number, number> {
   return {
-    isData: (data) => typeof data === 'number' && data >= min && data <= max,
+    isData: (data) => data >= min && data <= max,
     getErrorMessages: (data) =>
       `Expected a number between ${min} and ${max}, but got ${data}`,
   };
@@ -19,10 +19,10 @@ function age(min, max): Contract<unknown, number> {
 Now you can use this matcher in your schema:
 
 ```ts
-import { rec, str } from '@withease/contracts';
+import { rec, str, and, num } from '@withease/contracts';
 
 const User = rec({
   name: str,
-  age: age(18, 100),
+  age: and(num, age(18, 100)),
 });
 ```

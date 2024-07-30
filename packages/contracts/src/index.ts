@@ -1,3 +1,5 @@
+import { func } from 'superstruct';
+
 /**
  * A type that allows to extract the result type of a _Contract_.
  *
@@ -124,11 +126,47 @@ export function or<T extends Array<Contract<unknown, any>>>(
 }
 
 /**
+ * Function that creates a _Contract_ that checks if a value is conform to all of the given _Contracts_.
+ *
+ * @example
+ * function age(min, max): Contract<number, number> {
+ *   return {
+ *     isData: (data) => data >= min && data <= max,
+ *     getErrorMessages: (data) =>
+ *       `Expected a number between ${min} and ${max}, but got ${data}`,
+ *   };
+ * }
+ *
+ * const User = rec({
+ *   name: str,
+ *   age: and(num, age(18, 100)),
+ * });
+ */
+export function and<T>(
+  first: Contract<unknown, T>,
+  ...rest: Array<Contract<T, T>>
+): Contract<unknown, T> {
+  const all = [first, ...rest];
+  return {
+    isData: (x): x is T => all.every((c) => c.isData(x as any)),
+    getErrorMessages: (x) => {
+      for (const c of all) {
+        if (!c.isData(x as any)) {
+          return c.getErrorMessages(x as any);
+        }
+      }
+
+      return [];
+    },
+  };
+}
+
+/**
  * Function that creates a _Contract_ that checks if a value is object and every property is conform to the given _Contract_.
- * 
+ *
  * @example
  * const Ids = rec(str, num);
- * 
+ *
  * Ids.isData({ id1: 1, id2: 2 }) === true;
  * Ids.isData({ id1: 1, id2: '2' }) === false;
  */

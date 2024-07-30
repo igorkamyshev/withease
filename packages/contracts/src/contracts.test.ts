@@ -1,6 +1,6 @@
 import { describe, it, test, expect } from 'vitest';
 
-import { bool, num, str, rec, or, val, arr } from './index';
+import { bool, num, str, rec, or, val, arr, and, Contract } from './index';
 
 describe('bool', () => {
   it('valid', () => {
@@ -237,6 +237,47 @@ describe('str', () => {
         ]
       `
       );
+    });
+  });
+
+  describe('and', () => {
+    const len = (l: number): Contract<string, string> => {
+      return {
+        isData: (x: string): x is string => x.length >= l,
+        getErrorMessages: (x) =>
+          x.length >= l ? [] : [`expected length >= ${l}, got ${x.length}`],
+      };
+    };
+
+    const cntrct = and(str, len(10));
+
+    it('valid all', () => {
+      const str10 = '1234567890';
+
+      expect(cntrct.isData(str10)).toBeTruthy();
+      expect(cntrct.getErrorMessages(str10)).toEqual([]);
+    });
+
+    it('invalid first', () => {
+      const number = 1234567890;
+
+      expect(cntrct.isData(number)).toBeFalsy();
+      expect(cntrct.getErrorMessages(number)).toMatchInlineSnapshot(`
+        [
+          "expected string, got number",
+        ]
+      `);
+    });
+
+    it('invalid second', () => {
+      const str9 = '123456789';
+
+      expect(cntrct.isData(str9)).toBeFalsy();
+      expect(cntrct.getErrorMessages(str9)).toMatchInlineSnapshot(`
+        [
+          "expected length >= 10, got 9",
+        ]
+      `);
     });
   });
 
