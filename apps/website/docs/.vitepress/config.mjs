@@ -128,6 +128,10 @@ export default defineConfig({
               text: 'Custom Matchers',
               link: '/contracts/cookbook/custom_matchers',
             },
+            {
+              text: 'Merge Objects',
+              link: '/contracts/cookbook/merge_objects',
+            },
           ],
         },
         { text: 'APIs', link: '/contracts/api' },

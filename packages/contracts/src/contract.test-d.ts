@@ -1,6 +1,6 @@
 import { describe, test, expectTypeOf } from 'vitest';
 
-import { and, Contract, num } from './index';
+import { and, Contract, num, obj, str } from './index';
 
 describe('and', () => {
   test('inline contract', () => {
@@ -10,5 +10,13 @@ describe('and', () => {
     });
 
     expectTypeOf(contract).toEqualTypeOf<Contract<unknown, number>>();
+  });
+
+  test('as extends', () => {
+    const contract = and(obj({ name: str }), obj({ age: num }));
+
+    expectTypeOf(contract).toEqualTypeOf<
+      Contract<unknown, { name: string; age: number }>
+    >();
   });
 });

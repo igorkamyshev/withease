@@ -547,3 +547,27 @@ describe('tuple', () => {
     `);
   });
 });
+
+describe('special cases', () => {
+  it('or with two big objects', () => {
+    const cntrct = or(obj({ name: str }), obj({ age: num }));
+
+    expect(cntrct.getErrorMessages({ lol: 'kek' })).toMatchInlineSnapshot(`
+      [
+        "name: expected string, got undefined",
+        "age: expected number, got undefined",
+      ]
+    `);
+  });
+
+  it('and as extends', () => {
+    const contract = and(obj({ name: str }), obj({ age: num }));
+
+    expect(contract.isData({ name: 'a', age: 1 })).toBeTruthy();
+
+    expect(contract.isData({ name: 'a' })).toBeFalsy();
+    expect(contract.isData({ age: 1 })).toBeFalsy();
+    expect(contract.isData({ name: 'a', age: 'ERROR' })).toBeFalsy();
+    expect(contract.isData({ name: 18888, age: 1 })).toBeFalsy();
+  });
+});

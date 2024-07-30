@@ -108,8 +108,41 @@ export function or<T extends Array<Contract<unknown, any>>>(
   };
 }
 
+type Merge<T, U> = {
+  [K in keyof T | keyof U]: K extends keyof U
+    ? U[K]
+    : K extends keyof T
+    ? T[K]
+    : never;
+};
+
+/**
+ * Function that merges two _Contracts_ of objects into one.
+ *
+ * @overload "and(objectA, objectB)"
+ *
+ * @example
+ *
+ * const User = obj({
+ *   name: str,
+ * });
+ *
+ * const Admin = and(User, obj({
+ *   permitted: bool,
+ * }));
+ */
+export function and<
+  T extends Record<string, any>,
+  K extends Record<string, any>
+>(
+  first: Contract<unknown, T>,
+  second: Contract<unknown, K>
+): Contract<unknown, Merge<T, K>>;
+
 /**
  * Function that creates a _Contract_ that checks if a value is conform to all of the given _Contracts_.
+ *
+ * @overload "and(first, ...rest)"
  *
  * @example
  * function age(min, max): Contract<number, number> {
@@ -125,6 +158,11 @@ export function or<T extends Array<Contract<unknown, any>>>(
  *   age: and(num, age(18, 100)),
  * });
  */
+export function and<T>(
+  first: Contract<unknown, T>,
+  ...rest: Array<Contract<T, T>>
+): Contract<unknown, T>;
+
 export function and<T>(
   first: Contract<unknown, T>,
   ...rest: Array<Contract<T, T>>
