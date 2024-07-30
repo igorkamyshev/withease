@@ -195,7 +195,7 @@ describe('str', () => {
       expect(cntrctA.isData('b')).toBeFalsy();
       expect(cntrct1.getErrorMessages('b')).toMatchInlineSnapshot(`
         [
-          "expected 1, got \\"b\\"",
+          "expected 1, got "b"",
         ]
       `);
 
@@ -266,13 +266,13 @@ describe('str', () => {
       expect(cntrct.getErrorMessages('')).toMatchInlineSnapshot(`
         [
           "expected boolean, got string",
-          "expected 0, got \\"\\"",
+          "expected 0, got """,
         ]
       `);
     });
   });
 
-  describe('rec', () => {
+  describe('rec, overload with fields', () => {
     it('empty object', () => {
       const cntrct = rec({});
 
@@ -318,6 +318,29 @@ describe('str', () => {
 
     it('optional field edge case', () => {
       expect(rec({ name: or(str, val(undefined)) }).isData({})).toBeTruthy();
+    });
+  });
+
+  describe('rec, overload with types', () => {
+    it('empty object', () => {
+      const cntrct = rec(str, num);
+
+      expect(cntrct.isData({})).toBeTruthy();
+      expect(cntrct.getErrorMessages({})).toEqual([]);
+    });
+
+    it('invalid field type', () => {
+      const cntrct = rec(str, str);
+
+      expect(cntrct.isData({ a: 'a' })).toBeTruthy();
+      expect(cntrct.getErrorMessages({ a: 'a' })).toEqual([]);
+
+      expect(cntrct.isData({ a: 1, b: 'b' })).toBeFalsy();
+      expect(cntrct.getErrorMessages({ a: 1 })).toMatchInlineSnapshot(`
+        [
+          "a: expected string, got number",
+        ]
+      `);
     });
   });
 

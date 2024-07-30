@@ -124,6 +124,20 @@ export function or<T extends Array<Contract<unknown, any>>>(
 }
 
 /**
+ * Function that creates a _Contract_ that checks if a value is object and every property is conform to the given _Contract_.
+ * 
+ * @example
+ * const Ids = rec(str, num);
+ * 
+ * Ids.isData({ id1: 1, id2: 2 }) === true;
+ * Ids.isData({ id1: 1, id2: '2' }) === false;
+ */
+export function rec<V>(
+  keys: typeof str,
+  values: Contract<unknown, V>
+): Contract<unknown, Record<string, V>>;
+
+/**
  * Function that creates a _Contract_ that checks if a value is conform to an object with the given _Contracts_ as properties.
  *
  * @example
@@ -137,15 +151,27 @@ export function or<T extends Array<Contract<unknown, any>>>(
  */
 export function rec<C extends Record<string, Contract<unknown, any>>>(
   c: C
-): Contract<unknown, { [key in keyof C]: UnContract<C[key]> }> {
-  const check = (x: unknown): x is { [key in keyof C]: UnContract<C[key]> } => {
+): Contract<unknown, { [key in keyof C]: UnContract<C[key]> }>;
+
+export function rec(shape: any, fieldContract?: any): any {
+  const check = (x: unknown) => {
     if (typeof x !== 'object' || x === null) return false;
 
     let valid = true;
-    for (const [key, val] of Object.entries(c)) {
-      if (!val.isData((x as any)[key])) {
-        valid = false;
-        break;
+    if (shape === str) {
+      for (const val of Object.values(x)) {
+        if (fieldContract.isData(val) === false) {
+          valid = false;
+          break;
+        }
+      }
+    } else {
+      for (const [key, val] of Object.entries(shape)) {
+        // @ts-expect-error
+        if (!val.isData((x as any)[key])) {
+          valid = false;
+          break;
+        }
       }
     }
 
@@ -160,9 +186,18 @@ export function rec<C extends Record<string, Contract<unknown, any>>>(
       }
       const errors = [] as string[];
 
-      for (const [key, val] of Object.entries(c)) {
-        const newErrors = val.getErrorMessages((x as any)[key]);
-        errors.push(...newErrors.map((msg) => `${key}: ${msg}`));
+      if (shape === str) {
+        for (const [key, val] of Object.entries(x)) {
+          if (fieldContract.isData(val) === false) {
+            errors.push(`${key}: ${fieldContract.getErrorMessages(val)}`);
+          }
+        }
+      } else {
+        for (const [key, val] of Object.entries(shape)) {
+          // @ts-expect-error
+          const newErrors = val.getErrorMessages((x as any)[key]);
+          errors.push(...newErrors.map((msg: string) => `${key}: ${msg}`));
+        }
       }
 
       return errors;

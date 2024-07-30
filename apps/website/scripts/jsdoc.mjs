@@ -47,6 +47,10 @@ await Promise.all(
               name = node.declaration.id.name;
               kind = 'function';
               break;
+            case 'TSDeclareFunction':
+              name = node.declaration.id.name;
+              kind = 'function';
+              break;
             case 'VariableDeclaration':
               name = node.declaration.declarations[0].id.name;
               kind = 'variable';

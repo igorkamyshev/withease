@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "test:run": "vitest run --typecheck",
+    "test:watch": "vitest --typecheck",
     "build": "vite build",
     "size": "size-limit",
     "publint": "node ../../tools/publint.mjs",
@@ -31,7 +32,7 @@
   "size-limit": [
     {
       "path": "./dist/contracts.js",
-      "limit": "603 B"
+      "limit": "687 B"
     }
   ]
 }
