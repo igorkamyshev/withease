@@ -11,6 +11,9 @@
     "typelint": "attw --pack"
   },
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],
