@@ -6,6 +6,7 @@ importers:
     specifiers:
       '@algolia/client-search': ^4.14.3
       '@arethetypeswrong/cli': ^0.15.3
+      '@babel/parser': ^7.25.0
       '@changesets/cli': ^2.24.1
       '@farfetched/core': ^0.8.13
       '@farfetched/runtypes': ^0.12.4
@@ -16,8 +17,10 @@ importers:
       '@types/node': ^20.12.7
       bytes: ^3.1.2
       chart.js: ^4.4.3
+      comment-parser: ^1.4.1
       effector: 23.0.0
       effector-vue: 23.0.0
+      estree-walker: ^3.0.3
       glob: ^8.0.3
       i18next: 23.0.0
       markdown: ^0.5.0
@@ -47,6 +50,7 @@ importers:
       sandpack-vue3: 3.1.7_vue@3.4.27
     devDependencies:
       '@arethetypeswrong/cli': 0.15.3
+      '@babel/parser': 7.25.0
       '@changesets/cli': 2.24.1
       '@farfetched/core': 0.8.13_effector@23.0.0
       '@farfetched/runtypes': 0.12.4_x3t3da54h2pudzi4xrass7othq
@@ -56,8 +60,10 @@ importers:
       '@size-limit/file': 7.0.8_size-limit@7.0.8
       '@types/node': 20.12.7
       chart.js: 4.4.3
+      comment-parser: 1.4.1
       effector: 23.0.0
       effector-vue: 23.0.0_effector@23.0.0+vue@3.4.27
+      estree-walker: 3.0.3
       glob: 8.1.0
       i18next: 23.0.0
       markdown: 0.5.0
@@ -321,8 +327,8 @@ packages:
       js-tokens: 4.0.0
     dev: true
 
-  /@babel/parser/7.24.7:
-    resolution: {integrity: sha512-9uUYRm6OqQrCqQdG1iCBwBPZgN8ciDBro2nIOFaiRz1/BCxaI7CNvQbDHvsArAC7Tw9Hda/B3U+6ui9u4HWXPw==}
+  /@babel/parser/7.25.0:
+    resolution: {integrity: sha512-CzdIU9jdP0dg7HdyB+bHvDJGagUv+qtzZt5rYCWwW6tITNqV9odjp6Qu41gkG0ca5UfdDUWrKkiAnHHdGRnOrA==}
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
@@ -1986,7 +1992,7 @@ packages:
   /@vue/compiler-core/3.4.27:
     resolution: {integrity: sha512-E+RyqY24KnyDXsCuQrI+mlcdW3ALND6U7Gqa/+bVwbcpcR3BRRIckFoz7Qyd4TTlnugtwuI7YgjbvsLmxb+yvg==}
     dependencies:
-      '@babel/parser': 7.24.7
+      '@babel/parser': 7.25.0
       '@vue/shared': 3.4.27
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -2001,7 +2007,7 @@ packages:
   /@vue/compiler-sfc/3.4.27:
     resolution: {integrity: sha512-nDwntUEADssW8e0rrmE0+OrONwmRlegDA1pD6QhVeXxjIytV03yDqTey9SBDiALsvAd5U4ZrEKbMyVXhX6mCGA==}
     dependencies:
-      '@babel/parser': 7.24.7
+      '@babel/parser': 7.25.0
       '@vue/compiler-core': 3.4.27
       '@vue/compiler-dom': 3.4.27
       '@vue/compiler-ssr': 3.4.27
@@ -2556,6 +2562,11 @@ packages:
     dev: true
     optional: true
 
+  /comment-parser/1.4.1:
+    resolution: {integrity: sha512-buhp5kePrmda3vhc5B9t7pUQXAb2Tnd0qgpkIhPhkHXxJpiPJ11H0ZEU0oBpJ2QztSbzG/ZxMj/CHsYJqRHmyg==}
+    engines: {node: '>= 12.0.0'}
+    dev: true
+
   /computeds/0.0.1:
     resolution: {integrity: sha512-7CEBgcMjVmitjYo5q8JTJVra6X5mQ20uTThdK+0kR7UEaDrAWEQcRiBtWJzga4eRpP6afNwwLsX2SET2JhVB1Q==}
     dev: true
@@ -2891,7 +2902,7 @@ packages:
   /estree-walker/3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
     dependencies:
-      '@types/estree': 1.0.1
+      '@types/estree': 1.0.5
     dev: true
 
   /execa/8.0.1:

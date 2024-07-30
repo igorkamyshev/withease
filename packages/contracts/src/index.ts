@@ -1,7 +1,13 @@
 import { type Contract } from './protocol';
 
+/**
+ * A type that allows to extract the result type of a _Contract_.
+ */
 export type UnContract<T> = T extends Contract<unknown, infer U> ? U : never;
 
+/**
+ * _Contract_ that checks if a value is a boolean.
+ */
 export const bool: Contract<unknown, boolean> = createSimpleContract(
   (x: unknown): x is boolean => {
     return typeof x === 'boolean';
@@ -9,6 +15,9 @@ export const bool: Contract<unknown, boolean> = createSimpleContract(
   'boolean'
 );
 
+/**
+ * _Contract_ that checks if a value is a number.
+ */
 export const num: Contract<unknown, number> = createSimpleContract(
   (x: unknown): x is number => {
     return typeof x === 'number';
@@ -16,6 +25,9 @@ export const num: Contract<unknown, number> = createSimpleContract(
   'number'
 );
 
+/**
+ * _Contract_ that checks if a value is a string.
+ */
 export const str: Contract<unknown, string> = createSimpleContract(
   (x: unknown): x is string => {
     return typeof x === 'string';
@@ -23,6 +35,9 @@ export const str: Contract<unknown, string> = createSimpleContract(
   'string'
 );
 
+/**
+ * Function that creates a _Contract_ that checks if a value is equal to a given value.
+ */
 export function val<T extends string | number | boolean | null | undefined>(
   value: T
 ): Contract<unknown, T> {
@@ -38,10 +53,13 @@ export function val<T extends string | number | boolean | null | undefined>(
   };
 }
 
+/**
+ * Function that creates a _Contract_ that checks if a value is conform to one of the given _Contracts_.
+ */
 export function or<T extends Array<Contract<unknown, any>>>(
   ...contracts: T
-): Contract<unknown, ContarctValue<T[number]>> {
-  const check = (x: unknown): x is ContarctValue<T[number]> =>
+): Contract<unknown, UnContract<T[number]>> {
+  const check = (x: unknown): x is UnContract<T[number]> =>
     contracts.some((c) => c.isData(x));
 
   return {
@@ -52,12 +70,13 @@ export function or<T extends Array<Contract<unknown, any>>>(
   };
 }
 
+/**
+ * Function that creates a _Contract_ that checks if a value is conform to an object with the given _Contracts_ as properties.
+ */
 export function rec<C extends Record<string, Contract<unknown, any>>>(
   c: C
-): Contract<unknown, { [key in keyof C]: ContarctValue<C[key]> }> {
-  const check = (
-    x: unknown
-  ): x is { [key in keyof C]: ContarctValue<C[key]> } => {
+): Contract<unknown, { [key in keyof C]: UnContract<C[key]> }> {
+  const check = (x: unknown): x is { [key in keyof C]: UnContract<C[key]> } => {
     if (typeof x !== 'object' || x === null) return false;
 
     let valid = true;
@@ -89,6 +108,9 @@ export function rec<C extends Record<string, Contract<unknown, any>>>(
   };
 }
 
+/**
+ * Function that creates a _Contract_ that checks if a value is conform to an array of the given _Contracts_.
+ */
 export function arr<V>(c: Contract<unknown, V>): Contract<unknown, V[]> {
   const check = (x: unknown): x is V[] =>
     Array.isArray(x) && x.every((v) => c.isData(v));
@@ -106,11 +128,6 @@ export function arr<V>(c: Contract<unknown, V>): Contract<unknown, V[]> {
     }),
   };
 }
-
-// -- types
-
-export type ContarctValue<C extends Contract<unknown, any>> =
-  C extends Contract<unknown, infer T> ? T : never;
 
 // -- utils
 

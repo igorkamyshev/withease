@@ -2,7 +2,7 @@
   "name": "website",
   "private": true,
   "scripts": {
-    "prepare": "node changelog/cli.mjs",
+    "prepare": "node scripts/changelog.mjs && node scripts/jsdoc.mjs",
     "dev": "pnpm prepare && vitepress dev docs",
     "build": "pnpm prepare && vitepress build docs"
   },
