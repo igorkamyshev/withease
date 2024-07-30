@@ -271,6 +271,87 @@ export function arr<V>(c: Contract<unknown, V>): Contract<unknown, V[]> {
   };
 }
 
+export function tuple<T>(a: Contract<unknown, T>): Contract<unknown, [T]>;
+export function tuple<T, U>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>
+): Contract<unknown, [T, U]>;
+export function tuple<T, U, V>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>,
+  c: Contract<unknown, V>
+): Contract<unknown, [T, U, V]>;
+export function tuple<T, U, V, W>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>,
+  c: Contract<unknown, V>,
+  d: Contract<unknown, W>
+): Contract<unknown, [T, U, V, W]>;
+export function tuple<T, U, V, W, X>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>,
+  c: Contract<unknown, V>,
+  d: Contract<unknown, W>,
+  e: Contract<unknown, X>
+): Contract<unknown, [T, U, V, W, X]>;
+export function tuple<T, U, V, W, X, Y>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>,
+  c: Contract<unknown, V>,
+  d: Contract<unknown, W>,
+  e: Contract<unknown, X>,
+  f: Contract<unknown, Y>
+): Contract<unknown, [T, U, V, W, X, Y]>;
+export function tuple<T, U, V, W, X, Y, Z>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>,
+  c: Contract<unknown, V>,
+  d: Contract<unknown, W>,
+  e: Contract<unknown, X>,
+  f: Contract<unknown, Y>,
+  g: Contract<unknown, Z>
+): Contract<unknown, [T, U, V, W, X, Y, Z]>;
+export function tuple<T, U, V, W, X, Y, Z, A>(
+  a: Contract<unknown, T>,
+  b: Contract<unknown, U>,
+  c: Contract<unknown, V>,
+  d: Contract<unknown, W>,
+  e: Contract<unknown, X>,
+  f: Contract<unknown, Y>,
+  g: Contract<unknown, Z>,
+  h: Contract<unknown, A>
+): Contract<unknown, [T, U, V, W, X, Y, Z, A]>;
+/**
+ * Function that creates a _Contract_ that checks if a value is conform to a tuple of the given _Contracts_.
+ *
+ * @example
+ * const userAges = tuple(str, num);
+ *
+ * userAges.isData(['Alice', 42]) === true;
+ * userAges.isData(['Alice', 'what']) === false;
+ */
+export function tuple(...contracts: Array<Contract<unknown, any>>): any {
+  const check = (x: unknown): x is any[] =>
+    Array.isArray(x) &&
+    x.length === contracts.length &&
+    contracts.every((c, i) => c.isData(x[i]));
+
+  return {
+    isData: check,
+    getErrorMessages: createGetErrorMessages(check, (x) => {
+      if (!Array.isArray(x)) {
+        return [`expected tuple, got ${typeOf(x)}`];
+      }
+
+      return x.flatMap((v, idx) =>
+        contracts[idx]
+          .getErrorMessages(v)
+          .map((message) => `${idx}: ${message}`)
+      );
+    }),
+  };
+}
+
 // -- utils
 
 function createSimpleContract<T>(

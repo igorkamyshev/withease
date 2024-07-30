@@ -1,6 +1,17 @@
 import { describe, it, test, expect } from 'vitest';
 
-import { bool, num, str, obj, or, val, arr, and, Contract } from './index';
+import {
+  bool,
+  num,
+  str,
+  obj,
+  or,
+  val,
+  arr,
+  and,
+  tuple,
+  Contract,
+} from './index';
 
 describe('bool', () => {
   it('valid', () => {
@@ -480,6 +491,58 @@ describe('complex nested', () => {
     expect(cntrct.getErrorMessages([{ name: 1 }])).toMatchInlineSnapshot(`
       [
         "0: name: expected string, got number",
+      ]
+    `);
+  });
+});
+
+describe('tuple', () => {
+  it('one element', () => {
+    const cntrct = tuple(str);
+
+    expect(cntrct.isData(['a'])).toBeTruthy();
+    expect(cntrct.getErrorMessages(['a'])).toEqual([]);
+
+    expect(cntrct.isData([1])).toBeFalsy();
+    expect(cntrct.getErrorMessages([1])).toMatchInlineSnapshot(`
+      [
+        "0: expected string, got number",
+      ]
+    `);
+  });
+
+  it('two elements', () => {
+    const cntrct = tuple(str, num);
+
+    expect(cntrct.isData(['a', 1])).toBeTruthy();
+    expect(cntrct.getErrorMessages(['a', 1])).toEqual([]);
+
+    expect(cntrct.isData(['a', 'b'])).toBeFalsy();
+    expect(cntrct.getErrorMessages(['a', 'b'])).toMatchInlineSnapshot(`
+      [
+        "1: expected number, got string",
+      ]
+    `);
+
+    expect(cntrct.isData([1, 'b'])).toBeFalsy();
+    expect(cntrct.getErrorMessages([1, 'b'])).toMatchInlineSnapshot(`
+      [
+        "0: expected string, got number",
+        "1: expected number, got string",
+      ]
+    `);
+  });
+
+  it('three elements', () => {
+    const cntrct = tuple(str, num, bool);
+
+    expect(cntrct.isData(['a', 1, true])).toBeTruthy();
+    expect(cntrct.getErrorMessages(['a', 1, true])).toEqual([]);
+
+    expect(cntrct.isData(['a', 1, 'b'])).toBeFalsy();
+    expect(cntrct.getErrorMessages(['a', 1, 'b'])).toMatchInlineSnapshot(`
+      [
+        "2: expected boolean, got string",
       ]
     `);
   });
