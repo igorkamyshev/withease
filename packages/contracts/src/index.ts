@@ -2,11 +2,23 @@ import { type Contract } from './protocol';
 
 /**
  * A type that allows to extract the result type of a _Contract_.
+ *
+ * @example
+ * const User = rec({
+ *   name: str,
+ *   age: num,
+ * });
+ *
+ * type User = UnContract<typeof User>; // { name: string, age: number }
  */
 export type UnContract<T> = T extends Contract<unknown, infer U> ? U : never;
 
 /**
  * _Contract_ that checks if a value is a boolean.
+ *
+ * @example
+ * bool.isData(true) === true;
+ * bool.isData(42) === false;
  */
 export const bool: Contract<unknown, boolean> = createSimpleContract(
   (x: unknown): x is boolean => {
@@ -17,6 +29,10 @@ export const bool: Contract<unknown, boolean> = createSimpleContract(
 
 /**
  * _Contract_ that checks if a value is a number.
+ *
+ * @example
+ * num.isData(42) === true;
+ * num.isData('42') === false;
  */
 export const num: Contract<unknown, number> = createSimpleContract(
   (x: unknown): x is number => {
@@ -27,6 +43,10 @@ export const num: Contract<unknown, number> = createSimpleContract(
 
 /**
  * _Contract_ that checks if a value is a string.
+ *
+ * @example
+ * str.isData('hello') === true;
+ * str.isData(42) === false;
  */
 export const str: Contract<unknown, string> = createSimpleContract(
   (x: unknown): x is string => {
@@ -37,6 +57,11 @@ export const str: Contract<unknown, string> = createSimpleContract(
 
 /**
  * Function that creates a _Contract_ that checks if a value is equal to a given value.
+ *
+ * @example
+ * const only42 = val(42);
+ * only42.isData(42) === true;
+ * only42.isData(43) === false;
  */
 export function val<T extends string | number | boolean | null | undefined>(
   value: T
@@ -55,6 +80,12 @@ export function val<T extends string | number | boolean | null | undefined>(
 
 /**
  * Function that creates a _Contract_ that checks if a value is conform to one of the given _Contracts_.
+ *
+ * @example
+ * const stringOrNumber = or(str, num);
+ * stringOrNumber.isData('hello') === true;
+ * stringOrNumber.isData(42) === true;
+ * stringOrNumber.isData(true) === false;
  */
 export function or<T extends Array<Contract<unknown, any>>>(
   ...contracts: T
@@ -72,6 +103,15 @@ export function or<T extends Array<Contract<unknown, any>>>(
 
 /**
  * Function that creates a _Contract_ that checks if a value is conform to an object with the given _Contracts_ as properties.
+ *
+ * @example
+ * const User = rec({
+ *  name: str,
+ *  age: num,
+ * });
+ * 
+ * User.isData({ name: 'Alice', age: 42 }) === true;
+ * User.isData({ name: 'Alice' }) === false;
  */
 export function rec<C extends Record<string, Contract<unknown, any>>>(
   c: C
@@ -110,6 +150,11 @@ export function rec<C extends Record<string, Contract<unknown, any>>>(
 
 /**
  * Function that creates a _Contract_ that checks if a value is conform to an array of the given _Contracts_.
+ * 
+ * @example
+ * const arrayOfStrings = arr(str);
+ * arrayOfStrings.isData(['hello', 'world']) === true;
+ * arrayOfStrings.isData(['hello', 42]) === false;
  */
 export function arr<V>(c: Contract<unknown, V>): Contract<unknown, V[]> {
   const check = (x: unknown): x is V[] =>

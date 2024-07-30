@@ -4,7 +4,8 @@ import { promisify } from 'node:util';
 import { resolve } from 'node:path';
 import * as babelParser from '@babel/parser';
 import { parse as parseComment } from 'comment-parser';
-import { walk } from 'estree-walker';
+import { asyncWalk } from 'estree-walker';
+import prettier from 'prettier';
 
 const files = await promisify(glob)('../../packages/*/src/**/*.ts', {
   absolute: true,
@@ -24,13 +25,13 @@ await Promise.all(
 
     const content = await readFile(file, 'utf-8');
 
-    walk(
+    asyncWalk(
       babelParser.parse(content, {
         sourceType: 'module',
         plugins: ['typescript', 'jsx', 'estree', 'decorators-legacy'],
       }),
       {
-        enter(node) {
+        async enter(node) {
           if (node.type !== 'ExportNamedDeclaration') {
             return;
           }
@@ -75,10 +76,19 @@ await Promise.all(
               continue;
             }
 
+            const exampleTags = doc.tags.filter((tag) => tag.tag === 'example');
+
+            let examples = await Promise.all(
+              exampleTags.map((tag) =>
+                prettier.format(tag.description, { parser: 'babel' })
+              )
+            );
+
             packageApis.push({
               kind,
               name,
               description: doc.description,
+              examples,
             });
           }
         },
@@ -104,6 +114,7 @@ for (const [packageName, packageApis] of apis) {
         }`,
         ,
         api.description,
+        ...api.examples.map((example) => '```ts\n' + example + '\n```'),
       ].filter(Boolean)
     ),
   ].join('\n\n');
