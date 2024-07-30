@@ -1,6 +1,6 @@
 # Merge Objects
 
-Merge two [_Contracts_](/primitives/contract) representing objects into a single [_Contract_](/primitives/contract) representing an object with fields from both input objects is a common operation in many applications.
+Merge two [_Contracts_](/protocols/contract) representing objects into a single [_Contract_](/protocols/contract) representing an object with fields from both input objects is a common operation in many applications.
 
 With `@withease/contracts` in can be done with simple `and` call:
 
