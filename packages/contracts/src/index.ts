@@ -42,12 +42,7 @@ export type Contract<Raw, Data extends Raw> = {
  * bool.isData(true) === true;
  * bool.isData(42) === false;
  */
-export const bool: Contract<unknown, boolean> = createSimpleContract(
-  (x: unknown): x is boolean => {
-    return typeof x === 'boolean';
-  },
-  'boolean'
-);
+export const bool: Contract<unknown, boolean> = createSimpleContract('boolean');
 
 /**
  * _Contract_ that checks if a value is a number.
@@ -56,12 +51,7 @@ export const bool: Contract<unknown, boolean> = createSimpleContract(
  * num.isData(42) === true;
  * num.isData('42') === false;
  */
-export const num: Contract<unknown, number> = createSimpleContract(
-  (x: unknown): x is number => {
-    return typeof x === 'number';
-  },
-  'number'
-);
+export const num: Contract<unknown, number> = createSimpleContract('number');
 
 /**
  * _Contract_ that checks if a value is a string.
@@ -70,12 +60,7 @@ export const num: Contract<unknown, number> = createSimpleContract(
  * str.isData('hello') === true;
  * str.isData(42) === false;
  */
-export const str: Contract<unknown, string> = createSimpleContract(
-  (x: unknown): x is string => {
-    return typeof x === 'string';
-  },
-  'string'
-);
+export const str: Contract<unknown, string> = createSimpleContract('string');
 
 /**
  * Function that creates a _Contract_ that checks if a value is equal to a given value.
@@ -354,10 +339,8 @@ export function tuple(...contracts: Array<Contract<unknown, any>>): any {
 
 // -- utils
 
-function createSimpleContract<T>(
-  check: (x: unknown) => x is T,
-  exepctedType: string
-): Contract<unknown, T> {
+function createSimpleContract<T>(exepctedType: string): Contract<unknown, T> {
+  const check = (x: unknown): x is T => typeof x === exepctedType;
   return {
     isData: check,
     getErrorMessages: createGetErrorMessages(check, (actual) => [
