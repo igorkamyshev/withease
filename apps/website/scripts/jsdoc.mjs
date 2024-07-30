@@ -6,6 +6,7 @@ import * as babelParser from '@babel/parser';
 import { parse as parseComment } from 'comment-parser';
 import { asyncWalk } from 'estree-walker';
 import prettier from 'prettier';
+import { groupBy } from 'lodash-es';
 
 const files = await promisify(glob)('../../packages/*/src/**/*.ts', {
   absolute: true,
@@ -88,11 +89,14 @@ await Promise.all(
               )
             );
 
+            const overloadTag = doc.tags.find((tag) => tag.tag === 'overload');
+
             packageApis.push({
               kind,
               name,
               description: doc.description,
               examples,
+              alias: overloadTag?.name,
             });
           }
         },
@@ -106,22 +110,35 @@ for (const [packageName, packageApis] of apis) {
     continue;
   }
 
+  const groupedApis = groupBy(packageApis, (api) => api.name);
+
   const filePath = resolve('docs', packageName, 'api.md');
 
-  const content = [
-    '# APIs',
-    'Full list of available APIs.',
-    ...packageApis.flatMap((api) =>
-      [
-        `## \`${api.name}\` ${
-          api.kind === 'type' ? '<Badge text="TypeScript only" />' : ''
-        }`,
-        ,
-        api.description,
-        ...api.examples.map((example) => '```ts\n' + example + '\n```'),
-      ].filter(Boolean)
-    ),
-  ].join('\n\n');
+  const content = ['# APIs', 'Full list of available APIs.'];
 
-  await writeFile(filePath, content);
+  for (const [name, overloads] of Object.entries(groupedApis)) {
+    const tsOnly = overloads.every((api) => api.kind === 'type');
+    content.push(
+      `## \`${name}\` ${tsOnly ? '<Badge text="TypeScript only" />' : ''}`
+    );
+
+    if (overloads.length === 1) {
+      const [onlyOverload] = overloads;
+      content.push(onlyOverload.description);
+      content.push(
+        ...onlyOverload.examples.map((example) => '```ts\n' + example + '\n```')
+      );
+    } else {
+      content.push('Is has multiple overloads 👇');
+      for (const overload of overloads) {
+        content.push(`### \`${overload.alias ?? overload.name}\``);
+        content.push(overload.description);
+        content.push(
+          ...overload.examples.map((example) => '```ts\n' + example + '\n```')
+        );
+      }
+    }
+  }
+
+  await writeFile(filePath, content.join('\n\n'));
 }

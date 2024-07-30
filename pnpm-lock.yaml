@@ -23,6 +23,7 @@ importers:
       estree-walker: ^3.0.3
       glob: ^8.0.3
       i18next: 23.0.0
+      lodash-es: ^4.17.21
       markdown: ^0.5.0
       playwright: ^1.32.2
       prettier: ^2.6.2
@@ -46,6 +47,7 @@ importers:
     dependencies:
       '@algolia/client-search': 4.14.3
       bytes: 3.1.2
+      lodash-es: 4.17.21
       pretty-bytes: 6.1.1
       sandpack-vue3: 3.1.7_vue@3.4.27
     devDependencies:
@@ -3531,6 +3533,10 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
+
+  /lodash-es/4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: false
 
   /lodash.get/4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}

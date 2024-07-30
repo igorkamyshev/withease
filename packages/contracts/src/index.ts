@@ -163,6 +163,8 @@ export function and<T>(
 
 /**
  * Function that creates a _Contract_ that checks if a value is object and every property is conform to the given _Contract_.
+ * 
+ * @overload "rec(str, contract)"
  *
  * @example
  * const Ids = rec(str, num);
@@ -178,6 +180,8 @@ export function rec<V>(
 /**
  * Function that creates a _Contract_ that checks if a value is conform to an object with the given _Contracts_ as properties.
  *
+ * @overload "rec(shape)"
+ * 
  * @example
  * const User = rec({
  *  name: str,
