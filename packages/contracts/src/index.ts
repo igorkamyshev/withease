@@ -1,5 +1,3 @@
-import { type Contract } from './protocol';
-
 /**
  * A type that allows to extract the result type of a _Contract_.
  *
@@ -12,6 +10,30 @@ import { type Contract } from './protocol';
  * type User = UnContract<typeof User>; // { name: string, age: number }
  */
 export type UnContract<T> = T extends Contract<unknown, infer U> ? U : never;
+
+/**
+ * A _Contract_ is a type that allows to check if a value is conform to a given structure.
+ *
+ * @example
+ * function age(min, max): Contract<unknown, number> {
+ *   return {
+ *     isData: (data) => typeof data === 'number' && data >= min && data <= max,
+ *     getErrorMessages: (data) =>
+ *       `Expected a number between ${min} and ${max}, but got ${data}`,
+ *   };
+ * }
+ */
+export type Contract<Raw, Data extends Raw> = {
+  /**
+   * Checks if Raw is Data
+   */
+  isData: (prepared: Raw) => prepared is Data;
+  /**
+   * - empty array is dedicated for valid response
+   * - array of string with validation errors for invalidDataError
+   */
+  getErrorMessages: (prepared: Raw) => string[];
+};
 
 /**
  * _Contract_ that checks if a value is a boolean.
@@ -109,7 +131,7 @@ export function or<T extends Array<Contract<unknown, any>>>(
  *  name: str,
  *  age: num,
  * });
- * 
+ *
  * User.isData({ name: 'Alice', age: 42 }) === true;
  * User.isData({ name: 'Alice' }) === false;
  */
@@ -150,7 +172,7 @@ export function rec<C extends Record<string, Contract<unknown, any>>>(
 
 /**
  * Function that creates a _Contract_ that checks if a value is conform to an array of the given _Contracts_.
- * 
+ *
  * @example
  * const arrayOfStrings = arr(str);
  * arrayOfStrings.isData(['hello', 'world']) === true;

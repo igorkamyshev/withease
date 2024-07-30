@@ -117,6 +117,19 @@ export default defineConfig({
       ]),
       ...createSidebar('contracts', [
         { text: 'Get Started', link: '/contracts/' },
+        {
+          text: 'Cookbook',
+          items: [
+            {
+              text: 'Optional Fields',
+              link: '/contracts/cookbook/optional_fields',
+            },
+            {
+              text: 'Custom Matchers',
+              link: '/contracts/cookbook/custom_matchers',
+            },
+          ],
+        },
         { text: 'APIs', link: '/contracts/api' },
       ]),
       '/magazine/': [
