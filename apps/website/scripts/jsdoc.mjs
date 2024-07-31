@@ -6,7 +6,7 @@ import * as babelParser from '@babel/parser';
 import { parse as parseComment } from 'comment-parser';
 import { asyncWalk } from 'estree-walker';
 import prettier from 'prettier';
-import { groupBy } from 'lodash-es';
+import { groupBy, over } from 'lodash-es';
 
 const files = await promisify(glob)('../../packages/*/src/**/*.ts', {
   absolute: true,
@@ -91,12 +91,15 @@ await Promise.all(
 
             const overloadTag = doc.tags.find((tag) => tag.tag === 'overload');
 
+            const sinceTag = doc.tags.find((tag) => tag.tag === 'since');
+
             packageApis.push({
               kind,
               name,
               description: doc.description,
               examples,
               alias: overloadTag?.name,
+              since: sinceTag?.name,
             });
           }
         },
@@ -118,8 +121,15 @@ for (const [packageName, packageApis] of apis) {
 
   for (const [name, overloads] of Object.entries(groupedApis)) {
     const tsOnly = overloads.every((api) => api.kind === 'type');
+    const sinceAll = overloads.every((api) => api.since);
+
     content.push(
-      `## \`${name}\` ${tsOnly ? '<Badge text="TypeScript only" />' : ''}`
+      `## \`${name}\` ${[
+        tsOnly && '<Badge text="TypeScript only" />',
+        sinceAll && `<Badge text="since ${overloads[0].since}" />`,
+      ]
+        .filter(Boolean)
+        .join('')}`
     );
 
     if (overloads.length === 1) {
@@ -131,7 +141,13 @@ for (const [packageName, packageApis] of apis) {
     } else {
       content.push('Is has multiple overloads 👇');
       for (const overload of overloads) {
-        content.push(`### \`${overload.alias ?? overload.name}\``);
+        content.push(
+          `### \`${overload.alias ?? overload.name}\` ${[
+            !sinceAll &&
+              overload.since &&
+              `<Badge text="since ${overload.since}" />`,
+          ].join(' ')}`
+        );
         content.push(overload.description);
         content.push(
           ...overload.examples.map((example) => '```ts\n' + example + '\n```')

@@ -2,6 +2,21 @@
 
 By default, all fields mentioned in the schema of `obj` are required. However, you can make a field optional explicitly.
 
+In case you do not care how exactly the field is optional, you can use the `or` in combination with `noting`:
+
+```ts
+import { obj, str, num, or, nothing } from '@withease/contracts';
+
+const UserWithOptionalAge = obj({
+  name: str,
+  age: or(num, nothing),
+});
+```
+
+In the example above, the `age` field can be either a number or missing or `null` or `undefined`.
+
+## Only `null`
+
 In case you expect a field to have `null` as a value, you can add it to the field definition as follows:
 
 ```ts
@@ -13,7 +28,13 @@ const UserWithOptionalAge = obj({
 });
 ```
 
+## Only `undefined`
+
 If you expect a field to be missing, you can pass `undefined` as a value:
+
+::: warning
+In `@withease/contracts`, `undefined` as a field value is the same as a missing field. If you need to differentiate between the two, you can fallback to more powerful tools like Zod or Runtypes.
+:::
 
 ```ts
 import { obj, str, num, or, val } from '@withease/contracts';
@@ -23,7 +44,3 @@ const UserWithPossibleNoAge = obj({
   age: or(num, val(undefined)),
 });
 ```
-
-::: tip Q: But `undefined` as a field value is not the same as a missing field, right?
-A: Correct. However, in **most cases**, you can treat `undefined` as a missing field and vice versa. In case you _really_ need to differentiate between the two, you can fallback to more powerful tools like Zod or Runtypes, `@withease/contracts` aims to cover only the most common use cases.
-:::
