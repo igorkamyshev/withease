@@ -35,7 +35,8 @@ export default {
 
 async function definePackageSize(packageName, moduleName) {
   const response = await fetch(
-    `https://esm.run/${packageName}@latest/${moduleName}`
+    `https://esm.run/${packageName}@latest/${moduleName}`,
+    {method: 'HEAD'},
   );
 
   const encodedSize = Number(response.headers.get('content-length') ?? 0);
