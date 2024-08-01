@@ -2,7 +2,7 @@
   "name": "withease",
   "version": "0.0.0",
   "license": "MIT",
-  "packageManager": "pnpm@7.28.0",
+  "packageManager": "pnpm@9.5.0",
   "scripts": {
     "format:check": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --check --no-error-on-unmatched-pattern",
     "format:apply": "pnpm prettier {packages,apps}/**/*.{ts,tsx,md,vue} --write --no-error-on-unmatched-pattern"
