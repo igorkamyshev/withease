@@ -197,3 +197,99 @@ describe('trackGeolocation, providers as a Store', () => {
     `);
   });
 });
+
+describe('trackGeolocation, failure of provider', () => {
+  const brokenProvider = () => ({
+    async getCurrentPosition() {
+      throw new Error('Wow, government do not want you to use this provider!');
+    },
+    watchPosition(success: any, error: any) {
+      throw new Error('Wow, government do not want you to use this provider!');
+    },
+  });
+
+  const slightlyBrokenProvider = () => ({
+    async getCurrentPosition() {
+      throw new Error('Not this time, buddy!');
+    },
+    watchPosition(success: any, error: any) {
+      error(new Error('Not this time, buddy!'));
+
+      return () => {};
+    },
+  });
+
+  const okProvider = () => ({
+    async getCurrentPosition() {
+      return {
+        coords: { latitude: 2, longitude: 2 },
+        timestamp: Date.now(),
+      };
+    },
+    watchPosition(success: any, error: any) {
+      success({
+        coords: { latitude: 2, longitude: 2 },
+        timestamp: Date.now(),
+      });
+      return () => {};
+    },
+  });
+
+  const geo = trackGeolocation({
+    providers: [brokenProvider, slightlyBrokenProvider, okProvider],
+  });
+
+  test('request', async () => {
+    const scope = fork();
+
+    const failedWatcher = vi.fn();
+    createWatch({ unit: geo.reporting.failed, fn: failedWatcher, scope });
+
+    await allSettled(geo.request, { scope });
+
+    expect(scope.getState(geo.$location)).toMatchInlineSnapshot(`
+      {
+        "latitude": 2,
+        "longitude": 2,
+      }
+    `);
+
+    expect(failedWatcher.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          [Error: Wow, government do not want you to use this provider!],
+        ],
+        [
+          [Error: Not this time, buddy!],
+        ],
+      ]
+    `);
+  });
+
+  test('watching', async () => {
+    const scope = fork();
+
+    const failedWatcher = vi.fn();
+    createWatch({ unit: geo.reporting.failed, fn: failedWatcher, scope });
+
+    await allSettled(geo.watching.start, { scope });
+
+    expect(scope.getState(geo.$location)).toMatchInlineSnapshot(`
+      {
+        "latitude": 2,
+        "longitude": 2,
+      }
+    `);
+
+    expect(failedWatcher.mock.calls).toMatchInlineSnapshot(`
+      [
+        [
+          [Error: Wow, government do not want you to use this provider!],
+        ],
+        [
+          [Error: Not this time, buddy!],
+        ],
+      ]
+    `);
+  });
+});

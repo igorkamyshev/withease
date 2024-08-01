@@ -174,14 +174,20 @@ export function trackGeolocation(
         | CustomGeolocationPosition
         | null = null;
 
+      const boundFailed = scopeBind(failed, { safe: true });
+
       for (const provider of providers ?? []) {
-        if (isDefaultProvider(provider)) {
-          geolocation = await new Promise<GeolocationPosition>(
-            (resolve, reject) =>
-              provider.getCurrentPosition(resolve, reject, params)
-          );
-        } else {
-          geolocation = await provider.getCurrentPosition();
+        try {
+          if (isDefaultProvider(provider)) {
+            geolocation = await new Promise<GeolocationPosition>(
+              (resolve, reject) =>
+                provider.getCurrentPosition(resolve, reject, params)
+            );
+          } else {
+            geolocation = await provider.getCurrentPosition();
+          }
+        } catch (e: any) {
+          boundFailed(e);
         }
       }
 
@@ -217,21 +223,28 @@ export function trackGeolocation(
       const customUnwatchSet = new Set<Unsubscribe>();
 
       for (const provider of providers ?? []) {
-        if (isDefaultProvider(provider)) {
-          const watchId = provider.watchPosition(
-            boundNewPosition,
-            boundFailed,
-            params
-          );
+        try {
+          if (isDefaultProvider(provider)) {
+            const watchId = provider.watchPosition(
+              boundNewPosition,
+              boundFailed,
+              params
+            );
 
-          defaultUnwatchMap.set(
-            (id: number) => provider.clearWatch(id),
-            watchId
-          );
-        } else {
-          const unwatch = provider.watchPosition(boundNewPosition, boundFailed);
+            defaultUnwatchMap.set(
+              (id: number) => provider.clearWatch(id),
+              watchId
+            );
+          } else {
+            const unwatch = provider.watchPosition(
+              boundNewPosition,
+              boundFailed
+            );
 
-          customUnwatchSet.add(unwatch);
+            customUnwatchSet.add(unwatch);
+          }
+        } catch (e: any) {
+          boundFailed(e);
         }
       }
 
