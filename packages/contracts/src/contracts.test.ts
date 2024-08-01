@@ -12,6 +12,7 @@ import {
   tuple,
   type Contract,
   nothing,
+  anything,
 } from './index';
 
 describe('bool', () => {
@@ -623,5 +624,39 @@ describe('nothing', () => {
         "key: expected undefined, got "a"",
       ]
     `);
+  });
+});
+
+describe('anything', () => {
+  it('accepts any field', () => {
+    const cntrct = obj({ key: anything });
+
+    expect(cntrct.isData({})).toBeTruthy();
+    expect(cntrct.getErrorMessages({})).toEqual([]);
+
+    expect(cntrct.isData({ key: 1 })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 1 })).toEqual([]);
+
+    expect(cntrct.isData({ key: null })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: null })).toEqual([]);
+
+    expect(cntrct.isData({ key: undefined })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: undefined })).toEqual([]);
+  });
+
+  it('does not break original', () => {
+    const cntrct = obj({ key: or(num, anything) });
+
+    expect(cntrct.isData({ key: 1 })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 1 })).toEqual([]);
+
+    expect(cntrct.isData({ key: null })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: null })).toEqual([]);
+
+    expect(cntrct.isData({ key: undefined })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: undefined })).toEqual([]);
+
+    expect(cntrct.isData({ key: 'a' })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 'a' })).toEqual([]);
   });
 });

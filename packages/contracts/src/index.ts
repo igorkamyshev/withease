@@ -396,6 +396,25 @@ export function tuple(...contracts: Array<Contract<unknown, any>>): any {
  */
 export const nothing = or(val(null), val(undefined));
 
+/**
+ * _Contract_ that allows any value, basically a no-op.
+ *
+ * @since v1.1.0
+ *
+ * @example
+ *
+ * anything.isData('hello') === true;
+ * anything.isData(42) === true;
+ * anything.isData({}) === true;
+ * anything.isData([]) === true;
+ * anything.isData(null) === true;
+ * anything.isData(undefined) === true;
+ */
+export const anything: Contract<unknown, unknown> = {
+  isData: (x): x is unknown => true,
+  getErrorMessages: () => [],
+};
+
 // -- utils
 
 function createSimpleContract<T>(exepctedType: string): Contract<unknown, T> {
