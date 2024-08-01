@@ -90,10 +90,11 @@ export function trackGeolocation(
   let $providers: Store<
     Array<typeof BrowserProvider | CustomProvider | globalThis.Geolocation>
   >;
-  if (is.store(params?.providers)) {
-    $providers = params.providers;
+  const providersFromParams = params?.providers;
+  if (is.store(providersFromParams)) {
+    $providers = providersFromParams;
   } else {
-    $providers = createStore(params?.providers ?? [BrowserProvider]);
+    $providers = createStore(providersFromParams ?? [BrowserProvider]);
   }
 
   const initializeAllProvidersFx = attach({
