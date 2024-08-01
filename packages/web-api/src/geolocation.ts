@@ -14,6 +14,8 @@ import {
 
 import { readonly } from './shared';
 
+type InitializedProvider = ReturnType<CustomProvider> | globalThis.Geolocation;
+
 type GeolocationParams = {
   maximumAge?: number;
   timeout?: number;
@@ -108,12 +110,10 @@ export function trackGeolocation(
     },
   });
 
-  const $initializedProviders = createStore<Array<
-    ReturnType<CustomProvider> | globalThis.Geolocation
-  > | null>(null, { serialize: 'ignore' }).on(
-    initializeAllProvidersFx.doneData,
-    (_, providers) => providers
-  );
+  const $initializedProviders = createStore<Array<InitializedProvider> | null>(
+    null,
+    { serialize: 'ignore' }
+  ).on(initializeAllProvidersFx.doneData, (_, providers) => providers);
 
   // -- units
 
@@ -144,13 +144,6 @@ export function trackGeolocation(
 
   // -- shared logic
 
-  sample({
-    clock: [request, startWatching],
-    source: $initializedProviders,
-    filter: (providers) => !providers,
-    target: initializeAllProvidersFx,
-  });
-
   const newPosition = createEvent<
     CustomGeolocationPosition | globalThis.GeolocationPosition
   >();
@@ -169,7 +162,7 @@ export function trackGeolocation(
     CustomGeolocationError | globalThis.GeolocationPositionError
   > = attach({
     source: $initializedProviders,
-    async effect(providers) {
+    async effect(initializedProviders) {
       let geolocation:
         | globalThis.GeolocationPosition
         | CustomGeolocationPosition
@@ -177,7 +170,15 @@ export function trackGeolocation(
 
       const boundFailed = scopeBind(failed, { safe: true });
 
-      for (const provider of providers ?? []) {
+      let providers: InitializedProvider[];
+
+      if (initializedProviders) {
+        providers = initializedProviders;
+      } else {
+        providers = await initializeAllProvidersFx();
+      }
+
+      for (const provider of providers) {
         try {
           if (isDefaultProvider(provider)) {
             geolocation = await new Promise<GeolocationPosition>(
@@ -216,14 +217,22 @@ export function trackGeolocation(
 
   const watchPositionFx = attach({
     source: $initializedProviders,
-    effect(providers) {
+    async effect(initializedProviders) {
       const boundNewPosition = scopeBind(newPosition, { safe: true });
       const boundFailed = scopeBind(failed, { safe: true });
+
+      let providers: InitializedProvider[];
+
+      if (initializedProviders) {
+        providers = initializedProviders;
+      } else {
+        providers = await initializeAllProvidersFx();
+      }
 
       const defaultUnwatchMap = new Map<(id: number) => void, number>();
       const customUnwatchSet = new Set<Unsubscribe>();
 
-      for (const provider of providers ?? []) {
+      for (const provider of providers) {
         try {
           if (isDefaultProvider(provider)) {
             const watchId = provider.watchPosition(
