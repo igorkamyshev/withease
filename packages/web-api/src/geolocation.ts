@@ -2,13 +2,14 @@ import {
   type Event,
   type EventCallable,
   type Store,
+  type Effect,
   combine,
   createEvent,
   createStore,
-  createEffect,
   sample,
   attach,
   scopeBind,
+  is,
 } from 'effector';
 
 import { readonly } from './shared';
@@ -77,37 +78,41 @@ const BrowserProvider = Symbol('BrowserProvider');
 
 export function trackGeolocation(
   params?: GeolocationParams & {
-    providers?: Array<
-      typeof BrowserProvider | CustomProvider | globalThis.Geolocation
-    >;
+    providers?:
+      | Array<typeof BrowserProvider | CustomProvider | globalThis.Geolocation>
+      | Store<
+          Array<
+            typeof BrowserProvider | CustomProvider | globalThis.Geolocation
+          >
+        >;
   }
 ): Geolocation {
-  const providres = (
-    params?.providers ?? /* In case of no providers, we will use the default one only */ [
-      BrowserProvider,
-    ]
-  )
-    .map((provider) => {
-      /* BrowserProvider symbol means usage of navigator.geolocation */
-      if (provider === BrowserProvider) {
-        const browserGeolocationAvailable =
-          globalThis.navigator && 'geolocation' in globalThis.navigator;
-        if (!browserGeolocationAvailable) {
-          return null;
-        }
-
-        return globalThis.navigator.geolocation;
-      }
-
-      if (isDefaultProvider(provider)) {
-        return provider;
-      }
-
-      return provider(params ?? {});
-    })
-    .filter(Boolean) as Array<
-    ReturnType<CustomProvider> | globalThis.Geolocation
+  let $providers: Store<
+    Array<typeof BrowserProvider | CustomProvider | globalThis.Geolocation>
   >;
+  if (is.store(params?.providers)) {
+    $providers = params.providers;
+  } else {
+    $providers = createStore(params?.providers ?? [BrowserProvider]);
+  }
+
+  const initializeAllProvidersFx = attach({
+    source: $providers,
+    effect(providers) {
+      return providers
+        .map((provider) => initializeProvider(provider, params))
+        .filter(Boolean) as Array<
+        ReturnType<CustomProvider> | globalThis.Geolocation
+      >;
+    },
+  });
+
+  const $initializedProviders = createStore<Array<
+    ReturnType<CustomProvider> | globalThis.Geolocation
+  > | null>(null, { serialize: 'ignore' }).on(
+    initializeAllProvidersFx.doneData,
+    (_, providers) => providers
+  );
 
   // -- units
 
@@ -138,6 +143,13 @@ export function trackGeolocation(
 
   // -- shared logic
 
+  sample({
+    clock: [request, startWatching],
+    source: $initializedProviders,
+    filter: (providers) => !providers,
+    target: initializeAllProvidersFx,
+  });
+
   const newPosition = createEvent<
     CustomGeolocationPosition | globalThis.GeolocationPosition
   >();
@@ -150,35 +162,38 @@ export function trackGeolocation(
 
   // -- get current position
 
-  const getCurrentPositionFx = createEffect<
+  const getCurrentPositionFx: Effect<
     void,
     CustomGeolocationPosition | globalThis.GeolocationPosition,
     CustomGeolocationError | globalThis.GeolocationPositionError
-  >(async () => {
-    let geolocation:
-      | globalThis.GeolocationPosition
-      | CustomGeolocationPosition
-      | null = null;
+  > = attach({
+    source: $initializedProviders,
+    async effect(providers) {
+      let geolocation:
+        | globalThis.GeolocationPosition
+        | CustomGeolocationPosition
+        | null = null;
 
-    for (const provider of providres) {
-      if (isDefaultProvider(provider)) {
-        geolocation = await new Promise<GeolocationPosition>(
-          (resolve, rejest) =>
-            provider.getCurrentPosition(resolve, rejest, params)
-        );
-      } else {
-        geolocation = await provider.getCurrentPosition();
+      for (const provider of providers ?? []) {
+        if (isDefaultProvider(provider)) {
+          geolocation = await new Promise<GeolocationPosition>(
+            (resolve, reject) =>
+              provider.getCurrentPosition(resolve, reject, params)
+          );
+        } else {
+          geolocation = await provider.getCurrentPosition();
+        }
       }
-    }
 
-    if (!geolocation) {
-      throw {
-        code: 'POSITION_UNAVAILABLE',
-        message: 'No avaiable geolocation provider',
-      };
-    }
+      if (!geolocation) {
+        throw {
+          code: 'POSITION_UNAVAILABLE',
+          message: 'No available geolocation provider',
+        };
+      }
 
-    return geolocation;
+      return geolocation;
+    },
   });
 
   sample({ clock: request, target: getCurrentPositionFx });
@@ -192,40 +207,46 @@ export function trackGeolocation(
 
   const $unsubscribe = createStore<Unsubscribe | null>(null);
 
-  const watchPositionFx = createEffect(() => {
-    const boundNewPosition = scopeBind(newPosition, { safe: true });
-    const boundFailed = scopeBind(failed, { safe: true });
+  const watchPositionFx = attach({
+    source: $initializedProviders,
+    effect(providers) {
+      const boundNewPosition = scopeBind(newPosition, { safe: true });
+      const boundFailed = scopeBind(failed, { safe: true });
 
-    const defaultUnwatchMap = new Map<(id: number) => void, number>();
-    const customUnwatchSet = new Set<Unsubscribe>();
+      const defaultUnwatchMap = new Map<(id: number) => void, number>();
+      const customUnwatchSet = new Set<Unsubscribe>();
 
-    for (const provider of providres) {
-      if (isDefaultProvider(provider)) {
-        const watchId = provider.watchPosition(
-          boundNewPosition,
-          boundFailed,
-          params
-        );
+      for (const provider of providers ?? []) {
+        if (isDefaultProvider(provider)) {
+          const watchId = provider.watchPosition(
+            boundNewPosition,
+            boundFailed,
+            params
+          );
 
-        defaultUnwatchMap.set((id: number) => provider.clearWatch(id), watchId);
-      } else {
-        const unwatch = provider.watchPosition(boundNewPosition, boundFailed);
+          defaultUnwatchMap.set(
+            (id: number) => provider.clearWatch(id),
+            watchId
+          );
+        } else {
+          const unwatch = provider.watchPosition(boundNewPosition, boundFailed);
 
-        customUnwatchSet.add(unwatch);
+          customUnwatchSet.add(unwatch);
+        }
       }
-    }
 
-    return () => {
-      for (const [unwatch, id] of defaultUnwatchMap) {
-        unwatch(id);
-        defaultUnwatchMap.delete(unwatch);
-      }
+      return () => {
+        for (const [unwatch, id] of defaultUnwatchMap) {
+          unwatch(id);
+          defaultUnwatchMap.delete(unwatch);
+        }
 
-      for (const unwatch of customUnwatchSet) {
-        unwatch();
-        customUnwatchSet.delete(unwatch);
-      }
-    };
+        for (const unwatch of customUnwatchSet) {
+          unwatch();
+          customUnwatchSet.delete(unwatch);
+        }
+      };
+    },
   });
 
   const unwatchPositionFx = attach({
@@ -261,6 +282,28 @@ export function trackGeolocation(
 }
 
 trackGeolocation.browserProvider = BrowserProvider;
+
+function initializeProvider(
+  provider: typeof BrowserProvider | CustomProvider | globalThis.Geolocation,
+  params?: GeolocationParams
+) {
+  /* BrowserProvider symbol means usage of navigator.geolocation */
+  if (provider === BrowserProvider) {
+    const browserGeolocationAvailable =
+      globalThis.navigator && 'geolocation' in globalThis.navigator;
+    if (!browserGeolocationAvailable) {
+      return null;
+    }
+
+    return globalThis.navigator.geolocation;
+  }
+
+  if (isDefaultProvider(provider)) {
+    return provider;
+  }
+
+  return provider(params ?? {});
+}
 
 function isDefaultProvider(provider: any): provider is globalThis.Geolocation {
   return (

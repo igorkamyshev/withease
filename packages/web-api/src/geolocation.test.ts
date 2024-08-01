@@ -4,8 +4,9 @@
  */
 
 import { allSettled, createStore, createWatch, fork } from 'effector';
-import { trackGeolocation } from 'geolocation';
 import { describe, expect, test, vi } from 'vitest';
+
+import { trackGeolocation } from './geolocation';
 
 describe('trackGeolocation', () => {
   test('request', async () => {
@@ -141,5 +142,58 @@ describe('trackGeolocation', () => {
 
   test('do not throw if default provider is not available', async () => {
     expect(() => trackGeolocation()).not.toThrow();
+  });
+});
+
+describe('trackGeolocation, providers as a Store', () => {
+  const firstProvider = () => ({
+    name: 'firstProvider',
+    async getCurrentPosition() {
+      return {
+        coords: { latitude: 1, longitude: 1 },
+        timestamp: Date.now(),
+      };
+    },
+    watchPosition(success: any, error: any) {
+      return () => {};
+    },
+  });
+
+  const secondProvider = () => ({
+    name: 'secondProvider',
+    async getCurrentPosition() {
+      return {
+        coords: { latitude: 2, longitude: 2 },
+        timestamp: Date.now(),
+      };
+    },
+    watchPosition(success: any, error: any) {
+      return () => {};
+    },
+  });
+
+  const $providers = createStore([firstProvider]);
+
+  const geo = trackGeolocation({ providers: $providers });
+
+  test('request', async () => {
+    const scopeWithOriginal = fork();
+    const scopeWithReplace = fork({ values: [[$providers, [secondProvider]]] });
+
+    await allSettled(geo.request, { scope: scopeWithReplace });
+    expect(scopeWithReplace.getState(geo.$location)).toMatchInlineSnapshot(`
+      {
+        "latitude": 2,
+        "longitude": 2,
+      }
+    `);
+
+    await allSettled(geo.request, { scope: scopeWithOriginal });
+    expect(scopeWithOriginal.getState(geo.$location)).toMatchInlineSnapshot(`
+      {
+        "latitude": 1,
+        "longitude": 1,
+      }
+    `);
   });
 });

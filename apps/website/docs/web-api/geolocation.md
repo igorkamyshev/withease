@@ -58,6 +58,21 @@ import demoFile from './geolocation.live.vue?raw';
 
 ## Additional capabilities
 
+While creating an integration, you can override the default geolocation provider with your custom one. It can be done by passing an array of providers to the `trackGeolocation` function.
+
+```ts
+import { trackGeolocation } from '@withease/web-api';
+
+const geo = trackGeolocation({
+  /* ... */
+  // by default providers field contains trackGeolocation.browserProvider
+  // which represents the browser built-in Geolocation API
+  providers: [trackGeolocation.browserProvider],
+});
+```
+
+The logic is quite straightforward: integration will call providers one by one until one of them returns the location. The first provider that returns the location will be used.
+
 ### Regional restrictions
 
 In some countries and regions, the use of geolocation can be restricted. If you are aiming to provide a service in such locations, you use some local providers to get the location of the user. For example, in China, you can use [Baidu](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), [Autonavi](https://lbsyun.baidu.com/index.php?title=jspopular/guide/geolocation), or [Tencent](https://lbs.qq.com/webApi/component/componentGuide/componentGeolocation).
@@ -227,3 +242,26 @@ const geo = trackGeolocation({
   ],
 });
 ```
+
+### Testing
+
+You can pass a [_Store_](https://effector.dev/docs/api/effector/store) to `providers` option to get a way to mock the geolocation provider during testing via [Fork API](/magazine/fork_api_rules).
+
+```ts
+import { createStore, fork } from 'effector';
+import { trackGeolocation } from '@withease/web-api';
+
+// Create a store with the default provider
+const $geolocationProviders = createStore([trackGeolocation.browserProvider]);
+
+// Create an integration with the store
+const geo = trackGeolocation({
+  /* ... */
+  providers: $geolocationProviders,
+});
+
+// during testing, you can replace the provider with your mock
+const scope = fork({ values: [[$geolocationProviders, myFakeProvider]] });
+```
+
+That is it, any calculations on the created [_Scope_](https://effector.dev/docs/api/effector/scope) will use the `myFakeProvider` instead of the default one.
