@@ -1,6 +1,5 @@
 <script setup>
     import { ecosystem } from '../ecosystem.ts'
-    console.log(ecosystem)
 </script>
 
 # Ecosystem
