@@ -2,4 +2,4 @@
 '@withease/contracts': minor
 ---
 
-Add `anything` _Contract_ to pypass validation
+Add `anything` _Contract_ to bypass validation
