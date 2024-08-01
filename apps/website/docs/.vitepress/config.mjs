@@ -219,6 +219,7 @@ export default defineConfig({
           text: 'Statements',
           items: [
             { text: 'Releases policy', link: '/statements/releases' },
+            { text: 'Ecosystem policy', link: '/statements/ecosystem' },
             { text: 'Testing', link: '/statements/tests' },
             { text: 'TypeScript', link: '/statements/typescript' },
             { text: 'Compile target', link: '/statements/compile_target' },
