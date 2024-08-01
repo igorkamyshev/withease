@@ -1,5 +1,8 @@
 import {
-  Event,
+  type Event,
+  type Store,
+  type EventCallable,
+  type StoreWritable,
   attach,
   createEffect,
   createEvent,
@@ -103,4 +106,11 @@ export function setupListener<T>(
   sample({ clock: stopWatchingFx.done, target: $subscription.reinit! });
 
   return event;
+}
+
+export function readonly<T>(unit: StoreWritable<T>): Store<T>;
+export function readonly<T>(unit: EventCallable<T>): Event<T>;
+
+export function readonly(unit: any) {
+  return unit.map((v: any) => v);
 }
