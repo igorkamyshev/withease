@@ -6,7 +6,7 @@ import * as babelParser from '@babel/parser';
 import { parse as parseComment } from 'comment-parser';
 import { asyncWalk } from 'estree-walker';
 import prettier from 'prettier';
-import { groupBy, over } from 'lodash-es';
+import { groupBy } from 'lodash-es';
 
 const files = await promisify(glob)('../../packages/*/src/**/*.ts', {
   absolute: true,
