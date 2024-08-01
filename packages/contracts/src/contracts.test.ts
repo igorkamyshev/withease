@@ -11,6 +11,8 @@ import {
   and,
   tuple,
   type Contract,
+  nothing,
+  anything,
 } from './index';
 
 describe('bool', () => {
@@ -569,5 +571,92 @@ describe('special cases', () => {
     expect(contract.isData({ age: 1 })).toBeFalsy();
     expect(contract.isData({ name: 'a', age: 'ERROR' })).toBeFalsy();
     expect(contract.isData({ name: 18888, age: 1 })).toBeFalsy();
+  });
+});
+
+describe('nothing', () => {
+  it('accepts no field', () => {
+    const cntrct = obj({ key: nothing });
+
+    expect(cntrct.isData({})).toBeTruthy();
+    expect(cntrct.getErrorMessages({})).toEqual([]);
+
+    expect(cntrct.isData({ key: 1 })).toBeFalsy();
+    expect(cntrct.getErrorMessages({ key: 1 })).toMatchInlineSnapshot(`
+      [
+        "key: expected null, got 1",
+        "key: expected undefined, got 1",
+      ]
+    `);
+  });
+
+  it('accepts null', () => {
+    const cntrct = obj({ key: nothing });
+
+    expect(cntrct.isData({ key: null })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: null })).toEqual([]);
+  });
+
+  it('accepts undefined', () => {
+    const cntrct = obj({ key: nothing });
+
+    expect(cntrct.isData({ key: undefined })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: undefined })).toEqual([]);
+  });
+
+  it('does not break original', () => {
+    const cntrct = obj({ key: or(num, nothing) });
+
+    expect(cntrct.isData({ key: 1 })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 1 })).toEqual([]);
+
+    expect(cntrct.isData({ key: null })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: null })).toEqual([]);
+
+    expect(cntrct.isData({ key: undefined })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: undefined })).toEqual([]);
+
+    expect(cntrct.isData({ key: 'a' })).toBeFalsy();
+    expect(cntrct.getErrorMessages({ key: 'a' })).toMatchInlineSnapshot(`
+      [
+        "key: expected number, got string",
+        "key: expected null, got "a"",
+        "key: expected undefined, got "a"",
+      ]
+    `);
+  });
+});
+
+describe('anything', () => {
+  it('accepts any field', () => {
+    const cntrct = obj({ key: anything });
+
+    expect(cntrct.isData({})).toBeTruthy();
+    expect(cntrct.getErrorMessages({})).toEqual([]);
+
+    expect(cntrct.isData({ key: 1 })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 1 })).toEqual([]);
+
+    expect(cntrct.isData({ key: null })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: null })).toEqual([]);
+
+    expect(cntrct.isData({ key: undefined })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: undefined })).toEqual([]);
+  });
+
+  it('does not break original', () => {
+    const cntrct = obj({ key: or(num, anything) });
+
+    expect(cntrct.isData({ key: 1 })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 1 })).toEqual([]);
+
+    expect(cntrct.isData({ key: null })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: null })).toEqual([]);
+
+    expect(cntrct.isData({ key: undefined })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: undefined })).toEqual([]);
+
+    expect(cntrct.isData({ key: 'a' })).toBeTruthy();
+    expect(cntrct.getErrorMessages({ key: 'a' })).toEqual([]);
   });
 });

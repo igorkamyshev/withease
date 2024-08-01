@@ -375,6 +375,46 @@ export function tuple(...contracts: Array<Contract<unknown, any>>): any {
   };
 }
 
+/**
+ * _Contract_ checking if a value is null or undefined.
+ * In case of usage as field in `obj` _Contract_, it will allow to omit the field.
+ *
+ * @since v1.1.0
+ *
+ * @example
+ *
+ * const User = obj({
+ *   name: str,
+ *   age: or(num, nothing),
+ * });
+ *
+ * User.isData({ name: 'Alice', age: 42 }) === true;
+ * User.isData({ name: 'Alice' }) === true;
+ * User.isData({ name: 'Alice', age: null }) === true;
+ * User.isData({ name: 'Alice', age: undefined }) === true;
+ * User.isData({ name: 'Alice', age: 'four two' }) === false;
+ */
+export const nothing = or(val(null), val(undefined));
+
+/**
+ * _Contract_ that allows any value, basically a no-op.
+ *
+ * @since v1.1.0
+ *
+ * @example
+ *
+ * anything.isData('hello') === true;
+ * anything.isData(42) === true;
+ * anything.isData({}) === true;
+ * anything.isData([]) === true;
+ * anything.isData(null) === true;
+ * anything.isData(undefined) === true;
+ */
+export const anything: Contract<unknown, unknown> = {
+  isData: (x): x is unknown => true,
+  getErrorMessages: () => [],
+};
+
 // -- utils
 
 function createSimpleContract<T>(exepctedType: string): Contract<unknown, T> {
