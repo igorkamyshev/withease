@@ -1,3 +1,3 @@
 # @withease/redux
 
-Read documentation [here](https://withease.pages.dev/redux/).
+Read documentation [here](https://withease.effector.dev/redux/).

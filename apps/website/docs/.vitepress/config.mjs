@@ -1,13 +1,12 @@
 import { defineConfig } from 'vitepress';
-import { createSidebar } from './sidebar_creator.mjs';
-import { rss } from './rss.mjs';
+import { RssPlugin } from 'vitepress-plugin-rss';
 
-const HOSTNAME = 'https://withease.pages.dev';
+import { createSidebar } from './sidebar_creator.mjs';
+
+const HOSTNAME = 'https://withease.effector.dev';
 
 export default defineConfig({
-  async buildEnd(config) {
-    await rss.onBuildEnd(config, { hostname: HOSTNAME });
-  },
+  ignoreDeadLinks: ['/feed.rss'],
   sitemap: {
     hostname: HOSTNAME,
   },
@@ -29,6 +28,9 @@ export default defineConfig({
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2023-present, Igor Kamyşev',
     },
+    search: {
+      provider: 'local',
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/igorkamyshev/withease' },
       { icon: 'twitter', link: 'https://twitter.com/EffectorJS' },
@@ -46,6 +48,7 @@ export default defineConfig({
           { text: 'redux', link: '/redux/' },
           { text: 'web-api', link: '/web-api/' },
           { text: 'factories', link: '/factories/' },
+          { text: 'contracts', link: '/contracts/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
@@ -115,6 +118,27 @@ export default defineConfig({
         { text: 'Get Started', link: '/factories/' },
         { text: 'Motivation', link: '/factories/motivation' },
         { text: 'Important Caveats', link: '/factories/important_caveats' },
+      ]),
+      ...createSidebar('contracts', [
+        { text: 'Get Started', link: '/contracts/' },
+        {
+          text: 'Cookbook',
+          items: [
+            {
+              text: 'Optional Fields',
+              link: '/contracts/cookbook/optional_fields',
+            },
+            {
+              text: 'Custom Matchers',
+              link: '/contracts/cookbook/custom_matchers',
+            },
+            {
+              text: 'Merge Objects',
+              link: '/contracts/cookbook/merge_objects',
+            },
+          ],
+        },
+        { text: 'APIs', link: '/contracts/api' },
       ]),
       '/magazine/': [
         {
@@ -199,6 +223,7 @@ export default defineConfig({
           text: 'Statements',
           items: [
             { text: 'Releases policy', link: '/statements/releases' },
+            { text: 'Ecosystem policy', link: '/statements/ecosystem' },
             { text: 'Testing', link: '/statements/tests' },
             { text: 'TypeScript', link: '/statements/typescript' },
             { text: 'Compile target', link: '/statements/compile_target' },
@@ -206,5 +231,22 @@ export default defineConfig({
         },
       ],
     },
+  },
+  vite: {
+    plugins: [
+      RssPlugin({
+        title: 'With Ease Magazine',
+        description:
+          'The collection of articles about Effector and related topics. It is not a replacement for the official documentation, but it can help you to understand some concepts better.',
+        baseUrl: HOSTNAME,
+        link: HOSTNAME,
+        language: 'en',
+        favicon: `${HOSTNAME}/favicon.ico`,
+        copyright: 'Copyright (c) 2023-present, Igor Kamyşev',
+        filter: (page) =>
+          page.filepath.includes('/magazine/') &&
+          page.frontmatter.rss !== false,
+      }),
+    ],
   },
 });

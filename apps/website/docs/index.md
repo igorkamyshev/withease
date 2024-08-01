@@ -1,6 +1,8 @@
 ---
 layout: home
 
+markdownStyles: false
+
 hero:
   name: Effector
   text: with ease
@@ -32,24 +34,37 @@ features:
     details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
+  - icon: 📄
+    title: contracts
+    details: Extremely small library to validate data from external sources
+    link: /contracts/
+    linkText: Get Started
   - icon: 👩‍🏭
     title: factories
     details: Set of helpers to create factories in your application
     link: /factories/
     linkText: Get Started
-  - icon: 🪄
-    title: Farfetched
-    details: The advanced data fetching tool for web applications
-    link: https://farfetched.pages.dev
-    linkText: Learn More
-  - icon: 🫙
-    title: effector-storage
-    details: Sync Stores with any external storage (like localStorage)
-    link: https://github.com/yumauri/effector-storage
-    linkText: Learn More
-  - icon: 🪞
-    title: reflect
-    details: API for bind Effector to React components in an efficient and composable way
-    link: https://github.com/effector/reflect
-    linkText: Learn More
 ---
+
+<script setup>
+  import VPHero from 'vitepress/dist/client/theme-default/components/VPHero.vue'
+  import VPFeatures from 'vitepress/dist/client/theme-default/components/VPFeatures.vue'
+
+  import { ecosystem } from './ecosystem.ts'
+
+  const actions = [
+    {
+      theme: 'alt',
+      text: 'Principles',
+      link: '/statements/ecosystem/'
+    },
+  ]
+</script>
+
+<VPHero
+  name="Effector's"
+  text="ecosystem"
+  tagline="Apart from With Ease, there are other libs that can help you to build an app with Effector. There is a list of the most stable and useful ones."
+  :actions="actions"
+/>
+<VPFeatures :features="ecosystem" />
