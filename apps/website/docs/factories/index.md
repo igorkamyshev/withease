@@ -100,7 +100,7 @@ const createCounter = createFactory(({ initialValue }) => {
 Anywhere in your application you can invoke a factory by calling `invoke` with a factory and its arguments:
 We do not call `invoke` in components; instead, we call it in **`.js`** or **`.ts`** files, as if we were writing regular Effector code.
 
-```js
+```ts
 import { invoke } from '@withease/factories';
 
 const { $counter, increment, decrement } = invoke(createCounter, { initialValue: 2 });
