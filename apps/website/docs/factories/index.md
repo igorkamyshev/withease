@@ -98,7 +98,7 @@ const createCounter = createFactory(({ initialValue }) => {
 ### `invoke`
 
 Anywhere in your application you can invoke a factory by calling `invoke` with a factory and its arguments:
-We do not call `invoke` in components; instead, we call it in **`.js`** or **`.ts`** files, as if we were writing regular Effector code.
+It is recommended not to call ⁠invoke within components; instead, it should be called in ⁠`.js` or ⁠`.ts` files, as if writing standard Effector code.
 
 ```ts
 import { invoke } from '@withease/factories';
@@ -111,13 +111,13 @@ Here’s how you might use them in a React component:
 
 ```jsx
 const CounterComponent = () => {
-  const counter = useStore($counter);
-
+  const counter = useUnit($counter);
+  const [onIncrement,onDecrement] = useUnit(increment,decrement)
   return (
     <div>
       <p>Counter: {counter}</p>
-      <button onClick={() => increment()}>Increment</button>
-      <button onClick={() => decrement()}>Decrement</button>
+      <button onClick={() => onIncrement()}>Increment</button>
+      <button onClick={() => onDecrement()}>Decrement</button>
     </div>
   );
 };
