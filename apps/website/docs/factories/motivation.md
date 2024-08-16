@@ -9,7 +9,7 @@ Let us elaborate on these problems.
 
 ## Controlling that factories are invoked correctly
 
-In Effector's ecosystem, all factories [have to be added to the code-transformation plugin's config](https://farfetched.pages.dev/recipes/sids.html). But it is really easy to forget to add a factory to the config after creating it. Effector's plugin will not throw an error in this case, but the factory will not work correctly in case of SSR.
+In Effector's ecosystem, all factories [have to be added to the code-transformation plugin's config](https://effector.dev/en/explanation/sids/). But it is really easy to forget to add a factory to the config after creating it. Effector's plugin will not throw an error in this case, but the factory will not work correctly in case of SSR.
 
 In case of using this library, you have to remember only one thing: all factories have to be created using `createFactory` function from `@withease/factories` library. The result of this function is not callable, so you will get an error if you try to invoke it directly.
 
