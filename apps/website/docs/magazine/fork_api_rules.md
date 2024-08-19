@@ -9,7 +9,7 @@ Fork API allows you to run multiple instances of the same application in the sin
 
 :::tip
 
-Some of the rules can be validated by static analysis tools like [preset `scope` of `eslint-plugin-effector`](https://eslint.effector.dev/presets/scope.html), but others require runtime validation. Please, refer to the [tutorial](/magazine/scopefull/) to learn how to set up such validations in your project.
+Some of the rules can be validated by static analysis tools like [preset `scope` of `eslint-plugin-effector`](https://eslint.effector.dev/presets/scope.html), but others require runtime validation. Please, refer to the [tutorial](/magazine/scopefull) to learn how to set up such validations in your project.
 
 :::
 
