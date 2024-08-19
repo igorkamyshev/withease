@@ -13,7 +13,7 @@ Some violations of the Fork API rules can be detected by static analysis tools l
 
 In this case we need to listen to all messages that pass through Effector's kernel and analyze them. If we find a message with no [_Scope_](https://effector.dev/docs/api/effector/scope) we can log it.
 
-## The Preparation
+## The Solution
 
 Effector has a special API to listen messages that pass through the library. It is called [Inspect API](https://effector.dev/en/api/effector/inspect/). You can use it to catch all messages and analyze them. This API is great for debugging and testing which is what we need.
 
