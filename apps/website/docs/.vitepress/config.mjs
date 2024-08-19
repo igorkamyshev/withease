@@ -182,6 +182,10 @@ export default defineConfig({
               text: 'Migrating from Redux to Effector',
               link: '/magazine/migration_from_redux',
             },
+            {
+              text: 'Catch Scope-less Calls',
+              link: '/magazine/scopefull',
+            },
           ],
         },
         {

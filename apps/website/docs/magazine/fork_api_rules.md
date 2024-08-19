@@ -7,6 +7,12 @@ date: 2024-01-26
 
 Fork API allows you to run multiple instances of the same application in the single process. It is useful for testing, SSR, and other cases. It is powerful mechanism, but it has some rules that you should follow to avoid unexpected behavior.
 
+:::tip
+
+Some of the rules can be validated by static analysis tools like [preset `scope` of `eslint-plugin-effector`](https://eslint.effector.dev/presets/scope.html), but others require runtime validation. Please, refer to the [tutorial](/magazine/scopefull) to learn how to set up such validations in your project.
+
+:::
+
 ## Prefer declarative code
 
 All Effector's operators (like `sample` or `combine`) support Fork API out of the box, if you describe your application logic in a declarative way with Effector's operator, you do not have to do anything to make it work with Fork API.
