@@ -55,75 +55,11 @@ Our application calls it every time when a request for data is failed, and we ne
 
 We need to bound `dataLoadingFailed` and `notification.useNotification` somehow.
 
-Let us take a look on a couple of solutions and find the best one.
-
-### 🔴 Global `notification` service
-
-Ant Design allows using global notification instance.
-
-```ts{7-17}
-// model.ts
-import { createEvent, createEffect, sample } from 'effector';
-import { notification } from 'antd';
-
-const dataLoadingFailed = createEvent<{ reason: string }>();
-
-// Create an Effect to show a notification
-const showWarningFx = createEffect((params: { message: string }) => {
-  notification.warning(params);
-});
-
-// Execute it when dataLoadingFailed is happened
-sample({
-  clock: dataLoadingFailed,
-  fn: ({ reason }) => ({ message: reason }),
-  target: showWarningFx,
-});
-```
-
-In this solution it is not possible to use any Ant's settings from React Context, because it does not have access to the React at all. It means that notifications will not be styled properly and could look different from the rest of the application.
-
-So, this is not a solution.
-
-### 🔴 Just `.watch` an [_Event_](https://effector.dev/en/api/effector/event/) in a component
-
-It is possible to call `.watch`-method of an [_Event_](https://effector.dev/en/api/effector/event/) in a component.
-
-```tsx{9-17}
-import { useEffect } from 'react';
-import { notification } from 'antd';
-
-import { dataLoadingFailed } from './model';
-
-function App() {
-  const [api, contextHolder] = notification.useNotification();
-
-  useEffect(
-    () =>
-      dataLoadingFailed.watch(({ reason }) => {
-        api.warning({
-          message: reason,
-        });
-      }),
-    [api]
-  );
-
-  return (
-    <>
-      {contextHolder}
-      {/* ...the rest of the application */}
-    </>
-  );
-}
-```
-
-In this solution we do not respect [Fork API rules](/magazine/fork_api_rules), it means that we could have memory leaks, problems with test environments and Storybook-like tools.
-
-So, this is not a solution.
+Let us take a look on a ideal solution and a couple of not-so-good solutions.
 
 ### 🟢 Save `notification` instance to a [_Store_](https://effector.dev/docs/api/effector/store)
 
-We can combine the previous two solutions and save `notification` API-instance to a [_Store_](https://effector.dev/docs/api/effector/store). Let us create a couple new units to do it.
+The best way is saving `notification` API-instance to a [_Store_](https://effector.dev/docs/api/effector/store) and using it thru [_Effect_](https://effector.dev/docs/api/effector/effect). Let us create a couple new units to do it.
 
 ```ts
 // notifications.ts
@@ -209,6 +145,78 @@ sample({
   target: showWarningFx,
 });
 ```
+
+Now we have a valid solution to handle [_Events_](https://effector.dev/en/api/effector/event/) on UI-layer without exposing the whole data-flow.
+
+However, if you want to know why other (maybe more obvious) solutions are not so good, you can read about them below 👇
+
+::: details Not-so-good solutions
+
+### 🔴 Global `notification` service
+
+Ant Design allows using global notification instance.
+
+```ts{7-17}
+// model.ts
+import { createEvent, createEffect, sample } from 'effector';
+import { notification } from 'antd';
+
+const dataLoadingFailed = createEvent<{ reason: string }>();
+
+// Create an Effect to show a notification
+const showWarningFx = createEffect((params: { message: string }) => {
+  notification.warning(params);
+});
+
+// Execute it when dataLoadingFailed is happened
+sample({
+  clock: dataLoadingFailed,
+  fn: ({ reason }) => ({ message: reason }),
+  target: showWarningFx,
+});
+```
+
+In this solution it is not possible to use any Ant's settings from React Context, because it does not have access to the React at all. It means that notifications will not be styled properly and could look different from the rest of the application.
+
+So, this is not a solution.
+
+### 🔴 Just `.watch` an [_Event_](https://effector.dev/en/api/effector/event/) in a component
+
+It is possible to call `.watch`-method of an [_Event_](https://effector.dev/en/api/effector/event/) in a component.
+
+```tsx{9-17}
+import { useEffect } from 'react';
+import { notification } from 'antd';
+
+import { dataLoadingFailed } from './model';
+
+function App() {
+  const [api, contextHolder] = notification.useNotification();
+
+  useEffect(
+    () =>
+      dataLoadingFailed.watch(({ reason }) => {
+        api.warning({
+          message: reason,
+        });
+      }),
+    [api]
+  );
+
+  return (
+    <>
+      {contextHolder}
+      {/* ...the rest of the application */}
+    </>
+  );
+}
+```
+
+In this solution we do not respect [Fork API rules](/magazine/fork_api_rules), it means that we could have memory leaks, problems with test environments and Storybook-like tools.
+
+So, this is not a solution.
+
+:::
 
 ## Summary
 
