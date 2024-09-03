@@ -34,15 +34,20 @@ features:
     details: Web API bindings — network status, tab visibility, and more
     link: /web-api/
     linkText: Get Started
+  - icon: 👩‍🏭
+    title: factories
+    details: Set of helpers to create factories in your application
+    link: /factories/
+    linkText: Get Started
   - icon: 📄
     title: contracts
     details: Extremely small library to validate data from external sources
     link: /contracts/
     linkText: Get Started
-  - icon: 👩‍🏭
-    title: factories
-    details: Set of helpers to create factories in your application
-    link: /factories/
+  - icon: ♏️
+    title: zod
+    details: Compatibility layer for Zod and Contract-protocol
+    link: /zod/
     linkText: Get Started
 ---
 
