@@ -78,14 +78,61 @@ const createCounter = createFactory(({ initialValue }) => {
 
 Anywhere in your application you can invoke a factory by calling `invoke` with a factory and its arguments:
 
-```ts
-import { invoke } from '@withease/factories';
-
-const counter = invoke(createCounter, { initialValue: 2 });
-```
-
 ::: warning
 You have to invoke factories only in the top-level of your application. It means that you **must not** invoke it during component rendering or in any other place that can be called multiple times. Otherwise, you will get a memory leak.
 
 This limitation is applied to any factory, not only to factories created with `@withease/factories`.
+:::
+
+```ts
+import { invoke } from '@withease/factories';
+
+const { $counter, increment, decrement } = invoke(createCounter, {
+  initialValue: 2,
+});
+```
+
+Now we can use `$counter`, `increment`, and `decrement` in our components. Here is how you might use them in different UI frameworks:
+
+::: details Example usage in React
+
+```jsx
+import { useUnit } from 'effector-react';
+import { $counter, increment, decrement } from './model'; // assuming you've invoked your factory in `model.js`/`model.ts`
+
+const CounterComponent = () => {
+  const counter = useUnit($counter);
+  const [onIncrement, onDecrement] = useUnit(increment, decrement);
+
+  return (
+    <div>
+      <p>Counter: {counter}</p>
+      <button onClick={() => onIncrement()}>Increment</button>
+      <button onClick={() => onDecrement()}>Decrement</button>
+    </div>
+  );
+};
+```
+
+:::
+
+::: details Example usage in Vue
+
+```html
+<template>
+  <div>
+    <p>Counter: {{ counter }}</p>
+    <button @click="increment">Increment</button>
+    <button @click="decrement">Decrement</button>
+  </div>
+</template>
+
+<script setup>
+  import { useUnit } from 'effector-vue/composition';
+  import { $counter, increment, decrement } from './model'; // assuming you've invoked your factory in `model.js`/`model.ts`
+
+  const counter = useUnit($counter);
+</script>
+```
+
 :::
