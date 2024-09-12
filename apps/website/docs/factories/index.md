@@ -147,23 +147,6 @@ const counter = useUnit($counter);
 ```
 :::
 
-::: details Example usage in Svelte
-```svelte
-<script>
-  import { useUnit } from 'effector-svelte';
-  import { $counter, increment, decrement } from './store'; // assuming you've invoked your factory in `store.js`
-
-  const counter = useUnit($counter);
-</script>
-
-<div>
-  <p>Counter: {$counter}</p>
-  <button on:click="{increment}">Increment</button>
-  <button on:click="{decrement}">Decrement</button>
-</div>
-```
-:::
-
 ::: warning
 You have to invoke factories only in the top-level of your application. It means that you **must not** invoke it during component rendering or in any other place that can be called multiple times. Otherwise, you will get a memory leak.
 
