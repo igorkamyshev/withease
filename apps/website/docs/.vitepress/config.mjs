@@ -49,6 +49,7 @@ export default defineConfig({
           { text: 'web-api', link: '/web-api/' },
           { text: 'factories', link: '/factories/' },
           { text: 'contracts', link: '/contracts/' },
+          { text: 'zod', link: '/zod/' },
         ],
       },
       { text: 'Magazine', link: '/magazine/' },
@@ -140,6 +141,7 @@ export default defineConfig({
         },
         { text: 'APIs', link: '/contracts/api' },
       ]),
+      ...createSidebar('zod', [{ text: 'Get Started', link: '/zod/' }]),
       '/magazine/': [
         {
           text: 'Architecture',

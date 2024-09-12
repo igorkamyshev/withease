@@ -1,0 +1,47 @@
+{
+  "name": "@withease/zod",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "test:run": "vitest run --typecheck",
+    "test:watch": "vitest --typecheck",
+    "build": "vite build",
+    "size": "size-limit",
+    "publint": "node ../../tools/publint.mjs",
+    "typelint": "attw --pack"
+  },
+  "devDependencies": {
+    "zod": "^3.19"
+  },
+  "peerDependencies": {
+    "zod": "^3.19"
+  },
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/zod.cjs",
+  "module": "./dist/zod.js",
+  "types": "./dist/zod.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/zod.d.ts",
+        "default": "./dist/zod.js"
+      },
+      "require": {
+        "types": "./dist/zod.d.cts",
+        "default": "./dist/zod.cjs"
+      }
+    }
+  },
+  "size-limit": [
+    {
+      "path": "./dist/zod.js",
+      "limit": "231 B"
+    }
+  ]
+}
