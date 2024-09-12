@@ -98,25 +98,30 @@ const createCounter = createFactory(({ initialValue }) => {
 ### `invoke`
 
 Anywhere in your application you can invoke a factory by calling `invoke` with a factory and its arguments:
-::: warning
-It is recommended to call invoke in the same places where Effector code is written, rather than inside components.
-:::
 
+::: warning
+You have to invoke factories only in the top-level of your application. It means that you **must not** invoke it during component rendering or in any other place that can be called multiple times. Otherwise, you will get a memory leak.
+
+This limitation is applied to any factory, not only to factories created with `@withease/factories`.
+:::
 
 ```ts
 import { invoke } from '@withease/factories';
 
-const { $counter, increment, decrement } = invoke(createCounter, { initialValue: 2 });
+const { $counter, increment, decrement } = invoke(createCounter, {
+  initialValue: 2,
+});
 ```
 
-Now we can use `$counter`, `increment`, and `decrement` in our components. Here’s how you might use them in different UI frameworks:
+Now we can use `$counter`, `increment`, and `decrement` in our components. Here is how you might use them in different UI frameworks:
 
 ::: details Example usage in React
+
 ```jsx
 const CounterComponent = () => {
   const counter = useUnit($counter);
   const [onIncrement, onDecrement] = useUnit(increment, decrement);
-  
+
   return (
     <div>
       <p>Counter: {counter}</p>
@@ -126,9 +131,11 @@ const CounterComponent = () => {
   );
 };
 ```
+
 :::
 
 ::: details Example usage in Vue
+
 ```html
 <template>
   <div>
@@ -139,34 +146,11 @@ const CounterComponent = () => {
 </template>
 
 <script setup>
-import { useUnit } from 'effector-vue';
-import { $counter, increment, decrement } from './store'; // assuming you've invoked your factory in `store.js`
-
-const counter = useUnit($counter);
-</script>
-```
-:::
-
-::: details Example usage in Svelte
-```svelte
-<script>
-  import { useUnit } from 'effector-svelte';
+  import { useUnit } from 'effector-vue';
   import { $counter, increment, decrement } from './store'; // assuming you've invoked your factory in `store.js`
 
   const counter = useUnit($counter);
 </script>
-
-<div>
-  <p>Counter: {$counter}</p>
-  <button on:click="{increment}">Increment</button>
-  <button on:click="{decrement}">Decrement</button>
-</div>
 ```
+
 :::
-
-::: warning
-You have to invoke factories only in the top-level of your application. It means that you **must not** invoke it during component rendering or in any other place that can be called multiple times. Otherwise, you will get a memory leak.
-
-This limitation is applied to any factory, not only to factories created with `@withease/factories`.
-:::
-
