@@ -118,6 +118,9 @@ Now we can use `$counter`, `increment`, and `decrement` in our components. Here 
 ::: details Example usage in React
 
 ```jsx
+import { useUnit } from 'effector-react';
+import { $counter, increment, decrement } from './model'; // assuming you've invoked your factory in `model.js`/`model.ts`
+
 const CounterComponent = () => {
   const counter = useUnit($counter);
   const [onIncrement, onDecrement] = useUnit(increment, decrement);
@@ -146,8 +149,8 @@ const CounterComponent = () => {
 </template>
 
 <script setup>
-  import { useUnit } from 'effector-vue';
-  import { $counter, increment, decrement } from './store'; // assuming you've invoked your factory in `store.js`
+  import { useUnit } from 'effector-vue/composition';
+  import { $counter, increment, decrement } from './model'; // assuming you've invoked your factory in `model.js`/`model.ts`
 
   const counter = useUnit($counter);
 </script>
