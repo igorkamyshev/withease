@@ -22,7 +22,7 @@ importers:
       effector-vue: 23.0.0
       estree-walker: ^3.0.3
       glob: ^8.0.3
-      i18next: 23.0.0
+      i18next: 24.0.0
       lodash-es: ^4.17.21
       markdown: ^0.5.0
       playwright: ^1.32.2
@@ -69,7 +69,7 @@ importers:
       effector-vue: 23.0.0_effector@23.0.0+vue@3.4.35
       estree-walker: 3.0.3
       glob: 8.1.0
-      i18next: 23.0.0
+      i18next: 24.0.0_typescript@5.1.6
       markdown: 0.5.0
       playwright: 1.32.2
       prettier: 2.7.1
@@ -363,6 +363,13 @@ packages:
 
   /@babel/runtime/7.22.15:
     resolution: {integrity: sha512-T0O+aa+4w0u06iNmapipJXMV4HoUir03hpx3/YqXXhu9xim3w+dVphjFWl1OH8NbZHw5Lbm9k45drDkgq2VNNA==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      regenerator-runtime: 0.14.0
+    dev: true
+
+  /@babel/runtime/7.26.7:
+    resolution: {integrity: sha512-AOPI3D+a8dXnja+iwsUqGRjr1BbZIe771sXdapOtYI531gSqpi92vXivKcq2asu/DFpdl1ceFAKZyRzK2PCVcQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
       regenerator-runtime: 0.14.0
@@ -976,6 +983,7 @@ packages:
 
   /@kurkle/color/0.3.2:
     resolution: {integrity: sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==}
+    dev: false
 
   /@lezer/common/1.0.4:
     resolution: {integrity: sha512-lZHlk8p67x4aIDtJl6UQrXSOP6oi7dQR3W/geFVrENdA1JDaAJWldnVqVjPMJupbTKbzDfFcePfKttqVidS/dg==}
@@ -2722,10 +2730,16 @@ packages:
     engines: {node: '>=16.17.0'}
     dev: true
 
-  /i18next/23.0.0:
-    resolution: {integrity: sha512-nwggKtf7ZQWq1t21qGUGhrwoyRWHJNTy016jOPl6ZDfxGZAUyK1FWm3EgELgfO4ujNifCHmxJ6pyDdcX7cagWg==}
+  /i18next/24.0.0_typescript@5.1.6:
+    resolution: {integrity: sha512-ORGCwMrXxpmB/AljFbGEe0UK/9Pz6umb9aZgLZ9qJGE+kjKhlnLj423WX2mt+N0MlEJ78pQXFMBmeMzrkLxriQ==}
+    peerDependencies:
+      typescript: ^5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dependencies:
-      '@babel/runtime': 7.22.15
+      '@babel/runtime': 7.26.7
+      typescript: 5.1.6
     dev: true
 
   /iconv-lite/0.4.24:
