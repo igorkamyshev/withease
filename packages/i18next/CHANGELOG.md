@@ -1,5 +1,11 @@
 # @withease/i18next
 
+## 24.0.0
+
+### Major Changes
+
+- 442be74: Test against i18next@24. For migration guide please refer to the i18next docs: https://www.i18next.com/misc/migration-guide
+
 ## 23.2.2
 
 ### Patch Changes
