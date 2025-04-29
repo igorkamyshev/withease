@@ -27,6 +27,35 @@ describe('integration.translated', () => {
 
       expect(scope.getState($result)).toBe('valueOne');
     });
+
+    test('supports simple key and language change', async () => {
+      const instance = createInstance({
+        resources: {
+          th: { common: { key: 'valueOne' } },
+          en: { common: { key: 'valueTwo' } },
+        },
+        lng: 'th',
+      });
+
+      const setup = createEvent();
+
+      const { translated, changeLanguageFx } = createI18nextIntegration({
+        instance,
+        setup,
+      });
+
+      const $result = translated('common:key');
+
+      const scope = fork();
+
+      await allSettled(setup, { scope });
+
+      expect(scope.getState($result)).toBe('valueOne');
+
+      await allSettled(changeLanguageFx, { scope, params: 'en' });
+
+      expect(scope.getState($result)).toBe('valueTwo');
+    });
   });
 
   describe('overload: template literal', () => {
