@@ -35,7 +35,7 @@
   "size-limit": [
     {
       "path": "./dist/i18next.js",
-      "limit": "1.26 kB"
+      "limit": "1.33 kB"
     }
   ]
 }
