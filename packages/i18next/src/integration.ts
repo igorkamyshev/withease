@@ -179,8 +179,13 @@ export function createI18nextIntegration({
     return combine(
       $t,
       variables ? combine(variables) : defaultVariables,
-      // @ts-expect-error lng is special variable, it should not be passed to t
-      (t, { lng, ...vars }) => t(key, vars) ?? key
+      (t, vars) =>
+        t(
+          key,
+          // since i18next@25 t-function mutates variables object,
+          // so we spread it to avoid mutating original object
+          { ...vars }
+        ) ?? key
     );
   }
 
