@@ -39,6 +39,8 @@ type I18nextIntegration = {
 
 const identity = ((key: string) => key) as TFunction;
 
+const defaultVariables = createStore({}, { serialize: 'ignore' });
+
 export function createI18nextIntegration({
   instance,
   setup,
@@ -175,13 +177,10 @@ export function createI18nextIntegration({
     variables?: Record<string, Store<string>>
   ): Store<string> {
     return combine(
-      {
-        t: $t,
-        variables: variables
-          ? combine(variables)
-          : createStore(null, { serialize: 'ignore' }),
-      },
-      ({ t, variables }) => t(key, variables ?? undefined) ?? key
+      $t,
+      variables ? combine(variables) : defaultVariables,
+      // @ts-expect-error lng is special variable, it should not be passed to t
+      (t, { lng, ...vars }) => t(key, vars) ?? key
     );
   }
 
