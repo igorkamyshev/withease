@@ -175,8 +175,13 @@ export function createI18nextIntegration({
     variables?: Record<string, Store<string>>
   ): Store<string> {
     return combine(
-      { t: $t, variables: combine(variables ?? {}) },
-      ({ t, variables }) => t(key, variables) ?? key
+      {
+        t: $t,
+        variables: variables
+          ? combine(variables)
+          : createStore(null, { serialize: 'ignore' }),
+      },
+      ({ t, variables }) => t(key, variables ?? undefined) ?? key
     );
   }
 

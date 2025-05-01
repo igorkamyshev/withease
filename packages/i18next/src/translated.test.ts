@@ -116,5 +116,40 @@ describe('integration.translated', () => {
 
       expect(scope.getState($result)).toBe('valueOne kek');
     });
+
+    test('changes after language changed', async () => {
+      const instance = createInstance({
+        resources: {
+          th: { common: { key: 'valueOne {{name}}' } },
+          en: { common: { key: 'valueTwo {{name}}' } },
+        },
+        lng: 'th',
+      });
+
+      const setup = createEvent();
+
+      const { translated, changeLanguageFx } = createI18nextIntegration({
+        instance,
+        setup,
+      });
+
+      const $name = createStore('wow');
+
+      const $result = translated('common:key', { name: $name });
+
+      const scope = fork();
+
+      await allSettled(setup, { scope });
+
+      expect(scope.getState($result)).toBe('valueOne wow');
+
+      await allSettled(changeLanguageFx, { scope, params: 'en' });
+
+      expect(scope.getState($result)).toBe('valueTwo wow');
+
+      await allSettled($name, { scope, params: 'kek' });
+
+      expect(scope.getState($result)).toBe('valueTwo kek');
+    });
   });
 });
