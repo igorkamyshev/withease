@@ -4,7 +4,7 @@
   "license": "MIT",
   "peerDependencies": {
     "effector": "^22.5.0 || ^23.0.0",
-    "i18next": "^23.0.0 || ^24.0.0"
+    "i18next": "^23.0.0 || ^24.0.0 || ^25.0.0"
   },
   "scripts": {
     "test:run": "vitest run --typecheck",
@@ -35,7 +35,7 @@
   "size-limit": [
     {
       "path": "./dist/i18next.js",
-      "limit": "1.26 kB"
+      "limit": "1.33 kB"
     }
   ]
 }

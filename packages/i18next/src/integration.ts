@@ -176,7 +176,13 @@ export function createI18nextIntegration({
   ): Store<string> {
     return combine(
       { t: $t, variables: combine(variables ?? {}) },
-      ({ t, variables }) => t(key, variables) ?? key
+      ({ t, variables }) =>
+        t(
+          key,
+          // since i18next@25 t-function mutates variables object,
+          // so we spread it to avoid mutating original object
+          { ...variables }
+        ) ?? key
     );
   }
 
