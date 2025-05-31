@@ -114,3 +114,39 @@ export function readonly<T>(unit: EventCallable<T>): Event<T>;
 export function readonly(unit: any) {
   return unit.map((v: any) => v);
 }
+
+type UnsubscribeFn = () => void;
+type UpdaterFn = (updateFn: () => void) => UnsubscribeFn;
+
+export const createAutoUpdatedStore =
+  ({ setup, teardown }: Setupable) =>
+  <T>(readValue: () => T, updater: UpdaterFn) => {
+    const store = createStore(readValue());
+    const update = createEvent<T>();
+
+    let unsubscribe: () => void | undefined;
+
+    sample({
+      clock: update,
+      target: store,
+    });
+
+    sample({
+      clock: setup,
+      target: createEffect(
+        () => (unsubscribe = updater(() => update(readValue())))
+      ),
+    });
+
+    if (teardown) {
+      sample({
+        clock: teardown,
+        filter: () => Boolean(unsubscribe),
+        target: createEffect(() => {
+          unsubscribe!();
+        }),
+      });
+    }
+
+    return store;
+  };

@@ -111,6 +111,10 @@ export default defineConfig({
               text: 'Geolocation',
               link: '/web-api/geolocation',
             },
+            {
+              text: 'Window dimensions',
+              link: '/web-api/window_dimensions',
+            },
           ],
         },
       ]),
