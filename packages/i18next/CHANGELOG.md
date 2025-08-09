@@ -1,5 +1,11 @@
 # @withease/i18next
 
+## 26.0.0
+
+### Major Changes
+
+- ebc9fb7: Support i18next@25
+
 ## 25.0.0
 
 ### Major Changes
