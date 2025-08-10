@@ -114,6 +114,12 @@ importers:
   packages/web-api:
     specifiers: {}
 
+  packages/zod:
+    specifiers:
+      zod: ^3.19
+    devDependencies:
+      zod: 3.23.8
+
 packages:
 
   /@algolia/autocomplete-core/1.9.3_andexh5lxsyy34kfg3pekcyz5e:
@@ -4695,4 +4701,8 @@ packages:
       validator: 13.11.0
     optionalDependencies:
       commander: 9.5.0
+    dev: true
+
+  /zod/3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
     dev: true

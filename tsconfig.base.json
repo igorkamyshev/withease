@@ -17,7 +17,8 @@
       "@withease/i18next": ["packages/i18next/src/index.ts"],
       "@withease/redux": ["packages/redux/src/index.ts"],
       "@withease/web-api": ["packages/web-api/src/index.ts"],
-      "@withease/contracts": ["packages/contracts/src/index.ts"]
+      "@withease/contracts": ["packages/contracts/src/index.ts"],
+      "@withease/zod": ["packages/zod/src/index.ts"]
     }
   },
   "exclude": ["node_modules"]
