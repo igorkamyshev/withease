@@ -4,3 +4,4 @@ export { trackNetworkStatus } from './network_status';
 export { trackMediaQuery } from './media_query';
 export { trackPreferredLanguages } from './preferred_languages';
 export { trackGeolocation } from './geolocation';
+export { trackWindowDimensions } from './window';
